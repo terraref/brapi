@@ -13,7 +13,7 @@ Python 3.5.2+
 To run, first start an intance of the BETY database:
 
 ```
-docker run -n betydb -d -p 5432:5432 terraref/bety-postgis
+docker run -h betydb -d -p 5432:5432 terraref/bety-postgis
 ```
 
 Install the python requirements and start the Flask server:
