@@ -1,5 +1,5 @@
 # Run BETY
-#docker run -n betydb -d -p 5432:5432 terraref/bety-postgis
+#docker run -h betydb -d -p 5432:5432 terraref/bety-postgis
 
 
 export DBHOST=localhost
