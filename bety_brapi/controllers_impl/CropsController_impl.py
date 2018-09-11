@@ -7,6 +7,8 @@ def common_crop_names_get(pageSize=None, page=None):
     query = "select distinct commonname from species"
     res = database.get_engine().execute(query)
 
+    data = [r[0] for r in res]
+
     response = {
         "metadata": {
             "datafiles": [],
@@ -19,7 +21,7 @@ def common_crop_names_get(pageSize=None, page=None):
             "status": []
         },
         "result": {
-            "data": [dict(res)]
+            "data": data
             }
         }
 
