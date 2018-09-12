@@ -5,8 +5,10 @@ import os
 
 db_uri = 'postgresql+psycopg2://%s:%s@%s/%s' % (
     # ARGS.dbuser, ARGS.dbpass, ARGS.dbhost, ARGS.dbname
-    os.environ['DBUSER'], os.environ['DBPASS'],
-    os.environ['DBHOST'], os.environ['DBNAME']
+    os.environ.get('DBUSER', 'bety'),
+    os.environ.get('DBPASS', 'bety'),
+    os.environ.get('DBHOST', 'localhost'),
+    os.environ.get('DBNAME', 'bety')
 )
 engine = create_engine(db_uri, convert_unicode=True)
 
