@@ -39,4 +39,4 @@ def seasons_get(year=None, pageSize=None, page=None):
             "seasonDbId": "%04d%02d" % (row["year"], row["month"])
         })
 
-    return helper.create_result(data, count, pageSize, page)
+    return helper.create_result({"data": data}, count, pageSize, page)

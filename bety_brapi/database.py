@@ -10,6 +10,7 @@ db_uri = 'postgresql+psycopg2://%s:%s@%s/%s' % (
     os.environ.get('DBHOST', 'localhost'),
     os.environ.get('DBNAME', 'bety')
 )
+# add echo=True to see actual queries executed
 engine = create_engine(db_uri, convert_unicode=True)
 
 db_session = scoped_session(sessionmaker(autocommit=False,

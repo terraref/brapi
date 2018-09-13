@@ -12,6 +12,8 @@ def calls_get(datatype, pageSize, page):
     # create the full list of all calls implemented.
     data = [
         calls_get_helper('calls'),
+        calls_get_helper('locations'),
+        calls_get_helper('locations/{locationDbId}'),
         calls_get_helper('phenotypes-search'),
         calls_get_helper('seasons')
     ]
@@ -31,7 +33,7 @@ def calls_get(datatype, pageSize, page):
     data = data[page * pageSize:(page+1) * pageSize]
 
     # return the resulting data
-    return helper.create_result(data, count, pageSize, page)
+    return helper.create_result({"data": data}, count, pageSize, page)
 
 
 def calls_get_helper(api_call, datatypes=None, methods=None, versions=None):

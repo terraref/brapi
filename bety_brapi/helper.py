@@ -3,7 +3,7 @@ import math
 
 DEFAULT_PAGE_SIZE = 1000
 
-def query_count(query, params):
+def query_count(query, params=None):
     """
     Executes the query and returns the count of the number rows that would be returned
     by this query. This will not actually return the results.
@@ -18,7 +18,7 @@ def query_count(query, params):
     return count
 
 
-def query_result(query, params, pageSize, page):
+def query_result(query, params=None, pageSize=None, page=None):
     """
     Actually execute the query. This will use the pageSize and page values to limit the number
     of results that re returned. The query is assumed to be a parameterized query, and params
@@ -54,10 +54,7 @@ def create_result(data, rowCount, pageSize=None, page=None):
     :return: the dict that can be returned as the brapi result
     """
     if not pageSize:
-        if rowCount > DEFAULT_PAGE_SIZE:
-            pageSize = rowCount
-        else:
-            pageSize = DEFAULT_PAGE_SIZE
+        pageSize = DEFAULT_PAGE_SIZE
     if not page:
         page = 0
     body = {
@@ -70,8 +67,6 @@ def create_result(data, rowCount, pageSize=None, page=None):
                 "totalPages": math.ceil(rowCount / pageSize)
             }
         },
-        "result": {
-            "data": data
-        }
+        "result": data
     }
     return body

@@ -59,4 +59,4 @@ def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
     res = helper.query_result(query, params, pageSize, page)
     data = {"observations": [dict(r) for r in res]}
 
-    return helper.create_result(data, count, pageSize, page)
+    return helper.create_result({"data": data}, count, pageSize, page)
