@@ -21,6 +21,5 @@ def calls_get(datatype=None, pageSize=None, page=None):  # noqa: E501
     :rtype: CallsResponse
     """
 
-#    return CallsController_impl.calls_get(datatype=None, pageSize=None, page=None)
-    return "Not implemented"
+    return CallsController_impl.calls_get(datatype=None, pageSize=None, page=None)
 
