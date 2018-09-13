@@ -19,7 +19,7 @@ def common_crop_names_get(pageSize=None, page=None):  # noqa: E501
     :rtype: CommonCropNamesResponse
     """
 
-    return CropsController_impl.common_crop_names_get(pageSize=None, page=None)
+    return CropsController_impl.common_crop_names_get(pageSize, page)
 
 
 def crops_get(pageSize=None, page=None):  # noqa: E501
@@ -35,5 +35,5 @@ def crops_get(pageSize=None, page=None):  # noqa: E501
     :rtype: CommonCropNamesResponse
     """
 
-    return CropsController_impl.crops_get(pageSize=None, page=None)
+    return CropsController_impl.crops_get(pageSize, page)
 

@@ -12,6 +12,8 @@ def calls_get(datatype, pageSize, page):
     # create the full list of all calls implemented.
     data = [
         calls_get_helper('calls'),
+        calls_get_helper('commonCropNames', versions=['1.2']),
+        calls_get_helper('crops'),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
         calls_get_helper('phenotypes-search'),

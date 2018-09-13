@@ -1,32 +1,15 @@
-from bety_brapi import database
-from flask import jsonify
-from flask import current_app as app
+from bety_brapi import helper
 
 def common_crop_names_get(pageSize=None, page=None):
 
-    query = "select distinct commonname from species"
-    res = database.get_engine().execute(query)
+    query = "SELECT DISTINCT commonname FROM species ORDER BY commonname"
+    count = helper.query_count(query)
+    res = helper.query_result(query, pageSize, page)
 
     data = [r[0] for r in res]
 
-    response = {
-        "metadata": {
-            "datafiles": [],
-            "pagination": {
-                "currentPage": 0,
-                "pageSize": 100,
-                "totalCount": 2,
-                "totalPages": 1
-            },
-            "status": []
-        },
-        "result": {
-            "data": data
-            }
-        }
-
-    return response
+    return helper.create_result({"data": data}, count, pageSize, page)
 
 def crops_get(pageSize=None, page=None):
     # deprecated function name
-    return common_crop_names_get(pageSize=None, page=None)
+    return common_crop_names_get(pageSize, page)
