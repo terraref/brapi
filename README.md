@@ -41,3 +41,8 @@ preliminary mapping of BETY fields to BRAPI objects.
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
+
+
+## How to add an enpoint
+
+Example: see controllers/crops_controller.py and CropsController_impl.py
