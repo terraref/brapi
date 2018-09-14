@@ -14,6 +14,7 @@ def calls_get(datatype, pageSize, page):
         calls_get_helper('calls'),
         calls_get_helper('commonCropNames', versions=['1.2']),
         calls_get_helper('crops'),
+        calls_get_helper('germplasm-search'),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
         calls_get_helper('phenotypes-search'),

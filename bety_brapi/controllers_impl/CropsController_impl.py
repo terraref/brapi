@@ -4,7 +4,7 @@ def common_crop_names_get(pageSize=None, page=None):
 
     query = "SELECT DISTINCT commonname FROM species ORDER BY commonname"
     count = helper.query_count(query)
-    res = helper.query_result(query, pageSize, page)
+    res = helper.query_result(query, [], pageSize, page)
 
     data = [r[0] for r in res]
 
