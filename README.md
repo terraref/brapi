@@ -40,3 +40,4 @@ preliminary mapping of BETY fields to BRAPI objects.
 | /locations | sitegroups  | lat/lon computed from sites part of sitegroup |
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
+| /observations | traits | |
