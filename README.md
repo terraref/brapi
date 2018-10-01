@@ -46,3 +46,19 @@ preliminary mapping of BETY fields to BRAPI objects.
 ## How to add an endpoint
 
 Example: see controllers/crops_controller.py and CropsController_impl.py
+
+## Showing data in BETY database
+
+You can use the following command to start a docker container that is connected to the database
+allowing you to browse the database.
+
+```
+docker run -ti --rm -p 8000:8000 --link betydb:postgres pecan/bety
+```
+
+To enable the guest user you can run the following sql query when connected to the database:
+
+```
+INSERT INTO users (login, name, email, crypted_password, salt, city, state_prov, postal_code, country, area, access_level, page_access_level, created_at, updated_at, apikey, remember_token, remember_token_expires_at)
+ VALUES ('guestuser', 'guestuser', 'betydb@example.com', '994363a949b6486fc7ea54bf40335127f5413318', 'bety', 'Urbana', 'IL', '61801', 'USA', '', 4, 4, NOW(), NOW(), NULL, NULL, NULL);
+```
