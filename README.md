@@ -43,6 +43,6 @@ preliminary mapping of BETY fields to BRAPI objects.
 | /observations | traits | |
 
 
-## How to add an enpoint
+## How to add an endpoint
 
 Example: see controllers/crops_controller.py and CropsController_impl.py
