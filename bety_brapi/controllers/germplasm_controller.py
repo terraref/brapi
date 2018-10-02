@@ -1,6 +1,6 @@
 import connexion
 import six
-#from bety_brapi.controllers_impl import GermplasmController_impl
+from bety_brapi.controllers_impl import GermplasmController_impl
 
 from bety_brapi.models.breeding_method_response import BreedingMethodResponse  # noqa: E501
 from bety_brapi.models.breeding_methods_response import BreedingMethodsResponse  # noqa: E501
@@ -155,8 +155,7 @@ def germplasm_search_get(germplasmPUI=None, germplasmDbId=None, germplasmName=No
     :rtype: GermplasmResponse
     """
 
-#    return GermplasmController_impl.germplasm_search_get(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCropName=None, pageSize=None, page=None)
-    return "Not implemented"
+    return GermplasmController_impl.germplasm_search_get(germplasmPUI, germplasmDbId, germplasmName, commonCropName, pageSize, page)
 
 
 def germplasm_search_post(body=None):  # noqa: E501

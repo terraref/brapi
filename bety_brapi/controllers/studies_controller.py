@@ -1,6 +1,6 @@
 import connexion
 import six
-#from bety_brapi.controllers_impl import StudiesController_impl
+from bety_brapi.controllers_impl import StudiesController_impl
 
 from bety_brapi.models.germplasm_summary_list_response import GermplasmSummaryListResponse  # noqa: E501
 from bety_brapi.models.new_observation_db_ids_response import NewObservationDbIdsResponse  # noqa: E501
@@ -38,8 +38,7 @@ def seasons_get(year=None, pageSize=None, page=None):  # noqa: E501
     :rtype: SeasonsResponse
     """
 
-#    return StudiesController_impl.seasons_get(year=None, pageSize=None, page=None)
-    return "Not implemented"
+    return StudiesController_impl.seasons_get(year, pageSize, page)
 
 
 def studies_search_get(studyType=None, programDbId=None, locationDbId=None, seasonDbId=None, trialDbId=None, studyDbId=None, germplasmDbIds=None, observationVariableDbIds=None, pageSize=None, page=None, active=None, sortBy=None, sortOrder=None):  # noqa: E501

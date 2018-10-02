@@ -1,6 +1,6 @@
 import connexion
 import six
-#from bety_brapi.controllers_impl import CallsController_impl
+from bety_brapi.controllers_impl import CallsController_impl
 
 from bety_brapi.models.calls_response import CallsResponse  # noqa: E501
 from bety_brapi import util
@@ -21,6 +21,5 @@ def calls_get(datatype=None, pageSize=None, page=None):  # noqa: E501
     :rtype: CallsResponse
     """
 
-#    return CallsController_impl.calls_get(datatype=None, pageSize=None, page=None)
-    return "Not implemented"
+    return CallsController_impl.calls_get(datatype, pageSize, page)
 

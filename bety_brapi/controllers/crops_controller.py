@@ -1,6 +1,6 @@
 import connexion
 import six
-#from bety_brapi.controllers_impl import CropsController_impl
+from bety_brapi.controllers_impl import CropsController_impl
 
 from bety_brapi.models.common_crop_names_response import CommonCropNamesResponse  # noqa: E501
 from bety_brapi import util
@@ -19,8 +19,7 @@ def common_crop_names_get(pageSize=None, page=None):  # noqa: E501
     :rtype: CommonCropNamesResponse
     """
 
-#    return CropsController_impl.common_crop_names_get(pageSize=None, page=None)
-    return "Not implemented"
+    return CropsController_impl.common_crop_names_get(pageSize, page)
 
 
 def crops_get(pageSize=None, page=None):  # noqa: E501
@@ -36,6 +35,5 @@ def crops_get(pageSize=None, page=None):  # noqa: E501
     :rtype: CommonCropNamesResponse
     """
 
-#    return CropsController_impl.crops_get(pageSize=None, page=None)
-    return "Not implemented"
+    return CropsController_impl.crops_get(pageSize, page)
 

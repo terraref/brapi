@@ -1,6 +1,6 @@
 import connexion
 import six
-#from bety_brapi.controllers_impl import LocationsController_impl
+from bety_brapi.controllers_impl import LocationsController_impl
 
 from bety_brapi.models.location_response import LocationResponse  # noqa: E501
 from bety_brapi.models.locations_response import LocationsResponse  # noqa: E501
@@ -22,8 +22,7 @@ def locations_get(locationType=None, pageSize=None, page=None):  # noqa: E501
     :rtype: LocationsResponse
     """
 
-#    return LocationsController_impl.locations_get(locationType=None, pageSize=None, page=None)
-    return "Not implemented"
+    return LocationsController_impl.locations_get(locationType, pageSize, page)
 
 
 def locations_location_db_id_get(locationDbId):  # noqa: E501
@@ -37,6 +36,5 @@ def locations_location_db_id_get(locationDbId):  # noqa: E501
     :rtype: LocationResponse
     """
 
-#    return LocationsController_impl.locations_location_db_id_get(locationDbId)
-    return "Not implemented"
+    return LocationsController_impl.locations_location_db_id_get(locationDbId)
 

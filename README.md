@@ -13,7 +13,7 @@ Python 3.5.2+
 To run, first start an intance of the BETY database:
 
 ```
-docker run -h betydb -d -p 5432:5432 terraref/bety-postgis
+docker run --name betydb -d -p 5431:5432 terraref/bety-postgis
 ```
 
 Install the python requirements and start the Flask server:
@@ -30,3 +30,35 @@ http://localhost:8080/brapi/v1/ui/
 
 The only call implemented is the `GET phenotypes-search` with a very very
 preliminary mapping of BETY fields to BRAPI objects.
+
+
+## Mappings from BETY to BRAPI models
+
+| BRAPI      | BETY        | Notes |
+|------------|-------------|-------|
+| /calls     | generated   |       |
+| /locations | sitegroups  | lat/lon computed from sites part of sitegroup |
+| /seasons   | experiments | season = month of start_date, year of start_date |
+| /germplasm  | cultivars.  |       | 
+| /observations | traits | |
+
+
+## How to add an endpoint
+
+Example: see controllers/crops_controller.py and CropsController_impl.py
+
+## Showing data in BETY database
+
+You can use the following command to start a docker container that is connected to the database
+allowing you to browse the database.
+
+```
+docker run -ti --rm -p 8000:8000 --link betydb:postgres pecan/bety
+```
+
+To enable the guest user you can run the following sql query when connected to the database:
+
+```
+INSERT INTO users (login, name, email, crypted_password, salt, city, state_prov, postal_code, country, area, access_level, page_access_level, created_at, updated_at, apikey, remember_token, remember_token_expires_at)
+ VALUES ('guestuser', 'guestuser', 'betydb@example.com', '994363a949b6486fc7ea54bf40335127f5413318', 'bety', 'Urbana', 'IL', '61801', 'USA', '', 4, 4, NOW(), NOW(), NULL, NULL, NULL);
+```

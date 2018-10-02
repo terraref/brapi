@@ -1,4 +1,4 @@
-from bety_brapi import database
+from bety_brapi import helper
 from flask import jsonify
 from flask import current_app as app
 
@@ -17,6 +17,7 @@ def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
     # pageSize
     # page
 
+    params = []
     query = "select v.id as observationVariableDbId,  \
                     v.name as observationVariableName,  \
                     t.id as observationDbId, \
@@ -30,46 +31,32 @@ def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
     # For not, observationVariable is variable
     # e.g.,  6000000007 plant_height 
     if observationVariableDbId:
-        query += " and v.id = %s " % observationVariableDbId
+        query += " and v.id = %s "
+        params.append(observationVariableDbId)
 
     # For now, location is site
     if locationDbId:
-        query += " and t.site_id = %s " % locationDbId
+        query += " and t.site_id = %s "
+        params.append(locationDbId)
 
     # For now, germplasm is cultivar
     if germplasmDbId:
-        query += " and t.cultivar_id = %s " % germplasmDbId
+        query += " and t.cultivar_id = %s "
+        params.append(germplasmDbId)
 
     if (observationTimeStampRangeStart and observationTimeStampRangeEnd):
-        query += " and (date >= '%s' and date <= '%s')" % (observationTimeStampRangeStart, observationTimeStampRangeEnd)
+        query += " and (date >= %s and date <= %s)"
+        params.append(observationTimeStampRangeStart)
+        params.append(observationTimeStampRangeEnd)
     elif observationTimeStampRangeStart:
-        query += " and date >= %s" % observationTimeStampRangeStart
+        query += " and date >= %s"
+        params.append(observationTimeStampRangeStart)
     elif observationTimeStampRangeEnd:
-        query += " and date <= %s" % observationTimeStampRangeEnd
+        query += " and date <= %s"
+        params.append(observationTimeStampRangeEnd)
 
-    # TODO: actual pagination
-    query += " limit 100"     
+    count = helper.query_count(query, params)
+    res = helper.query_result(query, params, pageSize, page)
+    data = {"observations": [dict(r) for r in res]}
 
-    #app.logger.debug(query)
-    res = database.get_engine().execute(query)
-
-    response = {
-        "metadata":  {
-            "datafiles": [],
-            "pagination": {
-                "currentPage": 0,
-                "pageSize": 100,
-                "totalCount": 2,
-                "totalPages": 1
-           },
-           "status": []
-        },
-        "result":  {
-            "data": {
-               "observations": [dict(r) for r in res]
-            }
-        }
-    }
-
-    return response
-    #return jsonify([dict(r) for r in res])
+    return helper.create_result({"data": data}, count, pageSize, page)
