@@ -1,0 +1,205 @@
+---
+title: "Building Data for Germplasm Endpoint"
+output: html_document
+---
+
+
+```{r}
+library(tidyverse)
+
+genotypes <- read_csv('sorghum_lines_genomics.csv')
+
+g_json <- jsonlite::toJSON(genotypes[1:10,])
+
+print(g_json)
+```
+
+
+Search for germplasm from https://www.genesys-pgr.org BrAPI endpoint ... 
+
+https://www.genesys-pgr.org/brapi/v1/germplasm/0ba28636-e634-428a-aa58-4346a20de326
+
+
+```{r}
+devtools::install_github(repo = 'brapi', username = 'CIP-RIU')
+library(brapi)
+library(jsonlite)
+genesys_con <- ba_connect(brapiDb = as.ba_db(protocol = 'https://', db = 'www.genesys-pgr.org', secure = TRUE))
+
+a <- list()
+for(z in seq_along(genotypes$`source material identifiers`)){
+  a[[genotypes$accession[z]]] <- brapi::ba_germplasm_details(con = genesys_con, rclass = 'json', 
+                                                             germplasmDbId = genotypes$`source material identifiers`[z])
+}
+
+empty <- lapply(fromJSON(a[[1]])$result, function(x) x = '')
+empty$commonCropName <- 'sorghum'
+empty$genus <- 'Sorghum'
+empty$species <- 'bicolor'
+empty$subtaxa <- 'subsp. bicolor'
+empty$speciesAuthority <- "(L.) Moench"
+empty$biologicalStatusOfAccessionCode <- "412"
+
+b <- list()
+for(i in seq_along(a)){
+  if(all(class(a[[i]]) == 'try-error')){
+    res <- empty
+    accession <- genotypes$accession[i]
+    res$germplasmDbId <- genotypes$`source material identifiers`[i]
+  } else {
+    res <- fromJSON(a[[i]])$result
+    accession <-  gsub(' ', '', genotypes$accession[i])
+  
+  }
+  res$donors <- list(donorAccessionNumber = "", donorInstituteCode = "", germplasmPUI = "")
+  res$breedingMethodDbId <- ""
+  res$instituteName <- ""
+  res$germplasmName <- res$accessionNumber <- res$defaultDisplayName <- accession
+  res$germplasmPUI <- paste("https://purl.org/germplasm/id/", res$germplasmDbId, sep = "")
+  res$germplasmSeedSource <- res$seedSource
+  res$subtaxaAuthority <- res$speciesAuthority
+  res$taxonIds <- list(list(sourceName = "ncbiTaxon", taxonId = "http://purl.obolibrary.org/obo/NCBITaxon_4558"),
+                       list(sourceName = "USDA Plants", taxonId = "https://plants.usda.gov/core/profile?symbol=SOBIB"))
+  
+  b[[i]] <- res[c("accessionNumber", "acquisitionDate", "biologicalStatusOfAccessionCode", "breedingMethodDbId",
+                  "commonCropName", "defaultDisplayName", "donors",
+                  "genus", "germplasmDbId",  "germplasmName",
+                  "germplasmPUI", "instituteCode", "instituteName", "pedigree", "seedSource", "species", "speciesAuthority", "subtaxa", "subtaxaAuthority", "synonyms", "taxonIds", "typeOfGermplasmStorageCode")]
+}
+
+```
+
+get Ids from BETY
+
+```{r, eval=FALSE}
+library(tidyverse)
+cultivars <- jsonlite::fromJSON(paste0("https://terraref.ncsa.illinois.edu/bety/api/v1/cultivars?key=9999999999999999999999999999999999999999&limit=none"), flatten = TRUE, simplifyVector = TRUE)
+
+cultivars <- cultivars[[2]]
+
+```
+
+```{r}
+
+for(i in seq_along(b)){
+  c <- cultivars[cultivars$cultivar.name == b[[i]]$accessionNumber,]
+  cultivars_id <- c$cultivar.id
+  b[[i]][['xref']] <- list(id = cultivars_id, 
+                         source = c$cultivar.view_url
+                         )
+  b[[i]]$germplasmDbId <- cultivars_id
+}
+```
+
+
+### Add other cultivars
+
+```{r}
+
+
+zz <- list()
+for(i in seq_along(b)){
+  zz[i] <- b[[i]]$accessionNumber
+}
+zzz <- unlist(zz)
+
+remaining_cultivars <- cultivars[!cultivars$cultivar.name %in% zzz, ]
+
+template <- b[[1]]
+bb <- list()
+for(i in 1:nrow(remaining_cultivars)){
+  t <- template
+  c <- remaining_cultivars[i,]
+  t$accessionNumber <- c$cultivar.name
+  t$acquisitionDate <- ""
+  t$commonCropName <- ifelse(c$cultivar.specie_id == 2588, 'sorghum', 'wheat')
+  t$defaultDisplayName <- c$cultivar.name
+  t$genus <- ifelse(c$cultivar.specie_id == 2588, 'Sorghum', 'Triticum')
+  t$germplasmDbId <- c$cultivar.id
+  t$germplasmName <- c$cultivar.name
+  t$germplasmPUI <- ""
+  t$instituteCode <- ""
+  t$species <- ifelse(c$cultivar.specie_id == 2588, 'bicolor', 'Triticum')
+  t$speciesAuthority <- ifelse(c$cultivar.specie_id == 2588, "(L.) Moench", 'L.')
+  t$subtaxa <- ifelse(c$cultivar.specie_id == 2588, "subsp. bicolor", '')
+  t$subtaxaAuthority <- ifelse(c$cultivar.specie_id == 2588, "(L.) Moench", '')
+  t$synonyms <- ''
+  t$taxonIds[[1]]$taxonId <- ifelse(c$cultivar.specie_id == 2588, "http://purl.obolibrary.org/obo/NCBITaxon_4558", 'http://purl.obolibrary.org/obo/NCBITaxon_4565')
+  t$taxonIds[[2]]$taxonId <- ifelse(c$cultivar.specie_id == 2588, "https://plants.usda.gov/core/profile?symbol=SOBIB", 'https://plants.usda.gov/core/profile?symbol=TRAE')
+  t$xref$id <- c$cultivar.id
+  t$xref$source <- c$cultivar.view_url
+  bb[[i]] <- t
+}
+
+cc <- append(b, bb)
+```
+
+
+```{r}
+for(i in seq_along(cc)){
+  
+}
+```
+
+
+```{r}
+names(cc) <- NULL #should not be needed, just in case
+
+ccc <- toJSON(cc, auto_unbox = TRUE)
+
+#jsonlite::write_json(c, 'germplasm.txt')
+write_lines(jsonlite::prettify(ccc), '~/dev/brapi/bety_brapi/data/germplasm.json')
+#dir.create('~/dev/brapi/data')
+#jsonlite::write_json(b, '~/dev/brapi/germplasm.json')
+
+```
+
+
+## Further updates
+
+```{r}
+germplasm <- jsonlite::fromJSON('germplasm.json', simplifyVector = FALSE)
+
+```
+
+
+## Add latitudes and longitudes for referenced baps
+
+```{r}
+locations <- readr::read_tsv('referenced_bap.txt')
+
+for(i in seq_along(germplasm)){
+  cultivars.name <- germplasm[[i]]$accessionNumber
+  if(cultivars.name %in% locations$Taxa){
+    print(i)
+    location <- locations[locations$Taxa == cultivars.name,]
+    germplasm[[i]][['additionalInfo']] <- list(longitude = location$Longitude, latitude = location$Latitude)
+  }
+}
+
+write_lines(jsonlite::prettify(toJSON(germplasm)), '~/dev/brapi/bety_brapi/data/germplasm.json')
+
+```
+
+## 
+
+### Construct inserts for attributes table in betydb
+
+
+```{r}
+insert_germplasm <- list()
+for(i in seq_along(b)){
+    cultivars.name <- b[[i]]$accessionNumber
+
+  id <- cultivars[[cultivars.name]]$data[[1]]$cultivar$id
+  json <- toJSON(b[[cultivars.name]])
+  insert_germplasm[[cultivars.name]] <- list(id = id, json = as.character(json))
+
+  
+  
+}
+
+inserts <-  lapply(insert_germplasm, function(x){
+         paste0("insert into attributes (table,  table_id, json), values (",x$id, "'cultivars'", x$json,");")})
+
+```
