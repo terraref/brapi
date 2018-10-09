@@ -7,9 +7,11 @@ for TERRA-REF.
 The server code was generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen).
 
 ## Requirements
+
 Python 3.5.2+
 
 ## Usage
+
 To run, first start an intance of the BETY database:
 
 ```
@@ -42,6 +44,11 @@ preliminary mapping of BETY fields to BRAPI objects.
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
 
+## Contributed Data
+
+This repository provides the canonical reference for data that is outside of the scope of databases used in the TERRA REF program. Such data can be found in the `/contrib/` folder. 
+
+Genomics data in `contrib/genomics` is in a set of CSVs that were previously only available in the [experimental design section of the TERRA REF documentation](https://docs.terraref.org/scientific-objectives-and-experimental-design/experimental-design). These files provide metadata that describe the germplasm used in the sorghum trials, and were originally prepared by Noah Fahlgren. 
 
 ## How to add an endpoint
 
