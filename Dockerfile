@@ -1,6 +1,8 @@
 FROM python:3-alpine
 
-RUN mkdir -p /usr/src/app
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
+#RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY requirements.txt /usr/src/app/
