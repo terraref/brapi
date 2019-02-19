@@ -193,6 +193,6 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):  # n
 #    return GermplasmController_impl.studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None)
     return "Not implemented"
 
-def treatemnts_by_experiments_get(experimentId):
+def treatments_by_experiments_get(experimentId):
 
-    return str(experimentId)
+    return GermplasmController_impl.treatments_by_experiments_get(experimentId)

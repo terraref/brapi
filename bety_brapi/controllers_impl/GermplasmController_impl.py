@@ -39,3 +39,7 @@ def germplasm_search_get(germplasmPUI, germplasmDbId, germplasmName, commonCropN
 
     # return the resulting data
     return helper.create_result({"data": data}, count, pageSize, page)
+
+def treatments_by_experiments_get(experimentId):
+
+    return 'nothing'

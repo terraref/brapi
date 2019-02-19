@@ -125,7 +125,7 @@ paths:
       - "Treatments by experiments"
       summary: "Treatments name and definition through GET"
       description: ""
-      operationId: "treatemnts_by_experiments_get"
+      operationId: "treatments_by_experiments_get"
       produces:
       - "application/json"
       parameters:
