@@ -8,6 +8,7 @@ db_uri = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (
     os.environ.get('DBUSER', 'bety'),
     os.environ.get('DBPASS', 'bety'),
     os.environ.get('DBHOST', 'localhost'),
+    os.environ.get('DBPORT', '5432'),
     os.environ.get('DBNAME', 'bety')
 )
 # add echo=True to see actual queries executed
