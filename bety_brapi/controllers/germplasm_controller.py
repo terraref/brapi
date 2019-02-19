@@ -205,3 +205,10 @@ def treatments_by_experiment_post():
         the_request_json = connexion.request.get_json()
 
     return GermplasmController_impl.treatments_by_experiment_post(the_request_json['experiment_ids'])
+
+
+def cultivars_by_experiments_post():
+    if connexion.request.is_json:
+        the_request_json = connexion.request.get_json()
+
+    return GermplasmController_impl.cultivars_by_experiment_post(the_request_json['experiment_ids'])

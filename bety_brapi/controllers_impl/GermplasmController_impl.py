@@ -40,6 +40,7 @@ def germplasm_search_get(germplasmPUI, germplasmDbId, germplasmName, commonCropN
     # return the resulting data
     return helper.create_result({"data": data}, count, pageSize, page)
 
+
 def treatments_by_experiment_get(experimentId):
 
     params = list()
@@ -117,6 +118,55 @@ def treatments_by_experiment_post(experiment_ids_list):
         treatment["treatment_name"] = row["treatmentname"]
         treatment["treatment_definition"] = row["treatmentdefinition"]
         entry["treatments"] = treatment
+        data.append(entry)
+    print(data)
+    return helper.create_result({"treatments": data}, count)
+
+
+def cultivars_by_experiment_post(experiment_ids_list):
+
+    experiment_ids_list = str(experiment_ids_list)
+    experiment_ids_list = experiment_ids_list.replace('[','(')
+    experiment_ids_list = experiment_ids_list.replace(']',')')
+
+
+    params = list()
+    # get all sitegroups and sites
+    query = ""
+
+    query = "SELECT experiments_sites.experiment_id as experimentid, " \
+            "   sites_cultivars.site_id as siteid, " \
+            "   cultivars.specie_id as species, " \
+            "   sites_cultivars.cultivar_id as cultivarid, " \
+            "   species.scientificname as scientificname, " \
+            "   cultivars.name as cultivarname " \
+            "FROM experiments_sites, sites_cultivars, cultivars, species " \
+            "WHERE experiments_sites.site_id=sites_cultivars.site_id " \
+            "AND  sites_cultivars.cultivar_id=cultivars.id " \
+            "AND  species.id=cultivars.specie_id " \
+            "AND experiments_sites.experiment_id IN " + experiment_ids_list
+
+    print(query)
+
+    # count first
+    count = helper.query_count(query, params)
+    print('number of results', count)
+
+    # execute query
+    results = helper.query_result(query, params)
+    print(results)
+    # wrap result
+    data = []
+    for row in results:
+        print(row)
+        entry = dict()
+        cultivar = dict()
+        entry['experiment_id'] = row["experimentid"]
+        cultivar["cultivar_name"] = row["cultivarname"]
+        cultivar["cultivar_id"] = row["cultivarid"]
+        cultivar['specie_id'] = row["species"]
+        cultivar['scientific_name'] = row['scientificname']
+        entry["cultivar"] = cultivar
         data.append(entry)
     print(data)
     return helper.create_result({"treatments": data}, count)
