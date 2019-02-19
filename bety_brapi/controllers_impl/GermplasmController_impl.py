@@ -48,8 +48,10 @@ def treatments_by_experiments_get(experimentId):
     query = ""
 
     query = "SELECT experiments_treatments.experiment_id as experimentId, " \
-            "   experiments_treatments.treatment_id as treatmentId " \
-            "FROM experiments_treatments " \
+            "   experiments_treatments.treatment_id as treatmentId, " \
+            "   treatments.name as treatmentName, " \
+            "   treatments.definition as treatmentDefinition " \
+            "FROM experiments_treatments INNER JOIN treatments ON experiments_treatments.treatment_id=treatments.id " \
             "WHERE experiments_treatments.experiment_id = "+experimentId
 
     print(query)
@@ -69,8 +71,8 @@ def treatments_by_experiments_get(experimentId):
         treatment = dict()
         entry['experiment_id'] = row["experimentid"]
         treatment["treatment_id"] = row["treatmentid"]
-        treatment["treatment_name"] = 'namefornow'
-        treatment["treatment_definition"] = 'deffornow'
+        treatment["treatment_name"] = row["treatmentname"]
+        treatment["treatment_definition"] = row["treatmentdefinition"]
         entry["treatments"] = treatment
         data.append(entry)
     print(data)
