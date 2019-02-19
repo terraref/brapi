@@ -42,4 +42,36 @@ def germplasm_search_get(germplasmPUI, germplasmDbId, germplasmName, commonCropN
 
 def treatments_by_experiments_get(experimentId):
 
-    return 'nothing'
+    params = list()
+
+    # get all sitegroups and sites
+    query = ""
+
+    query = "SELECT experiments_treatments.experiment_id as experimentId, " \
+            "   experiments_treatments.treatment_id as treatmentId " \
+            "FROM experiments_treatments " \
+            "WHERE experiments_treatments.experiment_id = "+experimentId
+
+    print(query)
+
+    # count first
+    count = helper.query_count(query, params)
+    print('number of results',count)
+
+    # execute query
+    results = helper.query_result(query, params)
+    print(results)
+    # wrap result
+    data = []
+    for row in results:
+        print(row)
+        entry = dict()
+        treatment = dict()
+        entry['experiment_id'] = row["experimentid"]
+        treatment["treatment_id"] = row["treatmentid"]
+        treatment["treatment_name"] = 'namefornow'
+        treatment["treatment_definition"] = 'deffornow'
+        entry["treatments"] = treatment
+        data.append(entry)
+    print(data)
+    return helper.create_result({"treatments": data}, count)
