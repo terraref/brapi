@@ -55,19 +55,14 @@ def treatments_by_experiment_get(experimentId):
             "FROM experiments_treatments INNER JOIN treatments ON experiments_treatments.treatment_id=treatments.id " \
             "WHERE experiments_treatments.experiment_id = "+experimentId
 
-    print(query)
-
     # count first
     count = helper.query_count(query, params)
-    print('number of results', count)
 
     # execute query
     results = helper.query_result(query, params)
-    print(results)
     # wrap result
     data = []
     for row in results:
-        print(row)
         entry = dict()
         treatment = dict()
         entry['experiment_id'] = row["experimentid"]
@@ -76,7 +71,6 @@ def treatments_by_experiment_get(experimentId):
         treatment["treatment_definition"] = row["treatmentdefinition"]
         entry["treatments"] = treatment
         data.append(entry)
-    print(data)
     return helper.create_result({"treatments": data}, count)
 
 
@@ -98,19 +92,14 @@ def treatments_by_experiment_post(experiment_ids_list):
             "FROM experiments_treatments INNER JOIN treatments ON experiments_treatments.treatment_id=treatments.id " \
             "WHERE experiments_treatments.experiment_id IN " + experiment_ids_list
 
-    print(query)
-
     # count first
     count = helper.query_count(query, params)
-    print('number of results', count)
 
     # execute query
     results = helper.query_result(query, params)
-    print(results)
     # wrap result
     data = []
     for row in results:
-        print(row)
         entry = dict()
         treatment = dict()
         entry['experiment_id'] = row["experimentid"]
@@ -119,7 +108,6 @@ def treatments_by_experiment_post(experiment_ids_list):
         treatment["treatment_definition"] = row["treatmentdefinition"]
         entry["treatments"] = treatment
         data.append(entry)
-    print(data)
     return helper.create_result({"treatments": data}, count)
 
 
@@ -132,7 +120,6 @@ def cultivars_by_experiment_post(experiment_ids_list):
 
     params = list()
     # get all sitegroups and sites
-    query = ""
 
     query = "SELECT experiments_sites.experiment_id as experimentid, " \
             "   sites_cultivars.site_id as siteid, " \
@@ -146,19 +133,14 @@ def cultivars_by_experiment_post(experiment_ids_list):
             "AND  species.id=cultivars.specie_id " \
             "AND experiments_sites.experiment_id IN " + experiment_ids_list
 
-    print(query)
-
     # count first
     count = helper.query_count(query, params)
-    print('number of results', count)
 
     # execute query
     results = helper.query_result(query, params)
-    print(results)
     # wrap result
     data = []
     for row in results:
-        print(row)
         entry = dict()
         cultivar = dict()
         entry['experiment_id'] = row["experimentid"]
@@ -168,5 +150,4 @@ def cultivars_by_experiment_post(experiment_ids_list):
         cultivar['scientific_name'] = row['scientificname']
         entry["cultivar"] = cultivar
         data.append(entry)
-    print(data)
     return helper.create_result({"treatments": data}, count)
