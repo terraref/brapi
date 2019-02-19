@@ -77,3 +77,46 @@ def treatments_by_experiment_get(experimentId):
         data.append(entry)
     print(data)
     return helper.create_result({"treatments": data}, count)
+
+
+def treatments_by_experiment_post(experiment_ids_list):
+
+    experiment_ids_list = str(experiment_ids_list)
+    experiment_ids_list = experiment_ids_list.replace('[','(')
+    experiment_ids_list = experiment_ids_list.replace(']',')')
+
+
+    params = list()
+    # get all sitegroups and sites
+    query = ""
+
+    query = "SELECT experiments_treatments.experiment_id as experimentId, " \
+            "   experiments_treatments.treatment_id as treatmentId, " \
+            "   treatments.name as treatmentName, " \
+            "   treatments.definition as treatmentDefinition " \
+            "FROM experiments_treatments INNER JOIN treatments ON experiments_treatments.treatment_id=treatments.id " \
+            "WHERE experiments_treatments.experiment_id IN " + experiment_ids_list
+
+    print(query)
+
+    # count first
+    count = helper.query_count(query, params)
+    print('number of results', count)
+
+    # execute query
+    results = helper.query_result(query, params)
+    print(results)
+    # wrap result
+    data = []
+    for row in results:
+        print(row)
+        entry = dict()
+        treatment = dict()
+        entry['experiment_id'] = row["experimentid"]
+        treatment["treatment_id"] = row["treatmentid"]
+        treatment["treatment_name"] = row["treatmentname"]
+        treatment["treatment_definition"] = row["treatmentdefinition"]
+        entry["treatments"] = treatment
+        data.append(entry)
+    print(data)
+    return helper.create_result({"treatments": data}, count)
