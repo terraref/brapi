@@ -125,7 +125,7 @@ paths:
       - "Treatments by experiments"
       summary: "Treatments name and definition through GET"
       description: ""
-      operationId: "treatments_by_experiments_get"
+      operationId: "treatments_by_experiment_get"
       produces:
       - "application/json"
       parameters:
@@ -164,6 +164,52 @@ paths:
                 data:
                 - treatmentId: "id123"
                   definition: "treatment not defined"
+          headers: {}
+      x-swagger-router-controller: "bety_brapi.controllers.germplasm_controller"
+    post:
+      tags:
+        - "Treatments by experiments"
+      summary: "Treatments name and definition through GET"
+      description: ""
+      operationId: "treatments_by_experiment_post"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "experimentId"
+          in: "query"
+          description: "Unique id of experiment."
+          required: true
+          type: "string"
+        - name: "pageSize"
+          in: "query"
+          description: "The size of the pages to be returned. Default is `1000`."
+          required: false
+          type: "integer"
+        - name: "page"
+          in: "query"
+          description: "Which result page is requested. The page indexing starts at\
+              \ 0 (the first page is 'page'= 0). Default is `0`."
+          required: false
+          type: "integer"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/alleleMatrixValuesResponse"
+          examples:
+            application/json:
+              metadata:
+                datafiles: []
+                pagination:
+                  currentPage: 0
+                  pageSize: 1000
+                  totalCount: 2
+                  totalPages: 1
+                status: []
+              result:
+                data:
+                  - treatmentId: "id123"
+                    definition: "treatment not defined"
           headers: {}
       x-swagger-router-controller: "bety_brapi.controllers.germplasm_controller"
 

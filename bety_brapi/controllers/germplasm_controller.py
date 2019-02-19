@@ -193,6 +193,16 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):  # n
 #    return GermplasmController_impl.studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None)
     return "Not implemented"
 
-def treatments_by_experiments_get(experimentId):
+def treatments_by_experiment_get(experimentId):
 
-    return GermplasmController_impl.treatments_by_experiments_get(experimentId)
+    return GermplasmController_impl.treatments_by_experiment_get(experimentId)
+
+def treatments_by_experiment_post(experimentId):
+
+    if connexion.request.is_json:
+        the_request_json=connexion.request.get_json()
+        print(the_request_json)
+
+    return "Not implemented yet"
+
+    #return GermplasmController_impl.treatments_by_experiment_get(experimentId)

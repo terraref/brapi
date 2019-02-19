@@ -40,7 +40,7 @@ def germplasm_search_get(germplasmPUI, germplasmDbId, germplasmName, commonCropN
     # return the resulting data
     return helper.create_result({"data": data}, count, pageSize, page)
 
-def treatments_by_experiments_get(experimentId):
+def treatments_by_experiment_get(experimentId):
 
     params = list()
 
@@ -58,7 +58,7 @@ def treatments_by_experiments_get(experimentId):
 
     # count first
     count = helper.query_count(query, params)
-    print('number of results',count)
+    print('number of results', count)
 
     # execute query
     results = helper.query_result(query, params)
