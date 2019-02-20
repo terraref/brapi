@@ -112,8 +112,8 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):  # n
     :rtype: GermplasmSummaryListResponse
     """
 
-#    return StudiesController_impl.studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None)
-    return "Not implemented"
+    return StudiesController_impl.studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None)
+    #return "Not implemented"
 
 
 def studies_study_db_id_get(studyDbId):  # noqa: E501
