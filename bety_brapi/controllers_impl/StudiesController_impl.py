@@ -47,6 +47,9 @@ def studies_study_db_id_get(studyDbId):
 
     query = "SELECT experiments.id as experimentId, " \
             "   experiments.name as experimentName, " \
+            "   experiments.start_date as startDate, " \
+            "   experiments.end_date as endDate, " \
+            "   experiments.description as description, " \
             "   experiments_sites.site_id as siteId, " \
             "   sites.sitename as sitename " \
             "FROM experiments, experiments_sites, sites " \
@@ -67,6 +70,9 @@ def studies_study_db_id_get(studyDbId):
         site = dict()
         experiment['experiment_id'] = row['experimentid']
         experiment['experiment_name'] = row['experimentname']
+        experiment['start_date'] = row['startdate']
+        experiment['end_date'] = row['enddate']
+        experiment['description'] = row['description']
         site['site_id'] = row['siteid']
         site['site_name'] = row['sitename']
         experiment['site'] = site
