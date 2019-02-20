@@ -40,3 +40,36 @@ def seasons_get(year=None, pageSize=None, page=None):
         })
 
     return helper.create_result({"data": data}, count, pageSize, page)
+
+def studies_study_db_id_get(studyDbId):
+
+    params = list()
+
+    query = "SELECT experiments.id as experimentId, " \
+            "   experiments.name as experimentName, " \
+            "   experiments_sites.site_id as siteId, " \
+            "   sites.sitename as sitename " \
+            "FROM experiments, experiments_sites, sites " \
+            "WHERE experiments.id = experiments_sites.experiment_id " \
+            "AND sites.id = experiments_sites.site_id " \
+            "AND experiments.id = " + studyDbId
+
+    print(query)
+    # count first
+    count = helper.query_count(query, params)
+
+    # execute query
+    results = helper.query_result(query, params)
+    # wrap result
+    data = []
+    for row in results:
+        experiment = dict()
+        site = dict()
+        experiment['experiment_id'] = row['experimentid']
+        experiment['experiment_name'] = row['experimentname']
+        site['site_id'] = row['siteid']
+        site['site_name'] = row['sitename']
+        experiment['site'] = site
+
+        data.append(experiment)
+    return helper.create_result({"experiment": data}, count)

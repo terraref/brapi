@@ -1,10 +1,10 @@
-docker-compose -p bety up  -d postgres
+#docker-compose -p bety up  -d postgres
 #
 # initialize BETY database
-docker run -ti --rm --network bety_bety -e BETY_INITIALIZE_URL='-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz' pecan/bety:develop initialize
+#docker run -ti --rm --network bety_bety -e BETY_INITIALIZE_URL='-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz' pecan/bety:develop initialize
 #
 # sync  BETY database
-docker run -ti --rm --network bety_bety -e REMOTE_SERVERS=6  pecan/bety:terra sync
+#docker run -ti --rm --network bety_bety -e REMOTE_SERVERS=6  pecan/bety:terra sync
 #
 # run brapi:
 # docker-compose -p bety up brapi

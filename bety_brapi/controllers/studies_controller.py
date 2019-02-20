@@ -127,8 +127,8 @@ def studies_study_db_id_get(studyDbId):  # noqa: E501
     :rtype: StudyResponse
     """
 
-#    return StudiesController_impl.studies_study_db_id_get(studyDbId)
-    return "Not implemented"
+    return StudiesController_impl.studies_study_db_id_get(studyDbId)
+    #return "Not implemented"
 
 
 def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):  # noqa: E501
