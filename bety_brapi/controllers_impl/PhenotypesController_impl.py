@@ -46,6 +46,10 @@ def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
         query += " and t.site_id = %s "
         params.append(locationDbId)
 
+    if studyDbId:
+        query += " and es.experiment_id = %s "
+        params.append(studyDbId)
+
     # For now, germplasm is cultivar
     if germplasmDbId:
         query += " and t.cultivar_id = %s "
