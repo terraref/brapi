@@ -23,10 +23,17 @@ def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
                     t.id as observationDbId, \
                     t.mean as value, \
                     t.date as observationTimeStamp, \
-                    s.sitename as sitename\
-             from traits t, variables v, sites s \
+                    s.sitename as sitename, \
+                    es.experiment_id as experimentId, \
+                    et.treatment_id as treatmentid, \
+                    treatments.name as treatmentname, \
+                    treatments.definition as treatmentdefinition \
+             from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments treatments  \
              where v.id = t.variable_id \
-             and t.site_id = s.id" 
+             and t.site_id = s.id \
+             and es.site_id = t.site_id \
+             and et.experiment_id = es.experiment_id \
+             and treatments.id=et.treatment_id"
 
     # For not, observationVariable is variable
     # e.g.,  6000000007 plant_height 
