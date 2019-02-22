@@ -73,7 +73,10 @@ def studies_study_db_id_get(studyDbId):
         experiment['experiment_name'] = row['experimentname']
         experiment['start_date'] = row['startdate']
         experiment['end_date'] = row['enddate']
-        experiment['description'] = row['description']
+        current_descrption = row['description']
+        current_descrption = current_descrption.replace('\n', '')
+        current_descrption = current_descrption.replace('\r', '')
+        experiment['description'] = current_descrption
         site['site_id'] = row['siteid']
         site['site_name'] = row['sitename']
         experiment['site'] = site
@@ -112,6 +115,7 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     # wrap result
     data = []
     for row in results:
+
         experiment = dict()
         site = dict()
         cultivar = dict()
@@ -119,7 +123,11 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
         experiment['experiment_name'] = row['experimentname']
         experiment['start_date'] = row['startdate']
         experiment['end_date'] = row['enddate']
-        experiment['description'] = row['description']
+        current_descrption = row['description']
+        current_descrption = current_descrption.replace('\n', '')
+        current_descrption = current_descrption.replace('\r', '')
+
+        experiment['description'] = current_descrption
         site['site_id'] = row['siteid']
         site['site_name'] = row['sitename']
         cultivar['name'] = row['cultivarname']
