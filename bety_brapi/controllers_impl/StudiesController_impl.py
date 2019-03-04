@@ -68,21 +68,23 @@ def studies_study_db_id_get(studyDbId):
     data = []
     for row in results:
         experiment = dict()
-        site = dict()
-        experiment['experiment_id'] = row['experimentid']
-        experiment['experiment_name'] = row['experimentname']
+        location = dict()
+        experiment['studyDbId'] = row['studydbid']
+        experiment['studyName'] = row['studyname']
         experiment['start_date'] = row['startdate']
         experiment['end_date'] = row['enddate']
-        current_descrption = row['description']
+        current_descrption = row['studydescription']
         current_descrption = current_descrption.replace('\n', '')
         current_descrption = current_descrption.replace('\r', '')
-        experiment['description'] = current_descrption
-        site['site_id'] = row['siteid']
-        site['site_name'] = row['sitename']
-        experiment['site'] = site
+        experiment['studyDescription'] = current_descrption
+
+        location['location_name'] = row['location_name']
+        location['location_abbreviation'] = row['location_abbreviation']
+
+        experiment['location'] = location
 
         data.append(experiment)
-    return helper.create_result({"experiment": data}, count)
+    return helper.create_result({"study": data}, count)
 
 def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     params = list()
@@ -117,24 +119,27 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     for row in results:
 
         experiment = dict()
-        site = dict()
-        cultivar = dict()
-        experiment['experiment_id'] = row['experimentid']
-        experiment['experiment_name'] = row['experimentname']
+        location = dict()
+        germplasm = dict()
+
+        experiment['studyDbId'] = row['studydbid']
+        experiment['studyName'] = row['studyname']
         experiment['start_date'] = row['startdate']
         experiment['end_date'] = row['enddate']
-        current_descrption = row['description']
+        current_descrption = row['studydescription']
         current_descrption = current_descrption.replace('\n', '')
         current_descrption = current_descrption.replace('\r', '')
+        experiment['studyDescription'] = current_descrption
 
-        experiment['description'] = current_descrption
-        site['site_id'] = row['siteid']
-        site['site_name'] = row['sitename']
-        cultivar['name'] = row['cultivarname']
-        cultivar['scientific_name'] = row['scientificname']
-        cultivar['common_name'] = row['commonname']
-        site['cultivar'] = cultivar
-        experiment['site'] = site
+        location['location_name'] = row['location_name']
+        location['location_abbreviation'] = row['location_abbreviation']
+
+        germplasm['germplasmName'] = row['germplasmname']
+        germplasm['scientific_name'] = row['scientificname']
+        germplasm['common_name'] = row['commonname']
+
+        location['germplasm'] = germplasm
+        experiment['location'] = location
 
         data.append(experiment)
-    return helper.create_result({"experiment": data}, count)
+    return helper.create_result({"study": data}, count)
