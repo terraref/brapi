@@ -46,13 +46,13 @@ def studies_study_db_id_get(studyDbId):
 
     params = list()
 
-    query = "SELECT experiments.id as experimentId, " \
-            "   experiments.name as experimentName, " \
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
             "   experiments.start_date as startDate, " \
             "   experiments.end_date as endDate, " \
-            "   experiments.description as description, " \
-            "   experiments_sites.site_id as siteId, " \
-            "   sites.sitename as sitename " \
+            "   experiments.description as studyDescription, " \
+            "   experiments_sites.site_id as location_name, " \
+            "   sites.sitename as location_abbreviation " \
             "FROM experiments, experiments_sites, sites " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sites.id = experiments_sites.site_id " \
@@ -87,16 +87,16 @@ def studies_study_db_id_get(studyDbId):
 def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     params = list()
 
-    query = "SELECT experiments.id as experimentId, " \
-            "   experiments.name as experimentName, " \
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
             "   experiments.start_date as startDate, " \
             "   experiments.end_date as endDate, " \
-            "   experiments.description as description, " \
-            "   experiments_sites.site_id as siteId, " \
-            "   sites.sitename as sitename, " \
-            "   sites_cultivars.cultivar_id as cultivarId, " \
+            "   experiments.description as studyDescription, " \
+            "   experiments_sites.site_id as location_name, " \
+            "   sites.sitename as location_abbreviation, " \
+            "   sites_cultivars.cultivar_id as germPlasmDbId, " \
             "   cultivars.specie_id as species, " \
-            "   cultivars.name as cultivarName, " \
+            "   cultivars.name as germplasmName, " \
             "   species.scientificname as scientificname, " \
             "   species.commonname as commonname " \
             "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars, species " \
