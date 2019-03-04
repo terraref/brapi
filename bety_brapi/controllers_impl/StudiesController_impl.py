@@ -78,8 +78,8 @@ def studies_study_db_id_get(studyDbId):
         current_descrption = current_descrption.replace('\r', '')
         experiment['studyDescription'] = current_descrption
 
-        location['location_name'] = row['location_name']
-        location['location_abbreviation'] = row['location_abbreviation']
+        location['name'] = row['location_name']
+        location['abbreviation'] = row['location_abbreviation']
 
         experiment['location'] = location
 
@@ -131,8 +131,8 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
         current_descrption = current_descrption.replace('\r', '')
         experiment['studyDescription'] = current_descrption
 
-        location['location_name'] = row['location_name']
-        location['location_abbreviation'] = row['location_abbreviation']
+        location['name'] = row['location_name']
+        location['abbreviation'] = row['location_abbreviation']
 
         germplasm['germplasmName'] = row['germplasmname']
         germplasm['scientific_name'] = row['scientificname']
