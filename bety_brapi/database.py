@@ -3,12 +3,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
-db_uri = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (
+db_uri = 'postgresql+psycopg2://%s:%s@%s/%s' % (
     # ARGS.dbuser, ARGS.dbpass, ARGS.dbhost, ARGS.dbname
     os.environ.get('DBUSER', 'bety'),
     os.environ.get('DBPASS', 'bety'),
     os.environ.get('DBHOST', 'localhost'),
-    os.environ.get('DBPORT', '5432'),
     os.environ.get('DBNAME', 'bety')
 )
 # add echo=True to see actual queries executed

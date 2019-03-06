@@ -58,7 +58,12 @@ def studies_study_db_id_get(studyDbId):
             "AND sites.id = experiments_sites.site_id " \
             "AND experiments.id = " + studyDbId
 
-    print(query)
+    # print(query)
+
+    if studyDbId:
+        query += " and experiment.id = %s "
+        params.append(studyDbId)
+
     # count first
     count = helper.query_count(query, params)
 
@@ -86,6 +91,7 @@ def studies_study_db_id_get(studyDbId):
         data.append(experiment)
     return helper.create_result({"study": data}, count)
 
+
 def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     params = list()
 
@@ -108,9 +114,13 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
             "AND species.id = cultivars.specie_id " \
             "AND experiments.id = " + studyDbId
 
-    print(query)
+    # print(query)
     # count first
     count = helper.query_count(query, params)
+
+    if studyDbId:
+        query += " and experiment.id = %s "
+        params.append(studyDbId)
 
     # execute query
     results = helper.query_result(query, params)
