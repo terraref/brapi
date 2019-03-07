@@ -76,8 +76,8 @@ def studies_study_db_id_get(studyDbId):
         location = dict()
         experiment['studyDbId'] = row['studydbid']
         experiment['studyName'] = row['studyname']
-        experiment['start_date'] = row['startdate']
-        experiment['end_date'] = row['enddate']
+        experiment['startDate'] = row['startdate']
+        experiment['endDate'] = row['enddate']
         current_descrption = row['studydescription']
         current_descrption = current_descrption.replace('\n', '')
         current_descrption = current_descrption.replace('\r', '')
@@ -134,9 +134,9 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
         germplasm = dict()
 
         experiment['studyDbId'] = row['studydbid']
-        experiment['studyName'] = row['studyname']
-        experiment['start_date'] = row['startdate']
-        experiment['end_date'] = row['enddate']
+        experiment['studyType'] = row['studyname']
+        experiment['startDate'] = row['startdate']
+        experiment['endDate'] = row['enddate']
         current_descrption = row['studydescription']
         current_descrption = current_descrption.replace('\n', '')
         current_descrption = current_descrption.replace('\r', '')
