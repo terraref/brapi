@@ -56,14 +56,14 @@ def studies_study_db_id_get(studyDbId):
             "FROM experiments, experiments_sites, sites " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sites.id = experiments_sites.site_id " \
-            "AND experiments.id = " + studyDbId
+            # "AND experiments.id = " + studyDbId
 
     print(query)
 
-    # if studyDbId:
-    #     print('we have study db id')
-    #     query += " and experiment.id = %s "
-    #     params.append(studyDbId)
+    if studyDbId:
+        query += " and experiment.id = %s "
+        query = query % studyDbId
+        params.append(studyDbId)
 
     print(query)
 
