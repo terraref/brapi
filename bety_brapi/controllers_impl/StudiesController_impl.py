@@ -61,8 +61,8 @@ def studies_study_db_id_get(studyDbId):
     print(query)
 
     if studyDbId:
-        query += " and experiment.id = %s "
-        query = query % studyDbId
+        query += " AND experiments.id = %s "
+        # query = query % studyDbId
         params.append(studyDbId)
 
     print(query)
@@ -118,8 +118,7 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
             # "AND experiments.id = " + studyDbId
 
     if studyDbId:
-        query += " and experiment.id = %s "
-        query = query % studyDbId
+        query += " and experiments.id = %s "
         params.append(studyDbId)
 
     print(query)
