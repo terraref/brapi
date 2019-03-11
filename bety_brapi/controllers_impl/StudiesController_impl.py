@@ -72,6 +72,7 @@ def studies_study_db_id_get(studyDbId):
 
     # execute query
     results = helper.query_result(query, params)
+
     # wrap result
     data = []
     for row in results:
