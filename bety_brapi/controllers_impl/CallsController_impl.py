@@ -1,4 +1,8 @@
 from bety_brapi import helper
+import connexion
+
+app = connexion.App(__name__, specification_dir='./swagger/')
+logger = app.app.logger
 
 VERSIONS_ALL = ["1.0", "1.1", "1.2"]
 VERSIONS_LATEST = ["1.2"]

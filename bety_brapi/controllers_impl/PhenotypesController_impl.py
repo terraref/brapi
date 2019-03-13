@@ -1,9 +1,13 @@
 from bety_brapi import helper
 from flask import jsonify
 from flask import current_app as app
+import connexion
+
+app = connexion.App(__name__, specification_dir='./swagger/')
+logger = app.app.logger
 
 
-def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None, 
+def phenotypes_search_get(germplasmDbId=None, observationVariableDbId=None,
         studyDbId=None, locationDbId=None, trialDbId=None, programDbId=None, 
         seasonDbId=None, observationLevel=None, observationTimeStampRangeStart=None, 
         observationTimeStampRangeEnd=None, pageSize=None, page=None):

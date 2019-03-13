@@ -1,6 +1,9 @@
 from bety_brapi import helper
 import calendar
+import connexion
 
+app = connexion.App(__name__, specification_dir='./swagger/')
+logger = app.app.logger
 
 def seasons_get(year=None, pageSize=None, page=None):
     """
@@ -43,7 +46,6 @@ def seasons_get(year=None, pageSize=None, page=None):
 
 
 def studies_study_db_id_get(studyDbId):
-
     params = list()
 
     query = "SELECT experiments.id as studyDbId, " \
@@ -58,14 +60,14 @@ def studies_study_db_id_get(studyDbId):
             "AND sites.id = experiments_sites.site_id " \
             # "AND experiments.id = " + studyDbId
 
-    print(query)
+    logger.info(query)
 
     if studyDbId:
         query += " AND experiments.id = %s "
         # query = query % studyDbId
         params.append(studyDbId)
 
-    print(query)
+    # print(query)
 
     # count first
     count = helper.query_count(query, params)
@@ -122,7 +124,7 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
         query += " and experiments.id = %s "
         params.append(studyDbId)
 
-    print(query)
+    logger.debug(query)
     # count first
     count = helper.query_count(query, params)
 
