@@ -159,3 +159,68 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
 
         data.append(experiment)
     return helper.create_result({"data": data}, count)
+
+
+def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):
+    params = list()
+
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
+            "   experiments.start_date as startDate, " \
+            "   experiments.end_date as endDate, " \
+            "   experiments.description as studyDescription, " \
+            "   experiments_sites.site_id as location_name, " \
+            "   sites.sitename as location_abbreviation, " \
+            "   sites_cultivars.cultivar_id as germPlasmDbId, " \
+            "   cultivars.specie_id as species, " \
+            "   cultivars.name as germplasmName, " \
+            "   species.scientificname as scientificname, " \
+            "   species.commonname as commonname " \
+            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars, species " \
+            "WHERE experiments.id = experiments_sites.experiment_id " \
+            "AND sites.id = experiments_sites.site_id " \
+            "AND sites_cultivars.site_id = experiments_sites.site_id " \
+            "AND species.id = cultivars.specie_id " \
+            # "AND experiments.id = " + studyDbId
+
+    if studyDbId:
+        query += " and experiments.id = %s "
+        params.append(studyDbId)
+
+    print(query)
+    # count first
+    count = helper.query_count(query, params)
+
+
+
+    # execute query
+    results = helper.query_result(query, params)
+    # wrap result
+    data = []
+    for row in results:
+
+        experiment = dict()
+        location = dict()
+        germplasm = dict()
+
+        experiment['studyDbId'] = row['studydbid']
+        experiment['studyType'] = row['studyname']
+        experiment['startDate'] = row['startdate']
+        experiment['endDate'] = row['enddate']
+        current_descrption = row['studydescription']
+        current_descrption = current_descrption.replace('\n', '')
+        current_descrption = current_descrption.replace('\r', '')
+        experiment['studyDescription'] = current_descrption
+
+        location['name'] = row['location_name']
+        location['abbreviation'] = row['location_abbreviation']
+
+        germplasm['germplasmName'] = row['germplasmname']
+        germplasm['scientific_name'] = row['scientificname']
+        germplasm['common_name'] = row['commonname']
+
+        location['germplasm'] = germplasm
+        experiment['location'] = location
+
+        data.append(experiment)
+    return helper.create_result({"data": data}, count)
