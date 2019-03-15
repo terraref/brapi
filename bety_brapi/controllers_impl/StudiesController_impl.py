@@ -60,14 +60,12 @@ def studies_study_db_id_get(studyDbId):
             "AND sites.id = experiments_sites.site_id " \
             # "AND experiments.id = " + studyDbId
 
-    logger.info(query)
-
     if studyDbId:
         query += " AND experiments.id = %s "
         # query = query % studyDbId
         params.append(studyDbId)
 
-    # print(query)
+    logger.debug(query)
 
     # count first
     count = helper.query_count(query, params)
