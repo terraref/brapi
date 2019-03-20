@@ -167,4 +167,4 @@ def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
     #     experiment['location'] = location
     #
     #     data.append(experiment)
-    return helper.create_result({"study": data}, count)
+    return helper.create_result({"data": data}, count)
