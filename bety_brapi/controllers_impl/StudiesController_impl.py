@@ -87,10 +87,12 @@ def studies_study_db_id_get(studyDbId):
         current_descrption = current_descrption.replace('\r', '')
         experiment['studyDescription'] = current_descrption
 
-        location['name'] = row['location_name']
-        location['abbreviation'] = row['location_abbreviation']
-
-        experiment['location'] = location
+        experiment['locationName'] = row['location_abbreviation']
+        experiment['locationDbId'] = row['location_name']
+        # location['name'] = row['location_name']
+        # location['abbreviation'] = row['location_abbreviation']
+        #
+        # experiment['location'] = location
 
         data.append(experiment)
     return helper.create_result({"study": data}, count)
