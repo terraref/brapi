@@ -175,21 +175,15 @@ def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):
 
     query = "SELECT experiments.id as studyDbId, " \
             "   experiments.name as studyName, " \
-            "   experiments.start_date as startDate, " \
-            "   experiments.end_date as endDate, " \
-            "   experiments.description as studyDescription, " \
             "   experiments_sites.site_id as observation_unit_db_id, " \
             "   sites.sitename as location_abbreviation, " \
             "   sites_cultivars.cultivar_id as germPlasmDbId, " \
             "   cultivars.id as cultivarid, " \
-            "   cultivars.name as germplasmName, " \
-            "   species.scientificname as scientificname, " \
-            "   species.commonname as commonname " \
-            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars, species " \
+            "   cultivars.name as germplasmName " \
+            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sites.id = experiments_sites.site_id " \
             "AND sites_cultivars.site_id = experiments_sites.site_id " \
-            "AND species.id = cultivars.specie_id " \
             # "AND experiments.id = " + studyDbId
 
     if studyDbId:
