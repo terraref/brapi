@@ -146,8 +146,8 @@ def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):  # noqa
     :rtype: ObservationUnitPositionsResponse
     """
 
-#    return StudiesController_impl.studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None)
-    return "Not implemented"
+    return StudiesController_impl.studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None)
+    #return "Not implemented"
 
 
 def studies_study_db_id_layout_put(studyDbId, studyLayoutRequest=None):  # noqa: E501
