@@ -178,10 +178,9 @@ def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):
             "   experiments.start_date as startDate, " \
             "   experiments.end_date as endDate, " \
             "   experiments.description as studyDescription, " \
-            "   experiments_sites.site_id as location_name, " \
+            "   experiments_sites.site_id as observation_unit_db_id, " \
             "   sites.sitename as location_abbreviation, " \
             "   sites_cultivars.cultivar_id as germPlasmDbId, " \
-            "   cultivars.specie_id as species, " \
             "   cultivars.id as cultivarid, " \
             "   cultivars.name as germplasmName, " \
             "   species.scientificname as scientificname, " \
@@ -210,35 +209,10 @@ def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):
 
     for row in results:
         entry = dict()
-        entry['commonCropName'] = row['commonname']
         entry['germplasmName'] = row['germplasmname']
         entry['germPlasmDbId'] = row['cultivarid']
+        entry['observationUnitDbId'] = row['observation_unit_db_id']
+        entry['observationUnitName'] = row['location_abbreviation']
         data.append(entry)
 
-    # for row in results:
-    #
-    #     experiment = dict()
-    #     location = dict()
-    #     germplasm = dict()
-    #
-    #     experiment['studyDbId'] = row['studydbid']
-    #     experiment['studyType'] = row['studyname']
-    #     experiment['startDate'] = row['startdate']
-    #     experiment['endDate'] = row['enddate']
-    #     current_descrption = row['studydescription']
-    #     current_descrption = current_descrption.replace('\n', '')
-    #     current_descrption = current_descrption.replace('\r', '')
-    #     experiment['studyDescription'] = current_descrption
-    #
-    #     location['name'] = row['location_name']
-    #     location['abbreviation'] = row['location_abbreviation']
-    #
-    #     germplasm['germplasmName'] = row['germplasmname']
-    #     germplasm['scientific_name'] = row['scientificname']
-    #     germplasm['common_name'] = row['commonname']
-    #
-    #     location['germplasm'] = germplasm
-    #     experiment['location'] = location
-    #
-    #     data.append(experiment)
     return helper.create_result({"data": data}, count)
