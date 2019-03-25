@@ -87,14 +87,15 @@ def studies_study_db_id_get(studyDbId):
         current_descrption = current_descrption.replace('\r', '')
         experiment['studyDescription'] = current_descrption
 
-        experiment['locationName'] = row['location_abbreviation']
-        # location['name'] = row['location_name']
+        # experiment['locationName'] = row['location_abbreviation']
+        location['name'] = row['location_abbreviation']
+        location['locationDbId'] = row['location_name']
         # location['abbreviation'] = row['location_abbreviation']
         #
-        # experiment['location'] = location
+        experiment['location'] = location
 
         data.append(experiment)
-    return helper.create_result({"study": data}, count)
+    return helper.create_result({"data": data}, count)
 
 
 def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
