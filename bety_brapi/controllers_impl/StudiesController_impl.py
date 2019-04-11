@@ -58,7 +58,6 @@ def studies_study_db_id_get(studyDbId):
             "FROM experiments, experiments_sites, sites " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sites.id = experiments_sites.site_id " \
-            # "AND experiments.id = " + studyDbId
 
     if studyDbId:
         query += " AND experiments.id = %s "
