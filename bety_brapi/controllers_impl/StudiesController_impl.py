@@ -1,6 +1,9 @@
 from bety_brapi import helper
 import calendar
+import connexion
 
+app = connexion.App(__name__, specification_dir='./swagger/')
+logger = app.app.logger
 
 def seasons_get(year=None, pageSize=None, page=None):
     """
@@ -40,3 +43,170 @@ def seasons_get(year=None, pageSize=None, page=None):
         })
 
     return helper.create_result({"data": data}, count, pageSize, page)
+
+
+def studies_study_db_id_get(studyDbId):
+    params = list()
+
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
+            "   experiments.start_date as startDate, " \
+            "   experiments.end_date as endDate, " \
+            "   experiments.description as studyDescription, " \
+            "   experiments_sites.site_id as location_name, " \
+            "   sites.sitename as location_abbreviation " \
+            "FROM experiments, experiments_sites, sites " \
+            "WHERE experiments.id = experiments_sites.experiment_id " \
+            "AND sites.id = experiments_sites.site_id " \
+
+    if studyDbId:
+        query += " AND experiments.id = %s "
+        # query = query % studyDbId
+        params.append(studyDbId)
+
+    logger.debug(query)
+
+    # count first
+    count = helper.query_count(query, params)
+
+    # execute query
+    results = helper.query_result(query, params)
+
+    # wrap result
+    data = []
+    for row in results:
+        experiment = dict()
+        location = dict()
+        experiment['studyDbId'] = row['studydbid']
+        experiment['studyName'] = row['studyname']
+        experiment['startDate'] = row['startdate']
+        experiment['endDate'] = row['enddate']
+        current_descrption = row['studydescription']
+        current_descrption = current_descrption.replace('\n', '')
+        current_descrption = current_descrption.replace('\r', '')
+        experiment['studyDescription'] = current_descrption
+
+        # experiment['locationName'] = row['location_abbreviation']
+        location['name'] = row['location_abbreviation']
+        location['locationDbId'] = row['location_name']
+        # location['abbreviation'] = row['location_abbreviation']
+        #
+        experiment['location'] = location
+
+        data.append(experiment)
+    return helper.create_result({"data": data}, count)
+
+
+def studies_study_db_id_germplasm_get(studyDbId, pageSize=None, page=None):
+    params = list()
+
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
+            "   experiments.start_date as startDate, " \
+            "   experiments.end_date as endDate, " \
+            "   experiments.description as studyDescription, " \
+            "   experiments_sites.site_id as location_name, " \
+            "   sites.sitename as location_abbreviation, " \
+            "   sites_cultivars.cultivar_id as germPlasmDbId, " \
+            "   cultivars.specie_id as species, " \
+            "   cultivars.id as cultivarid, " \
+            "   cultivars.name as germplasmName, " \
+            "   species.scientificname as scientificname, " \
+            "   species.commonname as commonname " \
+            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars, species " \
+            "WHERE experiments.id = experiments_sites.experiment_id " \
+            "AND sites.id = experiments_sites.site_id " \
+            "AND sites_cultivars.site_id = experiments_sites.site_id " \
+            "AND species.id = cultivars.specie_id " \
+            # "AND experiments.id = " + studyDbId
+
+    if studyDbId:
+        query += " and experiments.id = %s "
+        params.append(studyDbId)
+
+    logger.debug(query)
+    # count first
+    count = helper.query_count(query, params)
+
+
+
+    # execute query
+    results = helper.query_result(query, params)
+    # wrap result
+    data = []
+
+    for row in results:
+        entry = dict()
+        entry['commonCropName'] = row['commonname']
+        entry['germplasmName'] = row['germplasmname']
+        entry['germPlasmDbId'] = row['cultivarid']
+        data.append(entry)
+
+    # for row in results:
+    #
+    #     experiment = dict()
+    #     location = dict()
+    #     germplasm = dict()
+    #
+    #     experiment['studyDbId'] = row['studydbid']
+    #     experiment['studyType'] = row['studyname']
+    #     experiment['startDate'] = row['startdate']
+    #     experiment['endDate'] = row['enddate']
+    #     current_descrption = row['studydescription']
+    #     current_descrption = current_descrption.replace('\n', '')
+    #     current_descrption = current_descrption.replace('\r', '')
+    #     experiment['studyDescription'] = current_descrption
+    #
+    #     location['name'] = row['location_name']
+    #     location['abbreviation'] = row['location_abbreviation']
+    #
+    #     germplasm['germplasmName'] = row['germplasmname']
+    #     germplasm['scientific_name'] = row['scientificname']
+    #     germplasm['common_name'] = row['commonname']
+    #
+    #     location['germplasm'] = germplasm
+    #     experiment['location'] = location
+    #
+    #     data.append(experiment)
+    return helper.create_result({"data": data}, count)
+
+def studies_study_db_id_layout_get(studyDbId, pageSize=None, page=None):
+    params = list()
+
+    query = "SELECT experiments.id as studyDbId, " \
+            "   experiments.name as studyName, " \
+            "   experiments_sites.site_id as observation_unit_db_id, " \
+            "   sites.sitename as location_abbreviation, " \
+            "   sites_cultivars.cultivar_id as germPlasmDbId, " \
+            "   cultivars.id as cultivarid, " \
+            "   cultivars.name as germplasmName " \
+            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars " \
+            "WHERE experiments.id = experiments_sites.experiment_id " \
+            "AND sites.id = experiments_sites.site_id " \
+            "AND sites_cultivars.site_id = experiments_sites.site_id " \
+            # "AND experiments.id = " + studyDbId
+
+    if studyDbId:
+        query += " and experiments.id = %s "
+        params.append(studyDbId)
+
+    logger.debug(query)
+    # count first
+    count = helper.query_count(query, params)
+
+
+
+    # execute query
+    results = helper.query_result(query, params)
+    # wrap result
+    data = []
+
+    for row in results:
+        entry = dict()
+        entry['germplasmName'] = row['germplasmname']
+        entry['germPlasmDbId'] = row['cultivarid']
+        entry['observationUnitDbId'] = row['observation_unit_db_id']
+        entry['observationUnitName'] = row['location_abbreviation']
+        data.append(entry)
+
+    return helper.create_result({"data": data}, count)
