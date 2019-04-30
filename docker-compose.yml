@@ -31,6 +31,8 @@ services:
     ports:
       - 8000:8000
     environment:
+      - INITIALIZE_URL=https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz
+      - REMOTE_SERVERS=6
       - UNICORN_WORKER_PROCESSES=1
       - SECRET_KEY_BASE=thisissomereallllllylongsecretkeyandshouldbelongerthanthis
     depends_on:

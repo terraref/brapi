@@ -3,6 +3,12 @@
 This repository contains preliminary work torward a BRAPI implementation
 for TERRA-REF.
 
+```bash
+docker-compose up -d postgres
+docker-compose run --rm bety initialize
+docker-compose run --rm bety sync
+```
+
 
 The server code was generated using [swagger-codegen](https://github.com/swagger-api/swagger-codegen).
 
