@@ -16,9 +16,9 @@ def query_count(query, params=None):
     """
     count_query = 'SELECT COUNT(*) FROM (' + query + ') AS a;'
     response = database.get_engine().execute(count_query, params)
-    count = response.get
+    count = response.fetchone()
     response.close()
-    return count
+    return count[0]
 
 
 def query_result(query, params=None, pageSize=None, page=None):

@@ -12,7 +12,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
     # create the full list of all calls implemented.
     data = [
         calls_get_helper('calls'),
-        calls_get_helper('commonCropNames', versions=['1.2']),
+        calls_get_helper('commoncropnames'),
         calls_get_helper('crops'),
         calls_get_helper('germplasm-search'),
         calls_get_helper('locations'),

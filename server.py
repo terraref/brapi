@@ -22,7 +22,7 @@ def basic_auth(username, password, required_scopes=None):
 
 
 if __name__ == '__main__':
-    debug = True
+    debug = False
 
     if debug:
         logging.basicConfig(level=logging.DEBUG)
