@@ -4,8 +4,8 @@ import connexion
 app = connexion.App(__name__, specification_dir='./swagger/')
 logger = app.app.logger
 
-VERSIONS_ALL = ["1.0", "1.1", "1.2"]
-VERSIONS_LATEST = ["1.2"]
+VERSIONS_ALL = ["1.0", "1.1", "1.2", "1.3"]
+VERSIONS_LATEST = ["1.3"]
 
 
 def calls_get(datatype, pageSize, page):
@@ -16,12 +16,12 @@ def calls_get(datatype, pageSize, page):
     # create the full list of all calls implemented.
     data = [
         calls_get_helper('calls'),
-        calls_get_helper('commonCropNames', versions=['1.2']),
+        calls_get_helper('commonCropNames', versions=['1.2', '1.3']),
         calls_get_helper('crops'),
         calls_get_helper('germplasm-search'),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
-        calls_get_helper('phenotypes-search'),
+        calls_get_helper('phenotypes-search', versions=['1.0', '1.1', '1.2']),
         calls_get_helper('seasons')
     ]
 
