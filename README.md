@@ -21,6 +21,8 @@ For the locations endpoint to work correctly you will need to group
 multiple sites together in a sitegroup. The following commands can
 be executed to associate sites with the sitegroups.
 
+(This is now part of the TERRA-REF dump)
+
 ```sql
 select count(a.id) from sites as a, sites as b where b.sitename='MAC Field Scanner Field' and ST_Intersects(a.geometry, b.geometry);
 
