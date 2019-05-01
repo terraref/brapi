@@ -41,9 +41,9 @@ services:
 
   # BRAPI
   brapi:
-    image: terraref/brapi:latest
+    image: terraref/brapi:openapi
     ports:
-      - 8080:8080
+      - 5000:5000
     environment:
       - DBHOST=postgres
     networks:
