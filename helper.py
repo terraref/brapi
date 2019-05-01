@@ -68,7 +68,8 @@ def create_result(data, rowCount, pageSize=None, page=None):
                 "pageSize": pageSize,
                 "totalCount": rowCount,
                 "totalPages": math.ceil(rowCount / pageSize)
-            }
+            },
+            "status": []
         },
         "result": data
     }

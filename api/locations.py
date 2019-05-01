@@ -1,4 +1,4 @@
-from bety_brapi import helper
+import helper
 
 
 def search(locationType=None, pageSize=None, page=None):

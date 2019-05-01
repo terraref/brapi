@@ -1,5 +1,6 @@
 import helper
 
+
 def search(pageSize=None, page=None):
 
     query = "SELECT DISTINCT commonname FROM species ORDER BY commonname"

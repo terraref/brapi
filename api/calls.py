@@ -23,9 +23,9 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
 
     # filter on datatype
     if dataType:
-        data = [d for d in data if datatype in d['datatypes']]
+        data = [d for d in data if datatype in d['dataTypes']]
     elif datatype:
-        data = [d for d in data if datatype in d['datatypes']]
+        data = [d for d in data if datatype in d['dataTypes']]
 
     # total number of rows
     count = len(data)
@@ -41,19 +41,19 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
     return helper.create_result({"data": data}, count, pageSize, page)
 
 
-def calls_get_helper(api_call, datatypes=None, methods=None, versions=None):
+def calls_get_helper(api_call, dataTypes=None, methods=None, versions=None):
     """
     Helper function to return a brapi call information.
     """
-    if not datatypes:
-        datatypes = ["json"]
+    if not dataTypes:
+        dataTypes = ["application/json"]
     if not methods:
         methods = ['GET']
     if not versions:
         versions = VERSIONS_ALL
     return {
         "call": api_call,
-        "datatypes": datatypes,
+        "dataTypes": dataTypes,
         "methods": methods,
         "versions": versions
     }
