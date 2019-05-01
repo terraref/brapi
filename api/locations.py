@@ -16,6 +16,7 @@ def search(locationType=None, pageSize=None, page=None):
     # get all sitegroups and sites
     query = "SELECT sitegroups.id AS locationDbId, " \
             "       sitegroups.name AS name, " \
+            "       sites.country AS countryCode, " \
             "       sites.geometry AS geometry " \
             "FROM sites, sitegroups, sitegroups_sites " \
             "WHERE sitegroups_sites.site_id = sites.id " \
@@ -23,19 +24,21 @@ def search(locationType=None, pageSize=None, page=None):
     # compute the bounding box
     query = "SELECT locationDbId, " \
             "       name, " \
+            "       countryCode, " \
             "       ST_Extent(geometry) AS geometry " \
             "FROM (" + query + ") ss1 " \
-            "GROUP BY locationDbId, name "
+            "GROUP BY locationDbId, name, countryCode "
     # compute center point
     query = "SELECT locationDbId::text, " \
             "       name, " \
+            "       countryCode, " \
             "       ST_X(ST_CENTROID(geometry)) AS longitude, " \
-            "       ST_Y(ST_CENTROID(geometry)) AS latitude " \
+            "       ST_Y(ST_CENTROID(geometry)) AS latitude, " \
+            "       ST_Z(ST_CENTROID(geometry)) AS altitude " \
             "FROM (" + query + ") ss2"
 
     # order query
     query += "   ORDER BY locationDbId"
-    print(query)
 
     # TODO add a filter on the locationType
     # if locationType:
@@ -52,7 +55,14 @@ def search(locationType=None, pageSize=None, page=None):
     # wrap result
     data = []
     for row in results:
-        data.append({k: v for k, v in row.items() if v})
+        location = {k: v for k, v in row.items() if v}
+        if 'countryCode' not in location:
+            location['countryCode'] = location.pop('countrycode', '')
+        if 'altitude' not in location:
+            location['altitude'] = 0
+        if 'locationDbId' not in location:
+            location['locationDbId'] = location.pop('locationdbid', '')
+        data.append(location)
     return helper.create_result({"data": data}, count, pageSize, page)
 
 
