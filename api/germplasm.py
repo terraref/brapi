@@ -27,10 +27,14 @@ def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCrop
         page = 0
     data = data[page * pageSize:(page+1) * pageSize]
 
-    nd = _flatten_data(data)
+    nd = _convert_to_string(_flatten_data(data))
 
     # return the resulting data
     return helper.create_result({"data": nd}, count, pageSize, page)
+
+no_flatten_names = ["donors", "synonyms"]
+int_to_str_names = ["germplasmDbId", "typeOfGermplasmStorageCode"]
+str_to_int_names = ["typeOfGermplasmStorageCode"]
 
 def _flatten_data(data):
     if isinstance(data, list):
@@ -39,6 +43,31 @@ def _flatten_data(data):
         else:
             return [_flatten_data(x) for x in data]
     if isinstance(data, dict):
-        return {k: _flatten_data(v) for k, v in data.items()}
+        return {k: _flatten_data(v) if not k in no_flatten_names else v for k, v in data.items()}
+    return data
+
+def _convert_to_string(data):
+    if isinstance(data, list):
+        return [_convert_to_string(x) for x in data]
+    if isinstance(data, dict):
+        return {k: \
+              _convert_to_string(v) if not k in int_to_str_names else \
+              str(v) if not k in str_to_int_names else \
+              _make_int(v) for k, v in data.items()}
+    return data
+
+def _make_int(data):
+    if data is None:
+        return None
+    if isinstance(data, int):
+        return data
+
+    try:
+         print("Data: "+data)
+         return int(data)
+    except Exception as ex:
+        print(ex)
+        pass
+
     return data
 
