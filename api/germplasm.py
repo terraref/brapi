@@ -63,10 +63,8 @@ def _make_int(data):
         return data
 
     try:
-         print("Data: "+data)
          return int(data)
     except Exception as ex:
-        print(ex)
         pass
 
     return data
