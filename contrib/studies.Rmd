@@ -19,6 +19,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Studies
 
+Link Studies to Trials
+```{r load_sites}
+library(dplyr) 
+studies <- fromJSON("http://localhost:5000/brapi/v1/studies")$result$data %>% 
+  select(studyDbId, studyName)
+  
+trials <- fromJSON("~/dev/brapi/data/trials.json")
+
+studies %>% mutate(trialDbId = case_when(grepl(Wheat, "name") ~ )
+%>% 
+  select(studyDbId, studyName)
+
+```
 
 
 ```{r load-experiments}
@@ -49,12 +62,3 @@ select
   location as [join locations schemas sitegroups_sites join sites join experiments_sites]
  from experiments);
 ```
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
