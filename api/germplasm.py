@@ -27,19 +27,31 @@ def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCrop
         page = 0
     data = data[page * pageSize:(page+1) * pageSize]
 
-    nd = _ensure_arrays(_convert_strings(_flatten_data(data)))
+    nd = _ensure_arrays(_convert_strings(_flatten_data(_convert_types(data))))
 
     # return the resulting data
     return helper.create_result({"data": nd}, count, pageSize, page)
 
-no_flatten_names = []
+dict_to_array_names = ["seedSource"]
 ensure_array_names = ["donors", "synonyms", "typeOfGermplasmStorageCode"]
 int_to_str_names = ["germplasmDbId"]
 str_to_int_names = ["biologicalStatusOfAccessionCode"]
 
+def _convert_types(data):
+    if isinstance(data, list):
+        return [_convert_types(x) for x in data]
+    if isinstance(data, dict):
+        return {k: _convert_types(v) if not isinstance(v, dict) or not k in dict_to_array_names else \
+                        [_convert_types(j) for _, j in v.items()] \
+            for k, v in data.items()}
+            
+    return data
+
 def _flatten_data(data):
     if isinstance(data, list):
-        if len(data) == 1:
+        if len(data) == 0:
+            return None
+        elif len(data) == 1:
             return _flatten_data(data[0])
         else:
             return [_flatten_data(x) for x in data]
