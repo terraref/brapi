@@ -1,0 +1,60 @@
+---
+title: "Experiments —> Studies"
+author: "David LeBauer"
+date: "5/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## BrAPI and MIAPPE Schemas
+
+![BrAPI Schema](https://wiki.brapi.org/images/f/f7/BrAPI_Domains.png) from the [BrAPI wiki](https://wiki.brapi.org/index.php/BrAPI)
+
+
+![MIAPPE Schema](https://raw.githubusercontent.com/MIAPPE/MIAPPE/master/MIAPPE_Checklist-Data-Model-v1.1/MIAPPE_Checklist-Data-Model-v1.1.png)
+
+
+## Studies
+
+
+
+```{r load-experiments}
+library(dplyr)
+library(RPostgreSQL)
+con <- dbConnect(RPostgreSQL::PostgreSQL(),
+                   host = 'localhost',
+                   user = 'bety',
+                   port = 5432)
+studies <- tbl(con, 'experiments') %>%collect %>%  transmute(studyDbId = id,studyName = name) %>% 
+  mutate(programDbId = ifelse(grepl("Wheat", studyName), 2,1),
+         trialDbId = "99")
+
+jsonlite::toJSON(studies)
+
+```
+
+
+```{sql, connection = con}
+create temporary table studies (
+select 
+  id as studyDbId,
+  name as studyName,
+  description as studyDescription,
+  start_date as startDate,
+  end_date as endDate
+  design as statisticalDesign.description
+  location as [join locations schemas sitegroups_sites join sites join experiments_sites]
+ from experiments);
+```
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

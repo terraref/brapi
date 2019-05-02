@@ -1,0 +1,32 @@
+[
+  {
+    "trialDbId": "1",
+    "programDbId": "1",
+    "trialName": "Sorghum Biomass Association Panel"
+  },
+  {
+    "trialDbId": "2",
+    "programDbId": "1",
+    "trialName": "Sorghum Recombinant Inbred Lines"
+  },
+  {
+    "trialDbId": "3",
+    "programDbId": "1",
+    "trialName": "Sorghum Agronomic Trials"
+  },
+  {
+    "trialDbId": "4",
+    "programDbId": "1",
+    "trialName": "Sorghum Misc"
+  }
+  {
+    "trialDbId": "5",
+    "programDbId": "2",
+    "trialName": "Durum Wheat"
+  },
+  {
+    "trialDbId": "6",
+    "programDbId": "1",
+    "trialName": "Controlled Environment Sorghum"
+  }
+]
