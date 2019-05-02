@@ -48,11 +48,16 @@ services:
       - DBHOST=postgres
     networks:
       - bety
-    # can now just use to run latest code
-    volumes:
-      - ${PWD}:/usr/src/app
     depends_on:
       - postgres
+
+  # BRAVA
+  brava:
+    image: terraref/brapi-validator
+    ports:
+      - 8080:8080
+    networks:
+      - bety
 
 networks:
   bety:
