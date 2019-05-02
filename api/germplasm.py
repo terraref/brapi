@@ -27,14 +27,14 @@ def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCrop
         page = 0
     data = data[page * pageSize:(page+1) * pageSize]
 
-    nd = _ensure_arrays(_convert_to_string(_flatten_data(data)))
+    nd = _ensure_arrays(_convert_strings(_flatten_data(data)))
 
     # return the resulting data
     return helper.create_result({"data": nd}, count, pageSize, page)
 
 no_flatten_names = []
-ensure_array_names = ["donors", "synonyms"]
-int_to_str_names = ["germplasmDbId", "typeOfGermplasmStorageCode"]
+ensure_array_names = ["donors", "synonyms", "typeOfGermplasmStorageCode"]
+int_to_str_names = ["germplasmDbId"]
 str_to_int_names = ["biologicalStatusOfAccessionCode"]
 
 def _flatten_data(data):
@@ -47,14 +47,14 @@ def _flatten_data(data):
         return {k: _flatten_data(v) for k, v in data.items()}
     return data
 
-def _convert_to_string(data):
+def _convert_strings(data):
     if isinstance(data, list):
-        return [_convert_to_string(x) for x in data]
+        return [_convert_strings(x) for x in data]
     if isinstance(data, dict):
         return {k: \
-              _convert_to_string(v) if not k in int_to_str_names else \
-              str(v) if not k in str_to_int_names else \
-              _make_int(v) for k, v in data.items()}
+              _make_int(v) if k  in str_to_int_names else \
+              str(v) if k in int_to_str_names else \
+              _convert_strings(v) for k, v in data.items()}
 
     if isinstance(data, int):
         return str(data)
