@@ -27,6 +27,18 @@ def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCrop
         page = 0
     data = data[page * pageSize:(page+1) * pageSize]
 
+    nd = _flatten_data(data)
+
     # return the resulting data
-    return helper.create_result({"data": data}, count, pageSize, page)
+    return helper.create_result({"data": nd}, count, pageSize, page)
+
+def _flatten_data(data):
+    if isinstance(data, list):
+        if len(data) == 1:
+            return data[0]
+        else:
+            return [_flatten_data(x) for x in data]
+    if isinstance(data, dict):
+        return {k: _flatten_data(v) for k, v in data.items()}
+    return data
 
