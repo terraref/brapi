@@ -14,7 +14,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('calls'),
         calls_get_helper('commoncropnames'),
         calls_get_helper('crops'),
-        calls_get_helper('germplasm'),
+        calls_get_helper('germplasm', versions=VERSIONS_LATEST),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
         calls_get_helper('phenotypes', methods=['POST']),
