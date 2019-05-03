@@ -3,7 +3,7 @@
 import logging
 
 import connexion
-from connexion.resolver import RestyResolver
+from brapiresolver import BrapiResolver
 
 
 def token_auth(token, required_scopes):
@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     app.add_api('brapi.yaml',
                 arguments={'title': 'TERRA-REF BRAPI'},
-                resolver=RestyResolver('api'),
+                resolver=BrapiResolver('api'),
                 resolver_error=501)
 
     # app.run(port=5000, host=None, server='flask', debug=debug, use_reloader=False)
