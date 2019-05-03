@@ -19,7 +19,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('germplasm', versions=VERSIONS_LATEST),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
-        calls_get_helper('phenotypes', methods=['POST'], versions=VERSIONS_LATEST),
+        calls_get_helper('observationunits', versions=VERSIONS_LATEST),
         calls_get_helper('phenotypes-search', versions=VERSIONS_1_2),
         calls_get_helper('programs'),
         calls_get_helper('seasons'),
