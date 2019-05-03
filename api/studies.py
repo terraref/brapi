@@ -48,7 +48,7 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         study['statisticalDesign'] = {'description': current_descrption }
 
         if row.has_key('location_id'):
-            location = api.locations.query(dataOnly=True, locationDbId=row['location_id'])
+            location = api.locations.query(single_row=True, locationDbId=row['location_id'])
             if location:
                 study['location'] = location
 
