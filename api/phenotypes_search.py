@@ -17,7 +17,7 @@ def _replace_keynames(data):
         return [_replace_keynames(x) for x in data]
 
     if isinstance(data, dict):
-        return {_map_key(k): _replace_keynames(v) for k, v in data}
+        return {_map_key(k): _replace_keynames(v) for k, v in data.items()}
 
     return data
 
