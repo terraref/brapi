@@ -85,6 +85,9 @@ def germplasm_search(studyDbId, pageSize=None, page=None):
         entry = api.germplasm.get_result(dataonly=True, germplasmDbId=row['cultivar_id'])
         if entry:
             data.append(entry[0])
+        else:
+            logging.warning("Missing germplasm for " + str(row['cultivar_id']))
+            count -= 1
 
     return helper.create_result({"data": data}, count)
 
