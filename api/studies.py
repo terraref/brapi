@@ -120,12 +120,12 @@ def layouts_search(studyDbId, pageSize=None, page=None):
 
     for row in results:
         entry = dict()
-        entry['studyDbId'] = row['studydbid']
+        entry['studyDbId'] = str(row['studydbid'])
         entry['studyName'] = row['studyname']
         entry['germplasmName'] = row['germplasmname']
-        entry['germPlasmDbId'] = row['germplasmdbid']
+        entry['germPlasmDbId'] = str(row['germplasmdbid'])
         entry['observationLevel'] = 'plot'
-        entry['observationUnitDbId'] = row['observation_unit_db_id']
+        entry['observationUnitDbId'] = str(row['observation_unit_db_id'])
         entry['observationUnitName'] = row['location_abbreviation']
         data.append(entry)
 
