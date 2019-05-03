@@ -9,18 +9,63 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## BrAPI and MIAPPE Schemas
+## Objective
+
+* Create programs, trials, studies
+* brapi studies == betydb experiments
+* write out programs and studies by hand
+
+This document provides 
+* code to import experiments (studies) from the existing database and create templates.
+
+In BrAPI 
+
+* programs 1--> many trials 
+* trials 1--> many studies
+
+
+### BrAPI and MIAPPE Schemas
+
 
 ![BrAPI Schema](https://wiki.brapi.org/images/f/f7/BrAPI_Domains.png) from the [BrAPI wiki](https://wiki.brapi.org/index.php/BrAPI)
 
 
 ![MIAPPE Schema](https://raw.githubusercontent.com/MIAPPE/MIAPPE/master/MIAPPE_Checklist-Data-Model-v1.1/MIAPPE_Checklist-Data-Model-v1.1.png)
 
+This file just provides notes on how this was compiled, and the meaning of the relationships and mappings.
 
-## Studies
+## Insert TrialDbId into experiments attributes table
 
-Link Studies to Trials
-```{r load_sites}
+```{r}
+library(jsonlite)
+study_attributes <- read_json('~/dev/brapi/data/studies.json',
+                        simplifyVector = TRUE)
+
+
+for(i in seq_along(study_attributes)){
+  study_attributes$jsons[i] <- toJSON(
+    list(brapi = list(
+      trialDbId = study_attributes$trialDbId[i])), 
+    auto_unbox = TRUE)
+}
+z <- study_attributes %>% 
+  transmute(
+    inserts = paste0("insert into attributes (container_type, container_id, value) VALUES ('experiments', ",
+                     studyDbId, ", '", jsons,"'", ');\n')) 
+
+cat(z[[1]])
+
+cat(z$inserts, file = '/tmp/inserts.sql')
+                     
+
+```
+
+## Appendix: preparing templates
+
+Generate a template on which to link Studies to Trials and programs
+
+
+```{r load_sites, eval=FALSE}
 library(dplyr) 
 studies <- fromJSON("http://localhost:5000/brapi/v1/studies")$result$data %>% 
   select(studyDbId, studyName)
@@ -34,7 +79,7 @@ studies %>% mutate(trialDbId = case_when(grepl(Wheat, "name") ~ )
 ```
 
 
-```{r load-experiments}
+```{r insert-attributes, eval = FALSE}
 library(dplyr)
 library(RPostgreSQL)
 con <- dbConnect(RPostgreSQL::PostgreSQL(),
@@ -50,15 +95,3 @@ jsonlite::toJSON(studies)
 ```
 
 
-```{sql, connection = con}
-create temporary table studies (
-select 
-  id as studyDbId,
-  name as studyName,
-  description as studyDescription,
-  start_date as startDate,
-  end_date as endDate
-  design as statisticalDesign.description
-  location as [join locations schemas sitegroups_sites join sites join experiments_sites]
- from experiments);
-```
