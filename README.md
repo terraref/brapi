@@ -123,3 +123,14 @@ connected to the database:
 INSERT INTO users (login, name, email, crypted_password, salt, city, state_prov, postal_code, country, area, access_level, page_access_level, created_at, updated_at, apikey, remember_token, remember_token_expires_at)
  VALUES ('guestuser', 'guestuser', 'betydb@example.com', '994363a949b6486fc7ea54bf40335127f5413318', 'bety', 'Urbana', 'IL', '61801', 'USA', '', 4, 4, NOW(), NOW(), NULL, NULL, NULL);
 ```
+
+## Testing your additions
+
+Before you commit your new endpoints or any new code, please make sure that you check it with
+BRAVA. You can do this by running the brava container `docker-compose up -d brava`. At this point
+you can connect to http://localhost:8080/ to see the UI.
+
+Next switch to 'Test your own' and change the URL. If you run the brapi server as a docker
+container in docker-compose you can use `http://brapi:5000/brapi/v1` as the URL. If you run
+the server on your machine you can either use `http://host.docker.internal:5000/brapi/v1` or
+you can use `http://<ipaddress>:5000/brapi/v1`.
