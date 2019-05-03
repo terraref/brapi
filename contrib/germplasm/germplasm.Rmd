@@ -1,13 +1,15 @@
 ---
 title: "Building Data for Germplasm Endpoint"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 
 ```{r}
 library(tidyverse)
 
-genotypes <- read_csv('sorghum_lines_genomics.csv')
+genotypes <- read_csv('data/sorghum_lines_genomics.csv')
 
 g_json <- jsonlite::toJSON(genotypes[1:10,])
 
@@ -21,7 +23,7 @@ https://www.genesys-pgr.org/brapi/v1/germplasm/0ba28636-e634-428a-aa58-4346a20de
 
 
 ```{r}
-devtools::install_github(repo = 'brapi', username = 'CIP-RIU')
+#devtools::install_github(repo = 'CIP-RIU/brapi')
 library(brapi)
 library(jsonlite)
 genesys_con <- ba_connect(brapiDb = as.ba_db(protocol = 'https://', db = 'www.genesys-pgr.org', secure = TRUE))
@@ -71,9 +73,9 @@ for(i in seq_along(a)){
 
 get Ids from BETY
 
-```{r, eval=FALSE}
+```{r}
 library(tidyverse)
-cultivars <- jsonlite::fromJSON(paste0("https://terraref.ncsa.illinois.edu/bety/api/v1/cultivars?key=9999999999999999999999999999999999999999&limit=none"), flatten = TRUE, simplifyVector = TRUE)
+cultivars <- jsonlite::fromJSON(paste0("https://terraref.ncsa.illinois.edu/bety/api/v1/cultivars?limit=none"), flatten = TRUE, simplifyVector = TRUE)
 
 cultivars <- cultivars[[2]]
 
@@ -95,8 +97,6 @@ for(i in seq_along(b)){
 ### Add other cultivars
 
 ```{r}
-
-
 zz <- list()
 for(i in seq_along(b)){
   zz[i] <- b[[i]]$accessionNumber
@@ -136,9 +136,9 @@ cc <- append(b, bb)
 
 
 ```{r}
-for(i in seq_along(cc)){
+#for(i in seq_along(cc)){
   
-}
+#}
 ```
 
 
@@ -148,9 +148,9 @@ names(cc) <- NULL #should not be needed, just in case
 ccc <- toJSON(cc, auto_unbox = TRUE)
 
 #jsonlite::write_json(c, 'germplasm.txt')
-write_lines(jsonlite::prettify(ccc), '~/dev/brapi/bety_brapi/data/germplasm.json')
+write_lines(jsonlite::prettify(ccc), '~/dev/brapi/data/germplasm.json')
 #dir.create('~/dev/brapi/data')
-#jsonlite::write_json(b, '~/dev/brapi/germplasm.json')
+jsonlite::write_json(b, '~/dev/brapi/germplasm.json')
 
 ```
 
@@ -158,7 +158,7 @@ write_lines(jsonlite::prettify(ccc), '~/dev/brapi/bety_brapi/data/germplasm.json
 ## Further updates
 
 ```{r}
-germplasm <- jsonlite::fromJSON('germplasm.json', simplifyVector = FALSE)
+germplasm <- jsonlite::fromJSON('../../', simplifyVector = FALSE)
 
 ```
 
@@ -177,11 +177,17 @@ for(i in seq_along(germplasm)){
   }
 }
 
-write_lines(jsonlite::prettify(toJSON(germplasm)), '~/dev/brapi/bety_brapi/data/germplasm.json')
+write_lines(jsonlite::prettify(toJSON(germplasm)), '~/dev/brapi/data/germplasm.json')
 
 ```
 
-## 
+## fix the json
+
+```{python}
+from api.germplasm import 
+sys.path.insert(0, '~/dev/brapi/api')
+import germplasm.py
+```
 
 ### Construct inserts for attributes table in betydb
 
