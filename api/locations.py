@@ -10,41 +10,6 @@ def search(locationType=None, pageSize=None, page=None):
     :return: all locations in the page
     """
 
-    # TODO map locationType to something
-    params = list()
-
-    # get all sitegroups and sites
-    query = "SELECT sitegroups.id AS locationDbId, " \
-            "       sitegroups.name AS name, " \
-            "       sites.country AS countryCode, " \
-            "       sites.geometry AS geometry " \
-            "FROM sites, sitegroups, sitegroups_sites " \
-            "WHERE sitegroups_sites.site_id = sites.id " \
-            "      AND sitegroups_sites.sitegroup_id = sitegroups.id "
-    # compute the bounding box
-    query = "SELECT locationDbId, " \
-            "       name, " \
-            "       countryCode, " \
-            "       ST_Extent(geometry) AS geometry " \
-            "FROM (" + query + ") ss1 " \
-            "GROUP BY locationDbId, name, countryCode "
-    # compute center point
-    query = "SELECT locationDbId::text, " \
-            "       name, " \
-            "       countryCode, " \
-            "       ST_X(ST_CENTROID(geometry)) AS longitude, " \
-            "       ST_Y(ST_CENTROID(geometry)) AS latitude, " \
-            "       ST_Z(ST_CENTROID(geometry)) AS altitude " \
-            "FROM (" + query + ") ss2"
-
-    # order query
-    query += "   ORDER BY locationDbId"
-
-    # TODO add a filter on the locationType
-    # if locationType:
-    #     # wrap query in a sub select to allow us to use locationType in WHERE clause
-    #     query = "SELECT * FROM (" + query + ") locations WHERE locationType = %s "
-    #     params.append(locationType)
 
     # count first
     count = helper.query_count(query, params)
@@ -67,41 +32,60 @@ def search(locationType=None, pageSize=None, page=None):
 
 
 def get(locationDbId):
+    query(dataOnly=False, locationDbId=locationDbId)
+
+
+def query(dataOnly=False, locationDbId=None):
     """
 
     :param locationDbId:
     :return:
     """
-
+    # TODO map locationType to something
     params = list()
 
     # get all sitegroups and sites
     query = "SELECT sitegroups.id AS locationDbId, " \
             "       sitegroups.name AS name, " \
+            "       sites.country AS countryCode, " \
             "       sites.geometry AS geometry " \
             "FROM sites, sitegroups, sitegroups_sites " \
-            "WHERE sitegroups.id = %s " \
-            "      AND sitegroups_sites.site_id = sites.id " \
+            "WHERE sitegroups_sites.site_id = sites.id " \
             "      AND sitegroups_sites.sitegroup_id = sitegroups.id "
-    params.append(int(locationDbId))
+    if locationDbId:
+        query += "AND sitegroups.id = %s"
+        params.append(locationDbId)
+
     # compute the bounding box
     query = "SELECT locationDbId, " \
             "       name, " \
+            "       countryCode, " \
             "       ST_Extent(geometry) AS geometry " \
             "FROM (" + query + ") ss1 " \
-            "GROUP BY locationDbId, name "
+            "GROUP BY locationDbId, name, countryCode "
     # compute center point
-    query = "SELECT locationDbId::text, " \
+    query = "SELECT DISTINCT locationDbId::text, " \
             "       name, " \
+            "       countryCode, " \
             "       ST_X(ST_CENTROID(geometry)) AS longitude, " \
-            "       ST_Y(ST_CENTROID(geometry)) AS latitude " \
+            "       ST_Y(ST_CENTROID(geometry)) AS latitude, " \
+            "       ST_Z(ST_CENTROID(geometry)) AS altitude " \
             "FROM (" + query + ") ss2"
 
     # order query
     query += "   ORDER BY locationDbId"
 
+    # TODO add a filter on the locationType
+    # if locationType:
+    #     # wrap query in a sub select to allow us to use locationType in WHERE clause
+    #     query = "SELECT * FROM (" + query + ") locations WHERE locationType = %s "
+    #     params.append(locationType)
+
     # count first
-    count = helper.query_count(query, params)
+    count = 1
+    if not dataOnly:
+        count = helper.query_count(query, params)
+    print(count)
 
     # execute query
     results = helper.query_result(query, params)
@@ -110,4 +94,11 @@ def get(locationDbId):
     data = []
     for row in results:
         data.append({k: v for k, v in row.items() if v})
-    return helper.create_result({"location": data}, count)
+    print(data)
+
+    if dataOnly:
+        if data:
+            return data[0]
+        return {}
+    else:
+        return helper.create_result({"location": data}, count)

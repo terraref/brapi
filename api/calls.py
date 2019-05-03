@@ -23,7 +23,10 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('phenotypes-search', versions=VERSIONS_1_2),
         calls_get_helper('programs'),
         calls_get_helper('seasons'),
-        calls_get_helper('studies')
+        calls_get_helper('studies'),
+        calls_get_helper('studies/{studyDbId}'),
+        calls_get_helper('studies/{studyDbId}/germplasm'),
+        calls_get_helper('studies/{studyDbId}/locations')
     ]
 
     # filter on datatype

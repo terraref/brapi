@@ -25,9 +25,9 @@ if __name__ == '__main__':
     debug = False
 
     if debug:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(format='%(asctime)-15s %(message)s', level=logging.DEBUG)
     else:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(format='%(asctime)-15s %(message)s', level=logging.INFO)
 
     app = connexion.FlaskApp(__name__, debug=debug)
 

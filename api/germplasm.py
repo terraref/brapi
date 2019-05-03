@@ -1,23 +1,41 @@
 import json
+import logging
+
 import helper
+
+dict_to_array_names = ["seedSource"]
+ensure_array_names = ["donors", "synonyms", "typeOfGermplasmStorageCode"]
+int_to_str_names = ["germplasmDbId"]
+str_to_int_names = ["biologicalStatusOfAccessionCode"]
+
+germplasm_data = None
 
 
 def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCropName=None, pageSize=None, page=None):
+    return get_result(dataonly=False, germplasmPUI=germplasmPUI, germplasmDbId=germplasmDbId,
+                      germplasmName=germplasmName, commonCropName=commonCropName, pageSize=pageSize, page=page)
 
-    # load all the data
-    # TODO this does not work if pakcage is installed, need to use pkgutil
-    filename = 'data/germplasm.json'
-    data = json.load(open(filename, 'r'))
+
+def get_result(dataonly=False,
+               germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCropName=None,
+               pageSize=None, page=None):
+
+    if not germplasm_data:
+        load_data()
+
+    def filter_func(x):
+        if germplasmPUI and x.get('germplasmPUI', '') != germplasmPUI:
+            return False
+        if germplasmDbId and x.get('germplasmDbId', '') != str(germplasmDbId):
+            return False
+        if germplasmName and x.get('germplasmName', '') != germplasmName:
+            return False
+        if commonCropName and x.get('commonCropName', '') != commonCropName:
+            return False
+        return True
 
     # filter the data
-    if germplasmPUI:
-        data = [x for x in data if x.get('germplasmPUI', '') == germplasmPUI]
-    if germplasmDbId:
-        data = [x for x in data if x.get('germplasmDbId', '') == int(germplasmDbId)]
-    if germplasmName:
-        data = [x for x in data if x.get('germplasmName', '') == germplasmName]
-    if commonCropName:
-        data = [x for x in data if x.get('commonCropName', '') == commonCropName]
+    data = list(filter(lambda x: filter_func(x), germplasm_data))
 
     # split data if needed, remembering total number
     count = len(data)
@@ -27,15 +45,19 @@ def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCrop
         page = 0
     data = data[page * pageSize:(page+1) * pageSize]
 
-    nd = _ensure_arrays(_convert_strings(_flatten_data(_convert_types(data))))
-
     # return the resulting data
-    return helper.create_result({"data": nd}, count, pageSize, page)
+    if dataonly:
+        return data
+    else:
+        return helper.create_result({"data": data}, count, pageSize, page)
 
-dict_to_array_names = ["seedSource"]
-ensure_array_names = ["donors", "synonyms", "typeOfGermplasmStorageCode"]
-int_to_str_names = ["germplasmDbId"]
-str_to_int_names = ["biologicalStatusOfAccessionCode"]
+
+def load_data():
+    global germplasm_data
+
+    raw_data = json.load(open('data/germplasm.json', 'r'))
+    germplasm_data = _ensure_arrays(_convert_strings(_flatten_data(_convert_types(raw_data))))
+
 
 def _convert_types(data):
     if isinstance(data, list):
@@ -46,6 +68,7 @@ def _convert_types(data):
             for k, v in data.items()}
             
     return data
+
 
 def _flatten_data(data):
     if isinstance(data, list):
@@ -58,6 +81,7 @@ def _flatten_data(data):
     if isinstance(data, dict):
         return {k: _flatten_data(v) for k, v in data.items()}
     return data
+
 
 def _convert_strings(data):
     if isinstance(data, list):
@@ -73,12 +97,14 @@ def _convert_strings(data):
 
     return data
 
+
 def _ensure_arrays(data):
     if isinstance(data, list):
         return [_ensure_arrays(x) for x in data]
     if isinstance(data, dict):
         return {k: v if not k in ensure_array_names or v is None or isinstance(v, list) else [v] for k, v in data.items()}
     return data
+
 
 def _make_int(data):
     if data is None:
