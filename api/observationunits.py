@@ -1,6 +1,21 @@
 
 import helper
 
+observation_names = ["collector", "observationDbId",
+            "observationTimeStamp", "observationVariableDbId",
+            "observationVariableName", "season", "value"]
+treatment_names = ["factor", "modality"]
+
+names_map = {
+    "observationvariabledbid": "observationVariableDbId",
+    "observationvariablename": "observationVariableName",
+    "observationdbid": "observationDbId",
+    "observationtimestamp": "observationTimeStamp",
+    "studydbid": "studyDbId",
+    "observationtreatment": "observationtreatment",
+    "treatmentdbid": "treatmentDbId"
+}
+
 def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, locationDbId=None, trialDbId=None, programDbId=None, seasonDbId=None, observationLevel=None, observationTimeStampRangeStart=None, observationTimeStampRangeEnd=None, pageSize=None, page=None):
 
     if observationTimeStampRangeStart:
@@ -11,14 +26,14 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
 
 
     params = []
-    query = "select v.id as observationVariableDbId,  \
+    query = "select v.id::text as observationVariableDbId,  \
                     v.name as observationVariableName,  \
-                    t.id as observationDbId, \
-                    t.mean as value, \
+                    t.id::text as observationDbId, \
+                    t.mean::text as value, \
                     t.date as observationTimeStamp, \
                     s.sitename as location_abbreviation, \
-                    es.experiment_id as studyDbId, \
-                    et.treatment_id as treatments, \
+                    es.experiment_id::text as studyDbId, \
+                    et.treatment_id as treatmentDbId, \
                     treatments.name as season, \
                     treatments.definition as observationtreatment \
              from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments treatments  \
@@ -59,14 +74,17 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
         query += " and date <= %s"
         params.append(observationTimeStampRangeEnd)
 
+    count = helper.query_count(query, params)
+    res = helper.query_result(query, params, pageSize, page)
+    data = _conform_data([dict(r) for r in res])
+
+    # split data if needed, remembering total number
+    count = len(data)
     if not pageSize:
         pageSize = helper.DEFAULT_PAGE_SIZE
     if not page:
         page = 0
-
-    count = helper.query_count(query, params)
-    res = helper.query_result(query, params, pageSize, page)
-    data = {"observations": [dict(r) for r in res]}
+    data = data[page * pageSize:(page+1) * pageSize]
 
     return helper.create_result({"data": data}, count, pageSize, page)
 
@@ -87,4 +105,33 @@ def deserialize_datetime(string):
     except ImportError:
          return string
 
+def _conform_data(data):
+    if not isinstance(data, list):
+        return data
+
+    return [_conform_element(x) for x in data]
+
+def _conform_element(ele):
+    if not isinstance(ele, dict):
+        return ele
+
+    res_obs = {}
+    res_treat = {}
+    res = {}
+    for k,v in ele.items():
+        if k in names_map:
+            k = names_map[k]
+        if k in observation_names:
+            res_obs[k] = v
+        elif k in treatment_names:
+            res_treat[k] = v
+        else:
+            res[k] = v
+
+    if len(res_obs.keys()) > 0:
+        res["observations"] = [res_obs]
+    if len(res_treat.keys()) > 0:
+        res["treatments"] = [res_treat]
+
+    return res
 
