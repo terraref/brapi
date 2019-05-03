@@ -19,8 +19,8 @@ def post(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, locat
                     s.sitename as location_abbreviation, \
                     es.experiment_id as studyDbId, \
                     et.treatment_id as treatments, \
-                    treatments.name as treatment_factor, \
-                    treatments.definition as treatment_definition \
+                    treatments.name as season, \
+                    treatments.definition as observationtreatment \
              from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments treatments  \
              where v.id = t.variable_id \
              and t.site_id = s.id \
