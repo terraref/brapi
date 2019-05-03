@@ -1,7 +1,9 @@
 import helper
 
-VERSIONS_ALL = ["1.2", "1.3"]
-VERSIONS_LATEST = ["1.3"]
+VERSIONS_1_2 = ["1.2"]
+VERSIONS_1_3 = ["1.3"]
+VERSIONS_ALL = VERSIONS_1_2 + VERSIONS_1_3
+VERSIONS_LATEST = VERSIONS_1_3
 
 
 def search(datatype=None, dataType=None, pageSize=None, page=None):
@@ -18,6 +20,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
         calls_get_helper('phenotypes', methods=['POST'], versions=VERSIONS_LATEST),
+        calls_get_helper('phenotypes-search', versions=VERSIONS_1_2),
         calls_get_helper('programs'),
         calls_get_helper('seasons'),
         calls_get_helper('studies')
