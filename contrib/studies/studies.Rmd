@@ -24,6 +24,17 @@ In BrAPI
 * trials 1--> many studies
 
 
+Overview of definitions from different standards:
+
+| BETYdb      | BrAPI           | MIAPPE        | ISA           |
+|-------------|-----------------|---------------|---------------|
+| NA          | Investigation   | Investigation | Investigation |
+| Experiments | Study           | Study         | Study         |
+| Plot        | ObservationUnit |               | Assay         |
+
+See more about the mapping from BrAPI to MIAPPE here: https://docs.google.com/spreadsheets/d/e/2PACX-1vQPxfTKGEgsnkHYAQMw48Kw-k2mD0adeh_Og1MVu31qW87R7MYNayGGBLEI7y3Fv3eajWvPkiiZtU5j/pubhtml
+
+
 ### BrAPI and MIAPPE Schemas
 
 ![Studies Schema Overview](studies/studies.png)
