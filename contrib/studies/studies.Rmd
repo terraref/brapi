@@ -26,6 +26,8 @@ In BrAPI
 
 ### BrAPI and MIAPPE Schemas
 
+![Studies Schema Overview](studies/studies.png)
+
 
 ![BrAPI Schema](https://wiki.brapi.org/images/f/f7/BrAPI_Domains.png) from the [BrAPI wiki](https://wiki.brapi.org/index.php/BrAPI)
 
