@@ -10,34 +10,18 @@ def search(locationType=None, pageSize=None, page=None):
     :return: all locations in the page
     """
 
-
-    # count first
-    count = helper.query_count(query, params)
-
-    # execute query
-    results = helper.query_result(query, params, pageSize, page)
-
-    # wrap result
-    data = []
-    for row in results:
-        location = {k: v for k, v in row.items() if v}
-        if 'countryCode' not in location:
-            location['countryCode'] = location.pop('countrycode', '')
-        if 'altitude' not in location:
-            location['altitude'] = 0
-        if 'locationDbId' not in location:
-            location['locationDbId'] = location.pop('locationdbid', '')
-        data.append(location)
-    return helper.create_result({"data": data}, count, pageSize, page)
+    return query()
 
 
 def get(locationDbId):
-    query(dataOnly=False, locationDbId=locationDbId)
+    data = query(single_row=True, locationDbId=locationDbId)
+    return helper.create_result({"location": data}, 1)
 
 
-def query(dataOnly=False, locationDbId=None):
+def query(single_row=False, locationDbId=None):
     """
 
+    :param single_row: return a single row back, not wrapped
     :param locationDbId:
     :return:
     """
@@ -82,10 +66,10 @@ def query(dataOnly=False, locationDbId=None):
     #     params.append(locationType)
 
     # count first
-    count = 1
-    if not dataOnly:
+    if single_row:
+        count = 1
+    else:
         count = helper.query_count(query, params)
-    print(count)
 
     # execute query
     results = helper.query_result(query, params)
@@ -93,12 +77,20 @@ def query(dataOnly=False, locationDbId=None):
     # wrap result
     data = []
     for row in results:
-        data.append({k: v for k, v in row.items() if v})
-    print(data)
+        location = {k: v for k, v in row.items() if v}
+        if 'countryCode' not in location:
+            location['countryCode'] = location.pop('countrycode', '')
+        if 'altitude' not in location:
+            location['altitude'] = 0
+        if 'locationDbId' not in location:
+            location['locationDbId'] = location.pop('locationdbid', '')
+        data.append(location)
+        if single_row:
+            break
 
-    if dataOnly:
+    if single_row:
         if data:
             return data[0]
         return {}
     else:
-        return helper.create_result({"location": data}, count)
+        return helper.create_result({"data": data}, count)

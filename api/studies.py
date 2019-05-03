@@ -48,7 +48,7 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         study['statisticalDesign'] = {'description': current_descrption }
 
         if row.has_key('location_id'):
-            location = api.locations.query(dataOnly=True, locationDbId=row['location_id'])
+            location = api.locations.query(single_row=True, locationDbId=row['location_id'])
             if location:
                 study['location'] = location
 
@@ -89,15 +89,14 @@ def germplasm_search(studyDbId, pageSize=None, page=None):
     return helper.create_result({"data": data}, count)
 
 
-def layout_search(studyDbId, pageSize=None, page=None):
+def layouts_search(studyDbId, pageSize=None, page=None):
     params = list()
 
     query = "SELECT DISTINCT experiments.id as studyDbId, " \
             "   experiments.name as studyName, " \
             "   experiments_sites.site_id as observation_unit_db_id, " \
             "   sites.sitename as location_abbreviation, " \
-            "   sites_cultivars.cultivar_id as germPlasmDbId, " \
-            "   cultivars.id as cultivarid, " \
+            "   cultivars.id as germPlasmDbId, " \
             "   cultivars.name as germplasmName " \
             "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
@@ -121,8 +120,11 @@ def layout_search(studyDbId, pageSize=None, page=None):
 
     for row in results:
         entry = dict()
+        entry['studyDbId'] = row['studydbid']
+        entry['studyName'] = row['studyname']
         entry['germplasmName'] = row['germplasmname']
-        entry['germPlasmDbId'] = row['cultivarid']
+        entry['germPlasmDbId'] = row['germplasmdbid']
+        entry['observationLevel'] = 'plot'
         entry['observationUnitDbId'] = row['observation_unit_db_id']
         entry['observationUnitName'] = row['location_abbreviation']
         data.append(entry)
