@@ -1,0 +1,12 @@
+[
+  {
+    "programDbId": "1",
+    "programName": "TERRA-REF sorghum",
+    "commonCropName": "sorghum"
+  },
+  {
+    "programDbId": "2",
+    "programName": "TERRA-REF durum wheat",
+    "commonCropName": "durum wheat"
+  }
+]

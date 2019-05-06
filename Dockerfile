@@ -1,18 +1,16 @@
 FROM python:3-alpine
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+EXPOSE 5000
 
-#RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements.txt /usr/src/app/
+COPY requirements.txt .
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN apk add --no-cache postgresql-libs \
+    && apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev \
+    && python3 -m pip install -r requirements.txt --no-cache-dir \
+    && apk --purge del .build-deps
 
-COPY . /usr/src/app
+COPY . .
 
-EXPOSE 8080
-
-ENTRYPOINT ["python3"]
-
-CMD ["-m", "bety_brapi"]
+CMD ["./server.py"]
