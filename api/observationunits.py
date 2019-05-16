@@ -79,12 +79,10 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
     data = _conform_data([dict(r) for r in res])
 
     # split data if needed, remembering total number
-    count = len(data)
     if not pageSize:
         pageSize = helper.DEFAULT_PAGE_SIZE
     if not page:
         page = 0
-    data = data[page * pageSize:(page+1) * pageSize]
 
     return helper.create_result({"data": data}, count, pageSize, page)
 
