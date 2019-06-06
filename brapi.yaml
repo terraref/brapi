@@ -2597,6 +2597,510 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
                 not found
+  /maps:
+    get:
+      tags:
+        - Genome Maps
+      summary: Get the Genomic Maps
+      description: Get list of maps
+      parameters:
+        - name: species
+          in: query
+          description: DEPRECATED in v1.3 - See "scientificName"
+          required: false
+          deprecated: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: commonCropName
+          in: query
+          description: The common name of the crop, found from "GET /commoncropnames"
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: scientificName
+          in: query
+          description: Full scientific binomial format name. This includes Genus, Species,
+            and Sub-species
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Type of map
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genomeMapsResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 2
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - comments: comments
+                      commonCropName: Paw Paw
+                      documentationURL: https://brapi.org
+                      linkageGroupCount: 1
+                      mapDbId: gm1
+                      mapName: Genome Map 1
+                      markerCount: 11
+                      name: Genome Map 1
+                      publishedDate: 2018-01-01
+                      scientificName: Asimina triloba
+                      species: triloba
+                      type: Genetic
+                      unit: cM
+                    - comments: comments
+                      commonCropName: Paw Paw
+                      documentationURL: https://brapi.org
+                      linkageGroupCount: 2
+                      mapDbId: gm2
+                      mapName: Genome Map 2
+                      markerCount: 11
+                      name: Genome Map 2
+                      publishedDate: 2018-01-01
+                      scientificName: Asimina triloba
+                      species: triloba
+                      type: Genetic
+                      unit: cM
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /maps/{mapDbId}:
+    get:
+      tags:
+        - Genome Maps
+      summary: Get the details of a specific Genomic Map
+      description: Provides the number of markers on each linkageGroup and the max
+        position on the linkageGroup
+      parameters:
+        - name: mapDbId
+          in: path
+          description: The internal db id of a selected map
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mapDetailsResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 1
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - linkageGroupName: "1"
+                      markerCount: 11
+                      maxPosition: 1110
+                  documentationURL: https://brapi.org
+                  linkageGroups:
+                    - linkageGroupName: "1"
+                      markerCount: 11
+                      maxPosition: 1110
+                  mapDbId: gm1
+                  mapName: Genome Map 1
+                  name: Genome Map 1
+                  type: Genetic
+                  unit: cM
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /maps/{mapDbId}/positions:
+    get:
+      tags:
+        - Genome Maps
+      summary: Get the positions of Markers inside a specific Genomic Map
+      description: All the markers in a given Map, ordered by linkageGroup and position.
+      parameters:
+        - name: mapDbId
+          in: path
+          description: unique id of the map
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: linkageGroupId
+          in: query
+          description: Deprecated Use linkageGroupName instead
+          required: false
+          deprecated: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: linkageGroupName
+          in: query
+          description: The chromosome identifier or the generic linkage group identifier
+            if the chromosome is not applicable.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/markerSummaryMapResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 11
+                    totalPages: 6
+                  status: []
+                result:
+                  data:
+                    - linkageGroupName: "1"
+                      location: "1000"
+                      markerDbId: mr01
+                      markerName: marker1-1
+                    - linkageGroupName: "1"
+                      location: "1020"
+                      markerDbId: mr02
+                      markerName: marker1-2
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /maps/{mapDbId}/positions/{linkageGroupName}:
+    get:
+      tags:
+        - Genome Maps
+      summary: Get the positions of Markers inside a specific Linkage Group
+      description: All the markers in a specific Linkage Group (aka Chromasome) inside
+        a particular Map, ordered by position.
+      parameters:
+        - name: mapDbId
+          in: path
+          description: unique id of the map
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: linkageGroupName
+          in: path
+          description: The chromosome identifier or the generic linkage group identifier
+            if the chromosome is not applicable.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: min
+          in: query
+          description: minimum position on linkage group
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: max
+          in: query
+          description: maximum position on linkage group
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/markerSummaryLinkageGroupResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 11
+                    totalPages: 6
+                  status: []
+                result:
+                  data:
+                    - location: "1000"
+                      markerDbId: mr01
+                      markerName: marker1-1
+                    - location: "1020"
+                      markerDbId: mr02
+                      markerName: marker1-2
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
   /markers:
     get:
       tags:
@@ -11237,6 +11741,481 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
                 not found
+  /vendor/orders:
+    get:
+      tags:
+        - Vendor
+      summary: List current available orders
+      description: List current available orders
+      parameters:
+        - name: orderId
+          in: query
+          description: The order id returned by the vendor when the order was successfully
+            submitted. From response of "POST /vendor/orders"
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: submissionId
+          in: query
+          description: The submission id returned by the vendor when a set of plates
+            was successfully submitted. From response of "POST /vendor/plates"
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorOrdersResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+    post:
+      tags:
+        - Vendor
+      summary: Submit New Order
+      description: Submit a new order to a vendor
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vendorOrderRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorOrderResponse'
+              example: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /vendor/orders/{orderId}/plates:
+    get:
+      tags:
+        - Vendor
+      summary: Get the Plates for a specific Order
+      description: Retrieve the plate and sample details of an order being processed
+      parameters:
+        - name: orderId
+          in: path
+          description: The order id returned by the vendor when the order was successfully
+            submitted.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorPlatesResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /vendor/orders/{orderId}/results:
+    get:
+      tags:
+        - Vendor
+      summary: Get the results of a specific Order
+      description: Retrieve the data files generated by the vendors analysis
+      parameters:
+        - name: orderId
+          in: path
+          description: The order id returned by the vendor when the order was successfully
+            submitted.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorOrderResultsResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /vendor/orders/{orderId}/status:
+    get:
+      tags:
+        - Vendor
+      summary: Get the status of a specific Order
+      description: Retrieve the current status of an order being processed
+      parameters:
+        - name: orderId
+          in: path
+          description: The order id returned by the vendor when the order was successfully
+            submitted.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorOrderStatusResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /vendor/plates:
+    post:
+      tags:
+        - Vendor
+      summary: Submit a new set of Sample data
+      description: Submit a new set of Sample data
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/vendorPlatesSubmissionRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorPlateResponse'
+              example: {}
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /vendor/plates/{submissionId}:
+    get:
+      tags:
+        - Vendor
+      summary: Get the data for a submitted set of plates
+      description: Get data for a submitted set of plates
+      parameters:
+        - name: submissionId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorPlateGetResponse_1'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /vendor/specifications:
+    get:
+      tags:
+        - Vendor
+      summary: Get the Vendor Specifications
+      description: Defines the plate format specification for the vendor.
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/vendorSpecificationResponse'
 components:
   schemas:
     VariableBaseClass:
