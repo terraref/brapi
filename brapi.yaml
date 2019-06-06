@@ -1681,6 +1681,391 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
                 not found
+  /methods:
+    get:
+      tags:
+        - Observation Variables
+      summary: Get the Methods
+      description: |-
+        Returns a list of Methods available on a server.
+
+        An Observation Variable has 3 critical parts: A Trait being observed, a Method for making the observation, and a Scale on which the observation can be measured and compared with other observations.
+      parameters:
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MethodsResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 4
+                    totalPages: 2
+                  status: []
+                result:
+                  data:
+                    - class: Numeric
+                      description: Standard rolled measuring tape
+                      formula: a^2 + b^2 = c^2
+                      methodDbId: m1
+                      methodName: Tape Measure
+                      name: Tape Measure
+                      ontologyReference:
+                        documentationLinks:
+                          - URL: https://ontology.org/m1
+                            type: RDF
+                            url: https://ontology.org/m1
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      reference: google.com
+                    - class: Numeric
+                      description: Dried sample on electric scale
+                      formula: NA
+                      methodDbId: m2
+                      methodName: Dry Electric Scale
+                      name: Dry Electric Scale
+                      ontologyReference:
+                        documentationLinks:
+                          - URL: https://ontology.org/m2
+                            type: WEBPAGE
+                            url: https://ontology.org/m2
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      reference: google.com
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+    post:
+      tags:
+        - Observation Variables
+      summary: Add a new Method
+      description: Create a new method object in the database
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMethodRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MethodResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  class: string
+                  description: string
+                  formula: string
+                  methodDbId: 8175d7ac-6221-4e1d-8023-91ddb8b30fd8
+                  methodName: string
+                  name: string
+                  ontologyReference:
+                    documentationLinks:
+                      - URL: string
+                        type: OBO
+                        url: string
+                    ontologyDbId: MO_123
+                    ontologyName: Ontology.org
+                    version: "17"
+                  reference: string
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /methods/{methodDbId}:
+    get:
+      tags:
+        - Observation Variables
+      summary: Get the details for a specific Method
+      description: |-
+        Retrieve details about a specific method
+
+        An Observation Variable has 3 critical parts: A Trait being observed, a Method for making the observation, and a Scale on which the observation can be measured and compared with other observations.
+      parameters:
+        - name: methodDbId
+          in: path
+          description: Id of the method to retrieve details of.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MethodResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  class: Numeric
+                  description: Standard rolled measuring tape
+                  formula: a^2 + b^2 = c^2
+                  methodDbId: m1
+                  methodName: Tape Measure
+                  name: Tape Measure
+                  ontologyReference:
+                    documentationLinks:
+                      - URL: https://ontology.org/m1
+                        type: RDF
+                        url: https://ontology.org/m1
+                    ontologyDbId: MO_123
+                    ontologyName: Ontology.org
+                    version: "17"
+                  reference: google.com
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+    put:
+      tags:
+        - Observation Variables
+      summary: Update an existing Method
+      description: Update the details of an existing method
+      parameters:
+        - name: methodDbId
+          in: path
+          description: Id of the method to retrieve details of.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMethodRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MethodResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  class: string
+                  description: string
+                  formula: string
+                  methodDbId: m1
+                  methodName: string
+                  name: string
+                  ontologyReference:
+                    documentationLinks:
+                      - URL: string
+                        type: OBO
+                        url: string
+                    ontologyDbId: MO_123
+                    ontologyName: Ontology.org
+                    version: "17"
+                  reference: string
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
   /observationLevels:
     get:
       tags:
@@ -2071,6 +2456,478 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
                 to perform this action
+  /ontologies:
+    get:
+      tags:
+        - Observation Variables
+      summary: Get the Ontologies
+      description: Call to retrieve a list of observation variable ontologies available
+        in the system.
+      parameters:
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ontologiesResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 1
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - authors: Bob
+                      copyright: 2017 Ontology.org
+                      description: Ontology.org
+                      documentationURL: https://ontology.org
+                      licence: Apache
+                      ontologyDbId: MO_123
+                      ontologyName: Ontology.org
+                      version: "17"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /people:
+    get:
+      tags:
+        - People
+      summary: Get the People
+      description: Get filtered list of people
+      parameters:
+        - name: firstName
+          in: query
+          description: A persons first name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: lastName
+          in: query
+          description: A persons last name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: personDbId
+          in: query
+          description: The unique ID of a person
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: userID
+          in: query
+          description: A systems user ID ascociated with this person. Different from
+            personDbId because you could have a person who is not a user of the system.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personsResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 2
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - description: Example Person
+                      emailAddress: bob@bob.com
+                      firstName: Bob
+                      lastName: Robertson
+                      mailingAddress: 123 Road Street, City, State, Country, 98765
+                      middleName: Danger
+                      personDbId: person1
+                      phoneNumber: +19876543210
+                      userID: bdr45
+                    - description: Example Person
+                      emailAddress: rob@bob.com
+                      firstName: Rob
+                      lastName: Robertson
+                      mailingAddress: 123 Road Street, City, State, Country, 98765
+                      middleName: Danger
+                      personDbId: person2
+                      phoneNumber: +19876543210
+                      userID: rdr45
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+    post:
+      tags:
+        - People
+      summary: Create a new Person
+      description: Create a new person
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newPersonRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  description: string
+                  emailAddress: string
+                  firstName: Name
+                  lastName: Smith
+                  mailingAddress: string
+                  middleName: string
+                  personDbId: 4f67d1b5-d95e-4bf5-b719-79a64b619f00
+                  phoneNumber: string
+                  userID: string
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /people/{personDbId}:
+    get:
+      tags:
+        - People
+      summary: Get the details for a specific Person
+      description: Get a specific person
+      parameters:
+        - name: personDbId
+          in: path
+          description: The unique ID of a person
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  description: Example Person
+                  emailAddress: bob@bob.com
+                  firstName: Bob
+                  lastName: Robertson
+                  mailingAddress: 123 Road Street, City, State, Country, 98765
+                  middleName: Danger
+                  personDbId: person1
+                  phoneNumber: +19876543210
+                  userID: bdr45
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+    put:
+      tags:
+        - People
+      summary: Update a Person
+      description: Update an existing Person
+      parameters:
+        - name: personDbId
+          in: path
+          description: The unique ID of a person
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newPersonRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  description: string
+                  emailAddress: string
+                  firstName: Name
+                  lastName: Nameson
+                  mailingAddress: string
+                  middleName: string
+                  personDbId: person1
+                  phoneNumber: string
+                  userID: string
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
   /phenotypes:
     post:
       tags:
