@@ -2353,6 +2353,1127 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
                 not found
+  /images:
+    get:
+      tags:
+        - Images
+      summary: Get the image meta data summaries
+      description: "Get filtered set of image meta data\n\nImplementation Notes\n\n\
+        - 'imageURL' should be a complete URL decribing the location of the image.\
+        \ There is no BrAPI call for retireiving the image content, so it could be\
+        \ on a different path, or a different host.\n\n- 'descriptiveOntologyTerm'\
+        \ can be thought of as Tags for the image. These could be simple descriptive\
+        \ words, or ontology references, or full ontology URI's.  "
+      parameters:
+        - name: imageDbId
+          in: query
+          description: The unique identifier for a image
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: imageName
+          in: query
+          description: The human readable name of an image
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: observationUnitDbId
+          in: query
+          description: The unique identifier of the observation unit an image is portraying
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: observationDbId
+          in: query
+          description: The unique identifier of the observation an image is accosiated
+            with
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: descriptiveOntologyTerm
+          in: query
+          description: A descriptive term associated with an image
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imagesResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 2
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - additionalInfo: {}
+                      copyright: Copyright 2018
+                      description: BrAPI Logo
+                      descriptiveOntologyTerms:
+                        - brapi
+                        - logo
+                      imageDbId: img1
+                      imageFileName: brapi-logo.svg
+                      imageFileSize: 3676
+                      imageHeight: 56
+                      imageLocation:
+                        geometry:
+                          coordinates:
+                            - -110.11301
+                            - 50.010082
+                          type: Point
+                        type: Feature
+                      imageName: brapiLogo
+                      imageTimeStamp: 2011-06-14
+                      imageURL: https://brapi.org/assets/images/brapi-logo.svg
+                      imageWidth: 258
+                      mimeType: image/svg
+                      observationDbIds:
+                        - "1"
+                        - "2"
+                      observationUnitDbId: "1"
+                    - additionalInfo: {}
+                      copyright: Copyright 2018
+                      description: BrAPI Logo
+                      descriptiveOntologyTerms:
+                        - brapi
+                        - logo
+                      imageDbId: img2
+                      imageFileName: brapi-logo.svg
+                      imageFileSize: 3676
+                      imageHeight: 56
+                      imageLocation:
+                        geometry:
+                          coordinates:
+                            - -110.11301
+                            - 50.010082
+                          type: Point
+                        type: Feature
+                      imageName: brapiLogo
+                      imageTimeStamp: 2011-06-14
+                      imageURL: https://brapi.org/assets/images/brapi-logo.svg
+                      imageWidth: 258
+                      mimeType: image/svg
+                      observationDbIds:
+                        - "1"
+                        - "2"
+                      observationUnitDbId: "1"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+    post:
+      tags:
+        - Images
+      summary: Create a new image meta data object
+      description: "Create a new image meta data object\n\nImplementation Notes\n\n\
+        - 'imageURL' should be a complete URL decribing the location of the image.\
+        \ There is no BrAPI call for retireiving the image content, so it could be\
+        \ on a different path, or a different host.\n\n- 'descriptiveOntologyTerm'\
+        \ can be thought of as Tags for the image. These could be simple descriptive\
+        \ words, or ontology references, or full ontology URI's.\n\n- The `/images`\
+        \ calls support a GeoJSON object structure for describing their location.\
+        \ The BrAPI spec for GeoJSON only supports two of the possible geometries:\
+        \ Points and Polygons.\n\n- With most images, the Point geometry should be\
+        \ used, and it should indicate the longitude and latitude of the camera.\n\
+        \n- For top down images (ie from drones, cranes, etc), the Point geometry\
+        \ may be used to indicate the longitude and latitude of the centroid of the\
+        \ image content, and the Polygon geometry may be used to indicate the border\
+        \ of the image content. "
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newImageRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imageResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  additionalInfo: {}
+                  copyright: Copyright 2019
+                  description: BrAPI Logo
+                  descriptiveOntologyTerms:
+                    - brapi
+                    - logo
+                  imageDbId: ce15937e-093e-4624-8950-00dab3172e4c
+                  imageFileName: brapi-logo.svg
+                  imageFileSize: 3676
+                  imageHeight: 56
+                  imageLocation:
+                    geometry:
+                      coordinates:
+                        - -110.11301
+                        - 50.010082
+                      type: Point
+                    type: Feature
+                  imageName: brapiLogo
+                  imageTimeStamp: 1969-12-31
+                  imageURL: ""
+                  imageWidth: 258
+                  mimeType: image/svg
+                  observationDbIds:
+                    - "1"
+                    - "2"
+                  observationUnitDbId: "11"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /images/{imageDbId}:
+    get:
+      tags:
+        - Images
+      summary: Get the an image meta data summary
+      description: "Get one image meta data object\n\nImplementation Notes\n\n- 'imageURL'\
+        \ should be a complete URL decribing the location of the image. There is no\
+        \ BrAPI call for retireiving the image content, so it could be on a different\
+        \ path, or a different host.\n\n- 'descriptiveOntologyTerm' can be thought\
+        \ of as Tags for the image. These could be simple descriptive words, or ontology\
+        \ references, or full ontology URI's. "
+      parameters:
+        - name: imageDbId
+          in: path
+          description: The unique identifier for a image
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imageResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  additionalInfo: {}
+                  copyright: Copyright 2018
+                  description: BrAPI Logo
+                  descriptiveOntologyTerms:
+                    - brapi
+                    - logo
+                  imageDbId: img1
+                  imageFileName: brapi-logo.svg
+                  imageFileSize: 3676
+                  imageHeight: 56
+                  imageLocation:
+                    geometry:
+                      coordinates:
+                        - -110.11301
+                        - 50.010082
+                      type: Point
+                    type: Feature
+                  imageName: brapiLogo
+                  imageTimeStamp: 2011-06-14
+                  imageURL: https://brapi.org/assets/images/brapi-logo.svg
+                  imageWidth: 258
+                  mimeType: image/svg
+                  observationDbIds:
+                    - "1"
+                    - "2"
+                  observationUnitDbId: "1"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+    put:
+      tags:
+        - Images
+      summary: Update an image meta data
+      description: "Update an image meta data object\n\nImplementation Notes\n\n-\
+        \ This call should be paired with 'PUT /images/{imageDbId}/imagecontent' for\
+        \ full capability\n\n- A server may choose to modify the image meta data object\
+        \ based on the actually image which has been uploaded. \n\n- Image data may\
+        \ be stored in a database or file system. Servers should generate and provide\
+        \ the \\\"imageURL\\\" as an absolute path for retrieving the image, wherever\
+        \ it happens to live. \n\n- 'descriptiveOntologyTerm' can be thought of as\
+        \ Tags for the image. These could be simple descriptive words, or ontology\
+        \ references, or full ontology URI's. \n\n- The `/images` calls support a\
+        \ GeoJSON object structure for describing their location. The BrAPI spec for\
+        \ GeoJSON only supports two of the possible geometries: Points and Polygons.\
+        \ \n        \n- With most images, the Point geometry should be used, and it\
+        \ should indicate the longitude and latitude of the camera. \n        \n-\
+        \ For top down images (ie from drones, cranes, etc), the Point geometry may\
+        \ be used to indicate the longitude and latitude of the centroid of the image\
+        \ content, and the Polygon geometry may be used to indicate the border of\
+        \ the image content. '"
+      parameters:
+        - name: imageDbId
+          in: path
+          description: The unique identifier for a image
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newImageRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imageResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  additionalInfo: {}
+                  copyright: Copyright 2019
+                  description: BrAPI Logo
+                  descriptiveOntologyTerms:
+                    - brapi
+                    - logo
+                  imageDbId: img1
+                  imageFileName: brapi-logo.svg
+                  imageFileSize: 3676
+                  imageHeight: 56
+                  imageLocation:
+                    geometry:
+                      coordinates:
+                        - -110.11301
+                        - 50.010082
+                      type: Point
+                    type: Feature
+                  imageName: brapiLogo
+                  imageTimeStamp: 1969-12-31
+                  imageURL: ""
+                  imageWidth: 258
+                  mimeType: image/svg
+                  observationDbIds:
+                    - "1"
+                    - "2"
+                  observationUnitDbId: "11"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /images/{imageDbId}/imagecontent:
+    put:
+      tags:
+        - Images
+      summary: Update an image with the image file content
+      description: "Update an image with the image file content\n\nImplementation\
+        \ Notes\n\n- This call should be paired with 'PUT /images/{imageDbId}' for\
+        \ full capability\n\n- A server may choose to modify the image meta data object\
+        \ based on the actually image which has been uploaded. \n\n- Image data may\
+        \ be stored in a database or file system. Servers should generate and provide\
+        \ the \"imageURL\" for retrieving the image, wherever it happens to live.\
+        \  "
+      parameters:
+        - name: imageDbId
+          in: path
+          description: The unique identifier for a image
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          image/*:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imageResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  additionalInfo: {}
+                  copyright: Copyright 2019
+                  description: BrAPI Logo
+                  descriptiveOntologyTerms:
+                    - brapi
+                    - logo
+                  imageDbId: img1
+                  imageFileName: brapi-logo.svg
+                  imageFileSize: 3676
+                  imageHeight: 56
+                  imageLocation:
+                    geometry:
+                      coordinates:
+                        - -110.11301
+                        - 50.010082
+                      type: Point
+                    type: Feature
+                  imageName: brapiLogo
+                  imageTimeStamp: 1969-12-31
+                  imageURL: http://localhost:8080/brapi/v1/images/img1/brapi-logo.svg
+                  imageWidth: 258
+                  mimeType: image/svg
+                  observationDbIds:
+                    - "1"
+                    - "2"
+                  observationUnitDbId: "11"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /lists:
+    get:
+      tags:
+        - Lists
+      summary: Get the List Summaries
+      description: Get filtered set of generic lists
+      parameters:
+        - name: listType
+          in: query
+          description: The type of objects contained by this generic list
+          required: false
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/listTypes'
+        - name: listName
+          in: query
+          description: The human readable name of this generic list
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: listDbId
+          in: query
+          description: The unique ID of this generic list
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: listSource
+          in: query
+          description: The source tag of this generic list
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listSummaryResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 2
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - dateCreated: 2011-06-14T22:12:51-04:00
+                      dateModified: 2011-06-14T22:12:51-04:00
+                      description: Example List of germplasm
+                      listDbId: list1
+                      listName: Example List 1
+                      listOwnerName: Bob Robertson
+                      listOwnerPersonDbId: person1
+                      listSize: 3
+                      listSource: User Created
+                      listType: germplasm
+                    - dateCreated: 2011-06-14T22:12:51-04:00
+                      dateModified: 2011-06-14T22:12:51-04:00
+                      description: Example List of germplasm
+                      listDbId: list2
+                      listName: Example List 2
+                      listOwnerName: Rob Robertson
+                      listOwnerPersonDbId: person2
+                      listSize: 3
+                      listSource: User Created
+                      listType: germplasm
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+    post:
+      tags:
+        - Lists
+      summary: Create a New List
+      description: Create a new list
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newListRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  data:
+                    - string
+                  dateCreated: 2018-12-05T14:36:04-05:00
+                  dateModified: 2018-12-05T14:36:04-05:00
+                  description: string
+                  listDbId: d93d6bb6-dfc3-4d15-8d2e-654c618ce12e
+                  listName: string
+                  listOwnerName: string
+                  listOwnerPersonDbId: string
+                  listSize: 1
+                  listSource: string
+                  listType: germplasm
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /lists/{listDbId}:
+    get:
+      tags:
+        - Lists
+      summary: Get the details of a specific List
+      description: Get a specific generic lists
+      parameters:
+        - name: listDbId
+          in: path
+          description: The unique ID of this generic list
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  data:
+                    - "1"
+                    - "2"
+                    - "3"
+                  dateCreated: 2011-06-14T22:12:51-04:00
+                  dateModified: 2011-06-14T22:12:51-04:00
+                  description: Example List of germplasm
+                  listDbId: list1
+                  listName: Example List 1
+                  listOwnerName: Bob Robertson
+                  listOwnerPersonDbId: person1
+                  listSize: 3
+                  listSource: User Created
+                  listType: germplasm
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+    put:
+      tags:
+        - Lists
+      summary: Update a specific List
+      description: Update an existing generic list
+      parameters:
+        - name: listDbId
+          in: path
+          description: The unique ID of this generic list
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newListRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  data:
+                    - string
+                  dateCreated: 2011-06-14T22:12:51-04:00
+                  dateModified: 2018-12-05T14:36:04-05:00
+                  description: string
+                  listDbId: list1
+                  listName: string
+                  listOwnerName: string
+                  listOwnerPersonDbId: string
+                  listSize: 1
+                  listSource: string
+                  listType: germplasm
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /lists/{listDbId}/items:
+    post:
+      tags:
+        - Lists
+      summary: Add Items to a specific List
+      description: Add new data to a specific generic lists
+      parameters:
+        - name: listDbId
+          in: path
+          description: The unique ID of this generic list
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  data:
+                    - "1"
+                    - "2"
+                    - "3"
+                  dateCreated: 2011-06-14T22:12:51-04:00
+                  dateModified: 2018-12-05T14:36:04-05:00
+                  description: string
+                  listDbId: list1
+                  listName: string
+                  listOwnerName: string
+                  listOwnerPersonDbId: string
+                  listSize: 3
+                  listSource: string
+                  listType: germplasm
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
   /locations:
     get:
       tags:
@@ -6520,6 +7641,235 @@ paths:
                     - sourceName: ciradTaxon
                       taxonId: E312
                     typeOfGermplasmStorageCode: []
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - The requested object DbId is
+                not found
+  /search/images:
+    post:
+      tags:
+        - Images
+        - Search Services
+      summary: Submit a search request for Images
+      description: "Get filtered set of image meta data\n\nImplementation Notes\n\n\
+        - 'imageURL' should be a complete URL decribing the location of the image.\
+        \ There is no BrAPI call for retireiving the image content, so it could be\
+        \ on a different path, or a different host.\n\n- 'descriptiveOntologyTerm'\
+        \ can be thought of as Tags for the image. These could be simple descriptive\
+        \ words, or ontology references, or full ontology URI's.  \n\nSee Search Services\
+        \ for additional implementation details."
+      parameters:
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/imagesSearchRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/successfulSearchResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 0
+                    totalCount: 0
+                    totalPages: 0
+                  status: []
+                result:
+                  searchResultDbId: 551ae08c-4548-4bde-ad70-f23beb25e2ea
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+  /search/images/{searchResultsDbId}:
+    get:
+      tags:
+        - Images
+        - Search Services
+      summary: Get the results of an Images search request
+      description: "Get filtered set of image meta data\n\nImplementation Notes\n\n\
+        - 'imageURL' should be a complete URL decribing the location of the image.\
+        \ There is no BrAPI call for retireiving the image content, so it could be\
+        \ on a different path, or a different host.\n\n- 'descriptiveOntologyTerm'\
+        \ can be thought of as Tags for the image. These could be simple descriptive\
+        \ words, or ontology references, or full ontology URI's.  "
+      parameters:
+        - name: searchResultsDbId
+          in: path
+          description: Permanent unique identifier which references the search results
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Which result page is requested. The page indexing starts at 0
+            (the first page is 'page'= 0). Default is `0`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: "0"
+        - name: pageSize
+          in: query
+          description: The size of the pages to be returned. Default is `1000`.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+          example: 1000
+        - name: Authorization
+          in: header
+          description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+          required: false
+          style: simple
+          explode: false
+          schema:
+            pattern: ^Bearer .*$
+            type: string
+          example: Bearer XXXX
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/imagesResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 2
+                    totalPages: 1
+                  status: []
+                result:
+                  data:
+                    - additionalInfo: {}
+                      copyright: Copyright 2018
+                      description: BrAPI Logo
+                      descriptiveOntologyTerms:
+                        - brapi
+                        - logo
+                      imageDbId: img2
+                      imageFileName: brapi-logo.svg
+                      imageFileSize: 3676
+                      imageHeight: 56
+                      imageLocation:
+                        geometry:
+                          coordinates:
+                            - -110.11301
+                            - 50.010082
+                          type: Point
+                        type: Feature
+                      imageName: brapiLogo
+                      imageTimeStamp: 2011-06-14
+                      imageURL: https://brapi.org/assets/images/brapi-logo.svg
+                      imageWidth: 258
+                      mimeType: image/svg
+                      observationDbIds:
+                        - "1"
+                        - "2"
+                      observationUnitDbId: "1"
+                    - additionalInfo: {}
+                      copyright: Copyright 2019
+                      description: BrAPI Logo
+                      descriptiveOntologyTerms:
+                        - brapi
+                        - logo
+                      imageDbId: ce15937e-093e-4624-8950-00dab3172e4c
+                      imageFileName: brapi-logo.svg
+                      imageFileSize: 3676
+                      imageHeight: 56
+                      imageLocation:
+                        geometry:
+                          coordinates:
+                            - -110.11301
+                            - 50.010082
+                          type: Point
+                        type: Feature
+                      imageName: brapiLogo
+                      imageTimeStamp: 1969-12-31
+                      imageURL: ""
+                      imageWidth: 258
+                      mimeType: image/svg
+                      observationDbIds:
+                        - "1"
+                        - "2"
+                      observationUnitDbId: "11"
         400:
           description: Bad Request
           content:
