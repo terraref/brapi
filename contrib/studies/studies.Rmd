@@ -1,0 +1,110 @@
+---
+title: "Experiments —> Studies"
+author: "David LeBauer"
+date: "5/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+* Create programs, trials, studies
+* brapi studies == betydb experiments
+* write out programs and studies by hand
+
+This document provides 
+* code to import experiments (studies) from the existing database and create templates.
+
+In BrAPI 
+
+* programs 1--> many trials 
+* trials 1--> many studies
+
+
+Overview of definitions from different standards:
+
+| BETYdb      | BrAPI           | MIAPPE        | ISA           |
+|-------------|-----------------|---------------|---------------|
+| NA          | Investigation   | Investigation | Investigation |
+| Experiments | Study           | Study         | Study         |
+| Plot        | ObservationUnit |               | Assay         |
+
+See more about the mapping from BrAPI to MIAPPE here: https://docs.google.com/spreadsheets/d/e/2PACX-1vQPxfTKGEgsnkHYAQMw48Kw-k2mD0adeh_Og1MVu31qW87R7MYNayGGBLEI7y3Fv3eajWvPkiiZtU5j/pubhtml
+
+
+### BrAPI and MIAPPE Schemas
+
+![Studies Schema Overview](studies/studies.png)
+
+
+![BrAPI Schema](https://wiki.brapi.org/images/f/f7/BrAPI_Domains.png) from the [BrAPI wiki](https://wiki.brapi.org/index.php/BrAPI)
+
+
+![MIAPPE Schema](https://raw.githubusercontent.com/MIAPPE/MIAPPE/master/MIAPPE_Checklist-Data-Model-v1.1/MIAPPE_Checklist-Data-Model-v1.1.png)
+
+This file just provides notes on how this was compiled, and the meaning of the relationships and mappings.
+
+## Insert TrialDbId into experiments attributes table
+
+```{r}
+library(jsonlite)
+study_attributes <- read_json('~/dev/brapi/contrib/studies/studies.json',
+                        simplifyVector = TRUE)
+
+
+for(i in seq_along(study_attributes)){
+  study_attributes$jsons[i] <- toJSON(
+    list(brapi = list(
+      trialDbId = study_attributes$trialDbId[i])), 
+    auto_unbox = TRUE)
+}
+z <- study_attributes %>% 
+  transmute(
+    inserts = paste0("insert into attributes (container_type, container_id, value) VALUES ('experiments', ",
+                     studyDbId, ", '", jsons,"'", ');\n')) 
+
+cat(z[[1]])
+
+cat(z$inserts, file = '/tmp/inserts.sql')
+                     
+
+```
+
+## Appendix: preparing templates
+
+Generate a template on which to link Studies to Trials and programs
+
+
+```{r load_sites, eval=FALSE}
+library(dplyr) 
+studies <- fromJSON("http://localhost:5000/brapi/v1/studies")$result$data %>% 
+  select(studyDbId, studyName)
+  
+trials <- fromJSON("~/dev/brapi/data/trials.json")
+
+studies %>% mutate(trialDbId = case_when(grepl(Wheat, "name") ~ )
+%>% 
+  select(studyDbId, studyName)
+
+```
+
+
+```{r insert-attributes, eval = FALSE}
+library(dplyr)
+library(RPostgreSQL)
+con <- dbConnect(RPostgreSQL::PostgreSQL(),
+                   host = 'localhost',
+                   user = 'bety',
+                   port = 5432)
+studies <- tbl(con, 'experiments') %>%collect %>%  transmute(studyDbId = id,studyName = name) %>% 
+  mutate(programDbId = ifelse(grepl("Wheat", studyName), 2,1),
+         trialDbId = "99")
+
+jsonlite::toJSON(studies)
+
+```
+
+

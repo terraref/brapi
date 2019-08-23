@@ -1,0 +1,157 @@
+[
+  {
+    "studyDbId": "6000000012",
+    "studyName": "Danforth Sorghum Pilot: Drought Tolerance",
+    "trialDbId": "6"
+  },
+  {
+    "studyDbId": "6000000001",
+    "studyName": "MAC Season 1: Biomass",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000002",
+    "studyName": "MAC Season 1: Buffer",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000003",
+    "studyName": "MAC Season 1: Density",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000004",
+    "studyName": "MAC Season 1: RILs",
+    "trialDbId": "2"
+  },
+  {
+    "studyDbId": "6000000005",
+    "studyName": "MAC Season 1: Row#",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000006",
+    "studyName": "MAC Season 1: Uniform",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000007",
+    "studyName": "MAC Season 1: nighthv",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000009",
+    "studyName": "KSU 2016: Biomass Association Panel",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000011",
+    "studyName": "MAC Season 3: Winter Wheat",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000013",
+    "studyName": "KSU 2016: Ashland Bottoms BAP & RIL",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000020",
+    "studyName": "MAC Season 1: BAP",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000026",
+    "studyName": "MAC Season 3: Winter Wheat Border",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000027",
+    "studyName": "MAC Season 3: Winter Wheat Uniformity Block",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000017",
+    "studyName": "MAC Season 4: Border Plots",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000016",
+    "studyName": "MAC Season 4: Short BAP Accessions",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000015",
+    "studyName": "MAC Season 4: Medium BAP Accessions",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000014",
+    "studyName": "MAC Season 4: Tall BAP Accessions",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000028",
+    "studyName": "MAC Season 3: Winter Wheat North",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000029",
+    "studyName": "MAC Season 3: Winter Wheat South",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000031",
+    "studyName": "Danforth BAP Drought LT1b: Drought Experiment (TM016_F_052716)",
+    "trialDbId": "6"
+  },
+  {
+    "studyDbId": "6000000030",
+    "studyName": "Danforth BAP Drought LT1a:  Drought Experiment (TM015_F_051616)",
+    "trialDbId": "6"
+  },
+  {
+    "studyDbId": "6000000033",
+    "studyName": "MAC Season 5: Winter Wheat",
+    "trialDbId": "5"
+  },
+  {
+    "studyDbId": "6000000034",
+    "studyName": "MAC Season 6: Sorghum BAP",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000010",
+    "studyName": "MAC Season 4: All BAP Accessions",
+    "trialDbId": "1"
+  },
+  {
+    "studyDbId": "6000000038",
+    "studyName": "MAC Season 7: Border",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000036",
+    "studyName": "MAC Season 7: Stay-green RILs F10",
+    "trialDbId": "2"
+  },
+  {
+    "studyDbId": "6000000035",
+    "studyName": "MAC Season 7: Sorghum All Plots",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000039",
+    "studyName": "MAC Season 7: Sorghum Mutants, F2 families",
+    "trialDbId": "4"
+  },
+  {
+    "studyDbId": "6000000037",
+    "studyName": "MAC Season 7: Pioneer Hybrid Uniformity Blocks",
+    "trialDbId": "3"
+  },
+  {
+    "studyDbId": "6000000008",
+    "studyName": "MAC Season 2: Stay-green RILs F10",
+    "trialDbId": "2"
+  }
+]
