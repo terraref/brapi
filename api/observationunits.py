@@ -30,7 +30,6 @@ def search(germplasmDbId=None, observationVariableDbId=None,
 
 
     params = []
-    # TODO: Need to add select operator = traitsview.author (person who collected data)
     query = "select v.id::text as observationVariableDbId,  \
                     v.name as observationVariableName,  \
                     t.id::text as observationDbId, \
