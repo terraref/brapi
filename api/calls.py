@@ -26,7 +26,8 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('studies'),
         calls_get_helper('studies/{studyDbId}'),
         calls_get_helper('studies/{studyDbId}/germplasm'),
-        calls_get_helper('studies/{studyDbId}/layouts')
+        calls_get_helper('studies/{studyDbId}/layouts'),
+        calls_get_helper('trials')
     ]
 
     # filter on datatype

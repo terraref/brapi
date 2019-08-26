@@ -57,7 +57,7 @@ def query(single_row=False, locationDbId=None):
             "FROM (" + query + ") ss2"
 
     # order query
-    query += "   ORDER BY locationDbId"
+    query += " ORDER BY locationDbId"
 
     # TODO add a filter on the locationType
     # if locationType:
