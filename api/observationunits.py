@@ -17,7 +17,10 @@ names_map = {
     "observationunitname": "observationUnitName"
 }
 
-def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, locationDbId=None, trialDbId=None, programDbId=None, seasonDbId=None, observationLevel=None, observationTimeStampRangeStart=None, observationTimeStampRangeEnd=None, pageSize=None, page=None):
+def search(germplasmDbId=None, observationVariableDbId=None,
+           studyDbId=None, locationDbId=None, trialDbId=None, programDbId=None, seasonDbId=None,
+           observationLevel=None, observationTimeStampRangeStart=None, observationTimeStampRangeEnd=None,
+           pageSize=None, page=None):
 
     if observationTimeStampRangeStart:
         observationTimeStampRangeStart = deserialize_datetime(observationTimeStampRangeStart)
@@ -27,6 +30,7 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
 
 
     params = []
+    # TODO: Need to add select operator = traitsview.author (person who collected data)
     query = "select v.id::text as observationVariableDbId,  \
                     v.name as observationVariableName,  \
                     t.id::text as observationDbId, \
@@ -35,14 +39,17 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
                     s.sitename as observationUnitName, \
                     es.experiment_id::text as studyDbId, \
                     et.treatment_id as treatmentDbId, \
-                    treatments.name as season, \
-                    treatments.definition as observationtreatment \
-             from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments treatments  \
+                    tr.name as season, \
+                    tr.definition as observationtreatment, \
+                    t.entity_id as replicate, \
+                    c.author as operator \
+             from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments tr, citations c \
              where v.id = t.variable_id \
              and t.site_id = s.id \
              and es.site_id = t.site_id \
              and et.experiment_id = es.experiment_id \
-             and treatments.id=et.treatment_id"
+             and tr.id=et.treatment_id  \
+             and c.id=t.citation_id "
 
     # For not, observationVariable is variable
     # e.g.,  6000000007 plant_height 
