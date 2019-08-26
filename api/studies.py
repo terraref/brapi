@@ -5,8 +5,9 @@ import api.locations
 import helper
 
 
-def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDbId=None, seasonDbId=None,
-           trialDbId=None, studyDbId=None, active=None, sortBy=None, sortOrder=None, pageSize=None, page=None):
+def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDbId=None,
+           seasonDbId=None, trialDbId=None, studyDbId=None,
+           active=None, sortBy=None, sortOrder=None, pageSize=None, page=None):
     params = list()
 
     query = "SELECT DISTINCT experiments.id as studyDbId, " \
@@ -24,6 +25,28 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         query += " AND experiments.id = %s "
         # query = query % studyDbId
         params.append(studyDbId)
+    if seasonDbId:
+        # TODO: Difference between studies and seasons?
+        year_part = seasonDbId[:4]
+        month_part = seasonDbId[-2:]
+        query += "AND extract(month from start_date) = %s " \
+                 "AND extract(year from start_date) = %s "
+        params.append(month_part)
+        params.append(year_part)
+
+    if sortBy:
+        if sortBy == "studyDbId":
+            query += " ORDER BY experiments.id"
+        elif sortBy == "locationDbId":
+            query += " ORDER BY sitegroups.id"
+        elif sortBy == "seasonDbId":
+            query += " ORDER BY start_date"
+        elif sortBy == "studyName":
+            query += " ORDER BY experiments.name"
+        elif sortBy == "studyLocation":
+            query += " ORDER BY sitegroups.name"
+        else: # programDbId, trialDbId, studyTypeDbId, programName
+            pass
 
     logging.debug(query)
 
@@ -47,7 +70,10 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         current_descrption = current_descrption.replace('\r', '')
         study['statisticalDesign'] = {'description': current_descrption }
 
+        # check location ID
         if row.has_key('location_id'):
+            if locationDbId and locationDbId != row['location_id']:
+                continue
             location = api.locations.query(single_row=True, locationDbId=row['location_id'])
             if location:
                 study['location'] = location
@@ -117,7 +143,7 @@ def layouts_search(studyDbId, pageSize=None, page=None):
     count = helper.query_count(query, params)
 
     # execute query
-    results = helper.query_result(query, params)
+    results = helper.query_result(query, params, pageSize, page)
     # wrap result
     data = []
 
@@ -132,7 +158,7 @@ def layouts_search(studyDbId, pageSize=None, page=None):
         entry['observationUnitName'] = row['location_abbreviation']
         data.append(entry)
 
-    return helper.create_result({"data": data}, count)
+    return helper.create_result({"data": data}, count, pageSize, page)
 
 
 def row_pop(row, key, dflt):

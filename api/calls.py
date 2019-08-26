@@ -32,7 +32,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
 
     # filter on datatype
     if dataType:
-        data = [d for d in data if datatype in d['dataTypes']]
+        data = [d for d in data if dataType in d['dataTypes']]
     elif datatype:
         data = [d for d in data if datatype in d['dataTypes']]
 

@@ -42,15 +42,16 @@ def search(germplasmDbId=None, observationVariableDbId=None,
                     tr.definition as observationtreatment, \
                     t.entity_id as replicate, \
                     c.author as operator \
-             from traits t, variables v, sites s, experiments_sites es, experiments_treatments et, treatments tr, citations c \
+             from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c \
              where v.id = t.variable_id \
              and t.site_id = s.id \
              and es.site_id = t.site_id \
              and et.experiment_id = es.experiment_id \
              and tr.id=et.treatment_id  \
-             and c.id=t.citation_id "
+             and c.id=t.citation_id \
+             and e.id = es.experiment_id "
 
-    # For not, observationVariable is variable
+    # For now, observationVariable is variable
     # e.g.,  6000000007 plant_height 
     if observationVariableDbId:
         query += " and v.id = %s "
@@ -69,6 +70,24 @@ def search(germplasmDbId=None, observationVariableDbId=None,
     if germplasmDbId:
         query += " and t.cultivar_id = %s "
         params.append(germplasmDbId)
+
+    if seasonDbId:
+        # TODO: Why are we using this when we have an ID?
+        year_part = seasonDbId[:4]
+        month_part = seasonDbId[-2:]
+        query += "WHERE extract(month from e.start_date) = %s " \
+                 "AND extract(year from e.start_date) = %s "
+        params.append(month_part)
+        params.append(year_part)
+
+    if trialDbId:
+        pass
+
+    if programDbId:
+        pass
+
+    if observationLevel:
+        pass
 
     if (observationTimeStampRangeStart and observationTimeStampRangeEnd):
         query += " and (date >= %s and date <= %s)"
