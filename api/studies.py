@@ -2,6 +2,7 @@ import logging
 
 import api.germplasm
 import api.locations
+import api.seasons
 import helper
 
 
@@ -11,28 +12,27 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
     params = list()
 
     query = "SELECT DISTINCT experiments.id as studyDbId, " \
-            "   experiments.name as studyName, " \
+            "   LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 2))) as studyName, " \
             "   experiments.start_date as startDate, " \
             "   experiments.end_date as endDate, " \
             "   experiments.description as studyDescription, " \
-            "   sitegroups.id as location_id " \
-            "FROM experiments, experiments_sites, sitegroups, sitegroups_sites " \
+            "   sitegroups.id as location_id, " \
+            "   seasonids.id as season_id " \
+            "FROM experiments, experiments_sites, sitegroups, sitegroups_sites, " \
+            "(with season_list as (select distinct extract(year from start_date) as year, " \
+            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season from experiments) " \
+            "select year, season, ROW_NUMBER () over (order by year, season) as id from season_list) seasonids " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sitegroups_sites.site_id = experiments_sites.site_id " \
-            "AND sitegroups_sites.sitegroup_id = sitegroups.id"
+            "AND sitegroups_sites.sitegroup_id = sitegroups.id " \
+            "AND seasonids.season = LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 1))) "
 
     if studyDbId:
         query += " AND experiments.id = %s "
-        # query = query % studyDbId
         params.append(studyDbId)
     if seasonDbId:
-        # TODO: Difference between studies and seasons?
-        year_part = seasonDbId[:4]
-        month_part = seasonDbId[-2:]
-        query += "AND extract(month from start_date) = %s " \
-                 "AND extract(year from start_date) = %s "
-        params.append(month_part)
-        params.append(year_part)
+        query += " AND seasonids.id = %s "
+        params.append(seasonDbId)
 
     if sortBy:
         if sortBy == "studyDbId":
@@ -40,13 +40,20 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         elif sortBy == "locationDbId":
             query += " ORDER BY sitegroups.id"
         elif sortBy == "seasonDbId":
-            query += " ORDER BY start_date"
+            query += " ORDER BY seasonids.id"
         elif sortBy == "studyName":
-            query += " ORDER BY experiments.name"
+            query += " ORDER BY LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 2)))"
         elif sortBy == "studyLocation":
             query += " ORDER BY sitegroups.name"
-        else: # programDbId, trialDbId, studyTypeDbId, programName
+        else:
+            # programDbId, trialDbId, studyTypeDbId, programName - unsupported
             pass
+        if sortOrder:
+            # do this here, params will add apostrophes around it
+            if sortOrder.lower() == "asc":
+                query += " ASC"
+            elif sortOrder.lower() == "desc":
+                query += " DESC"
 
     logging.debug(query)
 
@@ -70,9 +77,14 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         current_descrption = current_descrption.replace('\r', '')
         study['statisticalDesign'] = {'description': current_descrption }
 
+        # get seasons data
+        if row.has_key('season_id'):
+            season = api.seasons.search(row['season_id'])
+            study['seasons'] = season['result']['data']
+
         # check location ID
         if row.has_key('location_id'):
-            if locationDbId and locationDbId != row['location_id']:
+            if locationDbId and locationDbId != str(row['location_id']):
                 continue
             location = api.locations.query(single_row=True, locationDbId=row['location_id'])
             if location:

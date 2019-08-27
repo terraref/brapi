@@ -14,35 +14,29 @@ def search(seasonDbId=None, season=None, year=None, pageSize=None, page=None):
     :return: all seasons in the page
     """
     params = list()
-    query = "SELECT DISTINCT extract(month from start_date) as month, " \
-            "                extract(year from start_date) as year " \
-            "FROM experiments "
+    query = "select * from (with season_list as (select distinct extract(year from start_date) as year, " \
+            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season from experiments) " \
+            "select year, season, ROW_NUMBER () over (order by year, season) as id from season_list) seasons "
 
     # add a filter on the season ID
     if seasonDbId:
-        # TODO: Why are we using this when we have an ID?
-        year_part = seasonDbId[:4]
-        month_part = seasonDbId[-2:]
-        query += "WHERE extract(month from start_date) = %s " \
-                 "AND extract(year from start_date) = %s "
-        params.append(month_part)
-        params.append(year_part)
+        query += " WHERE id = %s "
+        params.append(int(seasonDbId))
     # add a filter on the year
     if year:
         if seasonDbId:
-            query += " AND extract(year from start_date) = %s"
+            query += " AND year = %s"
         else:
-            query += " WHERE extract(year from start_date) = %s"
+            query += " WHERE year = %s"
         params.append(year)
     if season:
-        # TODO: Why are we using this when we have a name?
         if year or seasonDbId:
-            query += " AND month = %s"
+            query += " AND season = %s"
         else:
-            query += " WHERE month = %s"
-        params.append("%02d" % calendar.month_name.indexOf[season])
+            query += " WHERE season = %s"
+        params.append(season)
 
-    query += " ORDER BY year, month"
+    query += " ORDER BY id"
 
     # count first
     count = helper.query_count(query, params)
@@ -54,11 +48,9 @@ def search(seasonDbId=None, season=None, year=None, pageSize=None, page=None):
     data = list()
     for row in result:
         data.append({
-            # TODO: Why are we using this when we have a name?
-            "season": calendar.month_name[int(row["month"])],
+            "season": row["season"],
             "year": str(int(row["year"])),
-            # TODO: Why are we using this when we have an ID?
-            "seasonDbId": "%04d%02d" % (row["year"], row["month"])
+            "seasonDbId": str(row["id"])
         })
 
     return helper.create_result({"data": data}, count, pageSize, page)

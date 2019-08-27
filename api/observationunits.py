@@ -41,7 +41,8 @@ def search(germplasmDbId=None, observationVariableDbId=None,
                     tr.name as season, \
                     tr.definition as observationtreatment, \
                     t.entity_id as replicate, \
-                    c.author as operator \
+                    c.author as operator, \
+                    t.checked as quality \
              from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c \
              where v.id = t.variable_id \
              and t.site_id = s.id \
@@ -49,7 +50,8 @@ def search(germplasmDbId=None, observationVariableDbId=None,
              and et.experiment_id = es.experiment_id \
              and tr.id=et.treatment_id  \
              and c.id=t.citation_id \
-             and e.id = es.experiment_id "
+             and e.id = es.experiment_id \
+             and t.checked > -1 "
 
     # For now, observationVariable is variable
     # e.g.,  6000000007 plant_height 
@@ -75,8 +77,8 @@ def search(germplasmDbId=None, observationVariableDbId=None,
         # TODO: Why are we using this when we have an ID?
         year_part = seasonDbId[:4]
         month_part = seasonDbId[-2:]
-        query += "WHERE extract(month from e.start_date) = %s " \
-                 "AND extract(year from e.start_date) = %s "
+        query += " AND extract(month from e.start_date) = %s " \
+                 " AND extract(year from e.start_date) = %s "
         params.append(month_part)
         params.append(year_part)
 
@@ -145,10 +147,18 @@ def _conform_element(ele):
     for k,v in ele.items():
         if k in names_map:
             k = names_map[k]
+
         if k in observation_names:
             res_obs[k] = v
         elif k in treatment_names:
             res_treat[k] = v
+        elif k == "quality":
+            if v == 0:
+                res[k] = "unchecked"
+            elif v == 1:
+                res[k] = "checked"
+            else:
+                res[k] = v
         else:
             res[k] = v
 

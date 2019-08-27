@@ -3,6 +3,10 @@ import json
 import helper
 from api.programs import search as search_programs
 
+dict_to_array_names = []
+ensure_array_names = []
+int_to_str_names = []
+str_to_int_names = []
 trial_data = None
 
 def search(programDbId=None, trialDbId=None, trialName=None, commonCropName=None, locationDbId=None,
