@@ -14,14 +14,14 @@ def search(seasonDbId=None, season=None, year=None, pageSize=None, page=None):
     :return: all seasons in the page
     """
     params = list()
-    query = "select * from (with season_list as (select distinct extract(year from start_date) as year, " \
-            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season from experiments) " \
-            "select year, season, ROW_NUMBER () over (order by year, season) as id from season_list) seasons "
+    query = "select * from (select distinct extract(year from start_date) as year, " \
+            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \
+            "md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list "
 
     # add a filter on the season ID
     if seasonDbId:
         query += " WHERE id = %s "
-        params.append(int(seasonDbId))
+        params.append(seasonDbId)
     # add a filter on the year
     if year:
         if seasonDbId:

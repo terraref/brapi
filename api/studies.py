@@ -19,9 +19,9 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
             "   sitegroups.id as location_id, " \
             "   seasonids.id as season_id " \
             "FROM experiments, experiments_sites, sitegroups, sitegroups_sites, " \
-            "(with season_list as (select distinct extract(year from start_date) as year, " \
-            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season from experiments) " \
-            "select year, season, ROW_NUMBER () over (order by year, season) as id from season_list) seasonids " \
+            "(select * from (select distinct extract(year from start_date) as year, " \
+            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \
+            "md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list) seasonids " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
             "AND sitegroups_sites.site_id = experiments_sites.site_id " \
             "AND sitegroups_sites.sitegroup_id = sitegroups.id " \
