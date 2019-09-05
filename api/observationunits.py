@@ -17,8 +17,8 @@ names_map = {
     "observationunitname": "observationUnitName"
 }
 
-def search(germplasmDbId=None, observationVariableDbId=None,
-           studyDbId=None, locationDbId=None, trialDbId=None, programDbId=None, seasonDbId=None,
+def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
+           locationDbId=None, trialDbId=None, programDbId=None, seasonDbId=None,
            observationLevel=None, observationTimeStampRangeStart=None, observationTimeStampRangeEnd=None,
            pageSize=None, page=None):
 
@@ -38,12 +38,14 @@ def search(germplasmDbId=None, observationVariableDbId=None,
                     s.sitename as observationUnitName, \
                     es.experiment_id::text as studyDbId, \
                     et.treatment_id as treatmentDbId, \
-                    tr.name as season, \
+                    seasons.season as season, \
+                    seasons.id as seasonDbId, \
                     tr.definition as observationtreatment, \
                     t.entity_id as replicate, \
                     c.author as operator, \
                     t.checked as quality \
-             from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c \
+             from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c, \
+             (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
              where v.id = t.variable_id \
              and t.site_id = s.id \
              and es.site_id = t.site_id \
@@ -51,6 +53,7 @@ def search(germplasmDbId=None, observationVariableDbId=None,
              and tr.id=et.treatment_id  \
              and c.id=t.citation_id \
              and e.id = es.experiment_id \
+             and seasons.season=LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) \
              and t.checked > -1 "
 
     # For now, observationVariable is variable
@@ -73,14 +76,15 @@ def search(germplasmDbId=None, observationVariableDbId=None,
         query += " and t.cultivar_id = %s "
         params.append(germplasmDbId)
 
+    """ TODO: Not defined in specification
+    if season:
+        query += " and seasons.season = %s "
+        params.append(season)
+    """
+
     if seasonDbId:
-        # TODO: Why are we using this when we have an ID?
-        year_part = seasonDbId[:4]
-        month_part = seasonDbId[-2:]
-        query += " AND extract(month from e.start_date) = %s " \
-                 " AND extract(year from e.start_date) = %s "
-        params.append(month_part)
-        params.append(year_part)
+        query += " AND seasons.id = %s "
+        params.append(seasonDbId)
 
     if trialDbId:
         pass
