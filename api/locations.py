@@ -36,12 +36,10 @@ def query(single_row=False, locationDbId=None, locationType=None, pageSize=None,
             "FROM sites, sitegroups, sitegroups_sites " \
             "WHERE sitegroups_sites.site_id = sites.id " \
             "      AND sitegroups_sites.sitegroup_id = sitegroups.id "
+
     if locationDbId:
         query += "AND sitegroups.id = %s"
         params.append(locationDbId)
-    if locationType:
-        # TODO determine locationType corresponding field in BETYdb
-        query += ""
 
     # compute the bounding box
     query = "SELECT locationDbId, " \

@@ -14,7 +14,8 @@ names_map = {
     "studydbid": "studyDbId",
     "observationtreatment": "observationtreatment",
     "treatmentdbid": "treatmentDbId",
-    "observationunitname": "observationUnitName"
+    "observationunitname": "observationUnitName",
+    "seasondbid": "seasonDbId"
 }
 
 def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
@@ -38,7 +39,6 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
                     s.sitename as observationUnitName, \
                     es.experiment_id::text as studyDbId, \
                     et.treatment_id as treatmentDbId, \
-                    seasons.season as season, \
                     seasons.id as seasonDbId, \
                     tr.definition as observationtreatment, \
                     t.entity_id as replicate, \
@@ -76,24 +76,9 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
         query += " and t.cultivar_id = %s "
         params.append(germplasmDbId)
 
-    """ TODO: Not defined in specification
-    if season:
-        query += " and seasons.season = %s "
-        params.append(season)
-    """
-
     if seasonDbId:
         query += " AND seasons.id = %s "
         params.append(seasonDbId)
-
-    if trialDbId:
-        pass
-
-    if programDbId:
-        pass
-
-    if observationLevel:
-        pass
 
     if (observationTimeStampRangeStart and observationTimeStampRangeEnd):
         query += " and (date >= %s and date <= %s)"
