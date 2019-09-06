@@ -1,10 +1,22 @@
-
 import helper
 
-observation_names = ["collector", "observationDbId",
-            "observationTimeStamp", "observationVariableDbId",
-            "observationVariableName", "season", "value"]
-treatment_names = ["factor", "modality"]
+observation_names = [
+    "collector",
+    "observationDbId",
+    "observationTimeStamp",
+    "observationVariableDbId",
+    "observationVariableName",
+    "season",
+    "value",
+    "quality",
+    "operator",
+    "replicate"
+]
+
+treatment_names = [
+    "factor",
+    "modality"
+]
 
 names_map = {
     "observationvariabledbid": "observationVariableDbId",
@@ -30,7 +42,6 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
         observationTimeStampRangeEnd = deserialize_datetime(observationTimeStampRangeEnd)
 
 
-    params = []
     query = "select v.id::text as observationVariableDbId,  \
                     v.name as observationVariableName,  \
                     t.id::text as observationDbId, \
@@ -40,60 +51,67 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
                     es.experiment_id::text as studyDbId, \
                     et.treatment_id as treatmentDbId, \
                     seasons.id as seasonDbId, \
-                    tr.definition as observationtreatment, \
+                    tr.name as factor, \
+                    tr.definition as modality, \
                     t.entity_id as replicate, \
                     c.author as operator, \
                     t.checked as quality \
              from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c, \
-             (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
+                  (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, \
+                  md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
              where v.id = t.variable_id \
-             and t.site_id = s.id \
-             and es.site_id = t.site_id \
-             and et.experiment_id = es.experiment_id \
-             and tr.id=et.treatment_id  \
-             and c.id=t.citation_id \
-             and e.id = es.experiment_id \
-             and seasons.season=LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) \
-             and t.checked > -1 "
-
-    # For now, observationVariable is variable
-    # e.g.,  6000000007 plant_height 
-    if observationVariableDbId:
+                 and t.site_id = s.id and t.citation_id = c.id and t.checked > -1 \
+                 and e.id = es.experiment_id and t.site_id = es.site_id \
+                 and e.id = et.experiment_id and tr.id = et.treatment_id \
+                 and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) "
+    params = []
+    
+    if observationVariableDbId is not None:
         query += " and v.id = %s "
         params.append(observationVariableDbId)
 
-    # For now, location is site
-    if locationDbId:
+    if locationDbId is not None:
         query += " and t.site_id = %s "
         params.append(locationDbId)
 
-    if studyDbId:
-        query += " and es.experiment_id = %s "
+    if studyDbId is not None:
+        query += " and e.id = %s "
         params.append(studyDbId)
 
-    # For now, germplasm is cultivar
-    if germplasmDbId:
+    if germplasmDbId is not None:
         query += " and t.cultivar_id = %s "
         params.append(germplasmDbId)
 
-    if seasonDbId:
+    if seasonDbId is not None:
         query += " AND seasons.id = %s "
         params.append(seasonDbId)
 
     if (observationTimeStampRangeStart and observationTimeStampRangeEnd):
-        query += " and (date >= %s and date <= %s)"
+        query += " and (date >= %s and date <= %s) "
         params.append(observationTimeStampRangeStart)
         params.append(observationTimeStampRangeEnd)
     elif observationTimeStampRangeStart:
-        query += " and date >= %s"
+        query += " and date >= %s "
         params.append(observationTimeStampRangeStart)
     elif observationTimeStampRangeEnd:
-        query += " and date <= %s"
+        query += " and date <= %s "
         params.append(observationTimeStampRangeEnd)
 
     count = helper.query_count(query, params)
     res = helper.query_result(query, params, pageSize, page)
     data = _conform_data([dict(r) for r in res])
+
+    # Need to group observations together under the same ObservationUnit
+    grouped_data = {}
+    for obs in data:
+        obs_name = obs["observationUnitName"]
+        if obs_name not in grouped_data:
+            grouped_data[obs_name] = obs
+        else:
+            grouped_data[obs_name]["observations"] += obs["observations"]
+    final_data = []
+    for obs_name in grouped_data:
+        final_data.append(grouped_data[obs_name])
 
     # split data if needed, remembering total number
     if not pageSize:
@@ -101,7 +119,7 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None,
     if not page:
         page = 0
 
-    return helper.create_result({"data": data}, count, pageSize, page)
+    return helper.create_result({"data": grouped_data}, count, pageSize, page)
 
 
 def deserialize_datetime(string):
@@ -138,16 +156,17 @@ def _conform_element(ele):
             k = names_map[k]
 
         if k in observation_names:
-            res_obs[k] = v
+            if k == "quality":
+                if v == 0:
+                    res_obs[k] = "unchecked"
+                elif v == 1:
+                    res_obs[k] = "checked"
+                else:
+                    res_obs[k] = v
+            else:
+                res_obs[k] = v
         elif k in treatment_names:
             res_treat[k] = v
-        elif k == "quality":
-            if v == 0:
-                res[k] = "unchecked"
-            elif v == 1:
-                res[k] = "checked"
-            else:
-                res[k] = v
         else:
             res[k] = v
 
