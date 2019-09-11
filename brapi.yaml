@@ -903,6 +903,14 @@ paths:
         explode: true
         schema:
           type: string
+      - name: observationUnitDbId
+        in: query
+        description: unique ID of an observationUnit to filter on
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       - name: observationLevel
         in: query
         description: The type of the observationUnit. Returns only the observation
