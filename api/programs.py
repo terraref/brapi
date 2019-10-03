@@ -8,11 +8,11 @@ def search(commonCropName=None, programName=None, abbreviation=None,  pageSize=N
 
     # filter data
     if commonCropName:
-        data = [ x for x in data if x['commonCropName'] == commonCropName]
+        data = [ x for x in data if 'commonCropName' in x and x['commonCropName'] == commonCropName]
     if programName:
-        data = [ x for x in data if x['programName'] == programName]
+        data = [ x for x in data if 'programName' in x and x['programName'] == programName]
     if abbreviation:
-        data = [ x for x in data if x['abbreviation'] == abbreviation]
+        data = [ x for x in data if 'abbreviation' in x and x['abbreviation'] == abbreviation]
 
     # split data if needed, remembering total number
     count = len(data)

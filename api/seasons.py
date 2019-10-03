@@ -3,7 +3,7 @@ import calendar
 import helper
 
 
-def search(year=None, pageSize=None, page=None):
+def search(seasonDbId=None, season=None, year=None, pageSize=None, page=None):
     """
     Return a list of all seasons. Right now this will return the seasons as the
     year and month of the startdate. The database-id that is returned will be of
@@ -14,16 +14,29 @@ def search(year=None, pageSize=None, page=None):
     :return: all seasons in the page
     """
     params = list()
-    query = "SELECT DISTINCT extract(month from start_date) as month," \
-            "                extract(year from start_date) as year" \
-            "   FROM experiments "
+    query = "select * from (select distinct extract(year from start_date) as year, " \
+            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \
+            "md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list "
 
+    # add a filter on the season ID
+    if seasonDbId:
+        query += " WHERE id = %s "
+        params.append(seasonDbId)
     # add a filter on the year
     if year:
-        query += "   WHERE extract(year from start_date) = %s"
+        if seasonDbId:
+            query += " AND year = %s"
+        else:
+            query += " WHERE year = %s"
         params.append(year)
+    if season:
+        if year or seasonDbId:
+            query += " AND season = %s"
+        else:
+            query += " WHERE season = %s"
+        params.append(season)
 
-    query += "   ORDER BY year, month"
+    query += " ORDER BY id"
 
     # count first
     count = helper.query_count(query, params)
@@ -35,9 +48,9 @@ def search(year=None, pageSize=None, page=None):
     data = list()
     for row in result:
         data.append({
-            "season": calendar.month_name[int(row["month"])],
+            "season": row["season"],
             "year": str(int(row["year"])),
-            "seasonDbId": "%04d%02d" % (row["year"], row["month"])
+            "seasonDbId": str(row["id"])
         })
 
     return helper.create_result({"data": data}, count, pageSize, page)

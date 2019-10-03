@@ -26,12 +26,13 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('studies'),
         calls_get_helper('studies/{studyDbId}'),
         calls_get_helper('studies/{studyDbId}/germplasm'),
-        calls_get_helper('studies/{studyDbId}/layouts')
+        calls_get_helper('studies/{studyDbId}/layouts'),
+        calls_get_helper('trials')
     ]
 
     # filter on datatype
     if dataType:
-        data = [d for d in data if datatype in d['dataTypes']]
+        data = [d for d in data if dataType in d['dataTypes']]
     elif datatype:
         data = [d for d in data if datatype in d['dataTypes']]
 

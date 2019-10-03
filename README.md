@@ -134,3 +134,68 @@ Next switch to 'Test your own' and change the URL. If you run the brapi server a
 container in docker-compose you can use `http://brapi:5000/brapi/v1` as the URL. If you run
 the server on your machine you can either use `http://host.docker.internal:5000/brapi/v1` or
 you can use `http://<ipaddress>:5000/brapi/v1`.
+
+# Currently implemented endpoints & parameters
+
+(see Swagger documentation for more details)
+
+  /calls	
+  	dataType
+  	paging
+  /commoncropnames
+  	paging				
+  /programs
+  	commonCropName
+  	programName	
+  	abbreviation
+  	paging		
+  /locations
+  	locationType - Unavailable
+  	paging
+  ​/locations​/{locationDbId}
+  /trials
+  	commonCropName	
+  	programDbId		
+  	locationDbId - Not supported
+  	active - Unavailable
+  	sorting	- Not supported
+  	paging
+  /seasons
+  	seasonDbId	
+  	season	
+  	year	
+  	paging	
+  /studies
+  	commonCropName - Not supported
+  	studyTypeDbId - Unavailable
+  	programDbId	- Not supported
+  	locationDbId
+  	seasonDbId
+  	trialDbId - Not supported
+  	studyDBId
+  	active - Unavailable
+  	sorting
+  	paging
+  /studies/{studyDbId}			
+  /studies/{studyDbId}/germplasm
+  	paging				
+  /studies/{studyDbId}/layouts
+  	paging				
+  /observationunits
+  	germplasmDbId		
+  	observationVariableDbId	
+  	studyDbId	
+  	locationDbId	
+  	trialDbId - Not supported
+  	programDbId - Not supported
+  	seasonDbId
+  	observationLevel - Unavailable
+  	observationTimeStampRangeStart
+  	observationTimeStampRangeEnd
+  	paging
+  /germplasm
+  	germplasmPUI			
+  	germplasmDbId			
+  	germplasmName		
+  	commonCropName		
+  	paging	

@@ -10,7 +10,7 @@ def search(locationType=None, pageSize=None, page=None):
     :return: all locations in the page
     """
 
-    return query()
+    return query(locationType=locationType, pageSize=pageSize, page=page)
 
 
 def get(locationDbId):
@@ -18,7 +18,7 @@ def get(locationDbId):
     return helper.create_result({"location": data}, 1)
 
 
-def query(single_row=False, locationDbId=None):
+def query(single_row=False, locationDbId=None, locationType=None, pageSize=None, page=None):
     """
 
     :param single_row: return a single row back, not wrapped
@@ -36,6 +36,7 @@ def query(single_row=False, locationDbId=None):
             "FROM sites, sitegroups, sitegroups_sites " \
             "WHERE sitegroups_sites.site_id = sites.id " \
             "      AND sitegroups_sites.sitegroup_id = sitegroups.id "
+
     if locationDbId:
         query += "AND sitegroups.id = %s"
         params.append(locationDbId)
@@ -57,13 +58,7 @@ def query(single_row=False, locationDbId=None):
             "FROM (" + query + ") ss2"
 
     # order query
-    query += "   ORDER BY locationDbId"
-
-    # TODO add a filter on the locationType
-    # if locationType:
-    #     # wrap query in a sub select to allow us to use locationType in WHERE clause
-    #     query = "SELECT * FROM (" + query + ") locations WHERE locationType = %s "
-    #     params.append(locationType)
+    query += " ORDER BY locationDbId"
 
     # count first
     if single_row:
@@ -72,7 +67,7 @@ def query(single_row=False, locationDbId=None):
         count = helper.query_count(query, params)
 
     # execute query
-    results = helper.query_result(query, params)
+    results = helper.query_result(query, params, pageSize, page)
 
     # wrap result
     data = []
@@ -93,4 +88,4 @@ def query(single_row=False, locationDbId=None):
             return data[0]
         return {}
     else:
-        return helper.create_result({"data": data}, count)
+        return helper.create_result({"data": data}, count, pageSize, page)
