@@ -57,7 +57,15 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
 
 
 def get(studyDbId):
-    return search(studyDbId=studyDbId)
+    full_result = search(studyDbId=studyDbId)
+
+    # fix the result so that the 'data' block is omitted in the case of a single result
+    if "data" in full_result["result"] and len(full_result["result"]["data"]) > 0:
+        full_result["result"] = full_result["result"]["data"][0]
+    else:
+        full_result["result"] = {}
+
+    return full_result
 
 
 def germplasm_search(studyDbId, pageSize=None, page=None):
