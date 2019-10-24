@@ -90,6 +90,8 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
             if location:
                 study['location'] = location
 
+        study['studyTypeName'] = "Phenotyping Study"
+
         data.append(study)
     return helper.create_result({"data": data}, count, pageSize, page)
 
