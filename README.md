@@ -137,8 +137,9 @@ you can use `http://<ipaddress>:5000/brapi/v1`.
 
 # Currently implemented endpoints & parameters
 
-(see Swagger documentation for more details)
+See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
 
+```
   /calls	
   	dataType
   	paging
@@ -198,4 +199,5 @@ you can use `http://<ipaddress>:5000/brapi/v1`.
   	germplasmDbId			
   	germplasmName		
   	commonCropName		
-  	paging	
+  	paging
+```
