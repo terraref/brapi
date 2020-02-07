@@ -91,6 +91,7 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
                 study['location'] = location
 
         study['studyTypeName'] = "Phenotyping Study"
+        study['documentationURL'] = "https://docs.terraref.org"
 
         data.append(study)
     return helper.create_result({"data": data}, count, pageSize, page)
