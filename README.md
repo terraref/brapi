@@ -2,21 +2,7 @@
 
 Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb database (terraref.org/bety).
 
-## Setup BETYdb
 
-Following commands can be used to initialize the database to be used 
-with BRAPI development. This will fetch data from TERRA-REF database
-(id=6). To get the latest data you can call the sync command. 
-
- 
-
-```bash
-docker-compose up -d postgres
-docker-compose run --rm bety initialize
-docker-compose run --rm bety sync
-```
-
-_Note:_ If you get an error about port 5432 already in use, you likely need to stop another instance of postgres (locally or as docker).
 
 ## Mappings from BETY to BRAPI models
 
@@ -28,9 +14,42 @@ _Note:_ If you get an error about port 5432 already in use, you likely need to s
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
 
+## How to set up a development environment.
 
+We assume you have the following installed:
+- Docker (to run BETYdb)
+- [Postman](https://www.postman.com/) (to test out APIs)
+- [PyCharm](https://www.jetbrains.com/pycharm/) (for development)
 
-## How to add an endpoint
+### Run a development instance of BETYdb
+
+The following commands can be used to initialize the database to be used with BRAPI development. This will fetch public data from TERRA-REF database (id=6). To get the latest data you can call the sync command. 
+
+```bash
+docker-compose up -d postgres
+docker-compose run --rm bety initialize
+docker-compose run --rm bety sync
+```
+
+_Note:_ If you get an error about port 5432 already in use, you likely need to stop another instance of postgres (locally or as docker).
+
+### Set up PyCharm 
+
+Now that you have BETYdb running on port 5432, you will be able to begin developing the server. These instructions assume that you are using PyCharm and have a project open to your brapi directory.
+
+* Go to run --> edit configurations
+* Set the "name" field to "server"
+* Set the 'script path' to `<localpath>/brapi/server.py`
+* In the top right of PyCharm, select the server configuration and click the green triangle to run the server
+* In Postman test that the API exists by navigating to http://localhost:5000/brapi/v1/calls  
+
+### How to evaluate changes in an endpoint
+
+* modify the file named `api/<endpoint>.py`
+* click the 'reload' button in PyCharm to restart the server
+* reload the endpoint in Postman and determine if requested changes are present.
+ 
+### How to add an endpoint
 
 You will need add a new file under the `api` folder called with the name of the endpoint, for example the /locations endpoint will be defined in a file called api/locations.py. In that file you will need a `search` function to handle the call to the GET endpoint. If the function is not implemented the url will return the actual name of the file and the function name.
 
@@ -60,7 +79,7 @@ BRAVA. You can do this by running the brava container
 docker-compose up -d brava
 ```. 
 
-At this point you can connect to http://localhost:8080/ to see the UI.
+At this point you can connect to http://localhost:8080/ to see the Brava UI.
 
 Next switch to 'Test your own' and change the URL. To launch the BrAPI:
 
