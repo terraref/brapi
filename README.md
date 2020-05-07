@@ -17,7 +17,7 @@ Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb databa
 ## How to set up a development environment.
 
 We assume you have the following installed:
-- Docker (to run BETYdb)
+- [Docker](https://www.docker.com/products/docker-desktop) (to run BETYdb)
 - [Postman](https://www.postman.com/) (to test out APIs)
 - [PyCharm](https://www.jetbrains.com/pycharm/) (for development)
 
