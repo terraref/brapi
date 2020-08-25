@@ -1,4 +1,4 @@
-observationVariableName,observationVariableId,traitDescription,scaleName,methodName,methodName,ontologyDbId,ontologyReference,URL,traitName,comments
+observationVariableName,observationVariableId,traitDescription,scaleName,methodName,methodName,ontologyDbId,ontologyReference,URL,traitName, ontology_comments
 days_to_emergence,,,days,,,TO,TO:0006061,http://purl.obolibrary.org/obo/TO_0006061,days to germinate,related
 emergence_count,6000000014,number of plants counted within plot or subplot during emergence,count,plant emergence counts,,TO,TO:0000202,http://purl.obolibrary.org/obo/TO_0000202,germination ratio,related
 seedling_emergence_rate,6000000251,Seedling emergence rate,ratio,Seedling emergence rate count,,TO,TO:0000430,http://purl.obolibrary.org/obo/TO_0000430,germination rate,related
