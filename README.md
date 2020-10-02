@@ -171,6 +171,10 @@ previously only available in the [experimental design section of the TERRA REF d
 
 The data in these files could be inserted into the BETYdb attributes table.
 
+The data in `contrib/ontologies/variables_annotations.csv` contain sorghum phenotypes, descriptions, ontologyReference from the Plant Trait Ontology, and the persistent URL, which were annotated by [Laurel Cooper](https://agsci.oregonstate.edu/users/laurel-cooper). 
+
+The file `contrib/ontologies/ontology_reference.json` contains metadata for the Plant Trait Ontology.
+
 ### Setup Locations
 
 For the locations endpoint to work correctly we grouped multiple sites together in a sitegroup. The commands in `contrib/locations_setup.sql` were used to associate sites with the sitegroups. (This has been done and is now part of the TERRA-REF dump).
