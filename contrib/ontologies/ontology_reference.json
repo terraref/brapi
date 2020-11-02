@@ -1,0 +1,15 @@
+"result": {
+    "data": [
+         {
+           "additionalInfo": {},
+           "authors": "Pankaj Jaiswal",
+           "copyright": "2000-2008 Cold Spring Harbor Laboratory and Cornell University, USA",
+           "description": "Plant Trait Ontology",
+           "documentationURL": "http://purl.obolibrary.org/obo/to.owl",
+           "licence": "CC-BY 4.0",
+           "ontologyDbId": "TO",
+           "ontologyName": "Plant Trait Ontology",
+           "version": "1.2"
+      },
+  ]
+}
