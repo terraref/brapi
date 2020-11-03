@@ -77,7 +77,7 @@ BRAVA. You can do this by running the brava container
 
 ```sh 
 docker-compose up -d brava
-```. 
+```
 
 At this point you can connect to http://localhost:8080/ to see the Brava UI.
 
