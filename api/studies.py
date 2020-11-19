@@ -148,7 +148,7 @@ def layouts_search(studyDbId, pageSize=None, page=None):
             "   experiments.name as studyName, " \
             "   experiments_sites.site_id as observation_unit_db_id, " \
             "   sites.sitename as location_abbreviation, " \
-            "   cultivars.id as germPlasmDbId, " \
+            "   cultivars.id as germplasmDbId, " \
             "   cultivars.name as germplasmName " \
             "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars " \
             "WHERE experiments.id = experiments_sites.experiment_id " \
