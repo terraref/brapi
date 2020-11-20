@@ -11,13 +11,13 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
            active=None, sortBy=None, sortOrder=None, pageSize=None, page=None):
     params = list()
 
-    query = "SELECT DISTINCT experiments.id as studyDbId, " \
+    query = "SELECT DISTINCT experiments.id::text as studyDbId, " \
             "   LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 2))) as studyName, " \
             "   experiments.start_date as startDate, " \
             "   experiments.end_date as endDate, " \
             "   experiments.description as studyDescription, " \
-            "   sitegroups.id as location_id, " \
-            "   seasonids.id as season_id " \
+            "   sitegroups.id::text as location_id, " \
+            "   seasonids.id::text as season_id " \
             "FROM experiments, experiments_sites, sitegroups, sitegroups_sites, " \
             "(select * from (select distinct extract(year from start_date) as year, " \
             "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \

@@ -29,7 +29,7 @@ def query(single_row=False, locationDbId=None, locationType=None, pageSize=None,
     params = list()
 
     # get all sitegroups and sites
-    query = "SELECT sitegroups.id AS locationDbId, " \
+    query = "SELECT sitegroups.id::text AS locationDbId, " \
             "       sitegroups.name AS name, " \
             "       sites.country AS countryCode, " \
             "       sites.geometry AS geometry " \

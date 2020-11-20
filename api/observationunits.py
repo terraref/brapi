@@ -21,10 +21,13 @@ treatment_names = [
 names_map = {
     "observationvariabledbid": "observationVariableDbId",
     "observationvariablename": "observationVariableName",
+    "observationunitdbid": "observationunitDbId",
     "observationdbid": "observationDbId",
     "observationtimestamp": "observationTimeStamp",
+    "germplasmdbid": "germplasmDbId",
+    "germplasmname": "germplasmName",
     "studydbid": "studyDbId",
-    "observationtreatment": "observationtreatment",
+    "observationtreatment": "observationTreatment",
     "treatmentdbid": "treatmentDbId",
     "observationunitname": "observationUnitName",
     "seasondbid": "seasonDbId"
@@ -48,15 +51,15 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
                     t.mean::text as value, \
                     t.date as observationTimeStamp, \
                     s.sitename as observationUnitName, \
-                    s.id as observationUnitDbId,\
-                    cv.id as germplasmDbId, \
+                    s.id::text as observationUnitDbId,\
+                    cv.id::text as germplasmDbId, \
                     cv.name as germplasmName, \
                     es.experiment_id::text as studyDbId, \
-                    et.treatment_id as treatmentDbId, \
-                    seasons.id as seasonDbId, \
+                    et.treatment_id::text as treatmentDbId, \
+                    seasons.id::text as seasonDbId, \
                     tr.name as factor, \
                     tr.definition as modality, \
-                    t.entity_id as replicate, \
+                    t.entity_id::text as replicate, \
                     c.author as operator, \
                     t.checked as quality \
                 from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c, cultivars cv, \
