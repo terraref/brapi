@@ -21,10 +21,13 @@ treatment_names = [
 names_map = {
     "observationvariabledbid": "observationVariableDbId",
     "observationvariablename": "observationVariableName",
+    "observationunitdbid": "observationunitDbId",
     "observationdbid": "observationDbId",
     "observationtimestamp": "observationTimeStamp",
+    "germplasmdbid": "germplasmDbId",
+    "germplasmname": "germplasmName",
     "studydbid": "studyDbId",
-    "observationtreatment": "observationtreatment",
+    "observationtreatment": "observationTreatment",
     "treatmentdbid": "treatmentDbId",
     "observationunitname": "observationUnitName",
     "seasondbid": "seasonDbId"
@@ -41,43 +44,34 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
     if observationTimeStampRangeEnd:
         observationTimeStampRangeEnd = deserialize_datetime(observationTimeStampRangeEnd)
 
-    # Return observations only if a single plot is specified via observationLevel
-    if observationUnitDbId is not None:
-        query = "select v.id::text as observationVariableDbId,  \
-                        v.name as observationVariableName,  \
-                        t.id::text as observationDbId, \
-                        t.mean::text as value, \
-                        t.date as observationTimeStamp, \
-                        s.sitename as observationUnitName, \
-                        es.experiment_id::text as studyDbId, \
-                        et.treatment_id as treatmentDbId, \
-                        seasons.id as seasonDbId, \
-                        tr.name as factor, \
-                        tr.definition as modality, \
-                        t.entity_id as replicate, \
-                        c.author as operator, \
-                        t.checked as quality \
-                 from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c, \
-                      (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, \
-                      md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
-                 where v.id = t.variable_id \
-                     and t.site_id = s.id and t.citation_id = c.id and t.checked > -1 \
-                     and e.id = es.experiment_id and t.site_id = es.site_id \
-                     and e.id = et.experiment_id and tr.id = et.treatment_id \
-                     and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) "
-    else:
-        query = "select s.sitename as observationUnitName, \
-                        es.experiment_id::text as studyDbId, \
-                        et.treatment_id as treatmentDbId, \
-                        seasons.id as seasonDbId, \
-                        tr.name as factor, \
-                        tr.definition as modality \
-                 from sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, \
-                      (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, \
-                      md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
-                 where e.id = es.experiment_id \
-                     and e.id = et.experiment_id and tr.id = et.treatment_id \
-                     and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) "
+
+    query = "select v.id::text as observationVariableDbId,  \
+                    v.name as observationVariableName,  \
+                    t.id::text as observationDbId, \
+                    t.mean::text as value, \
+                    t.date as observationTimeStamp, \
+                    s.sitename as observationUnitName, \
+                    s.id::text as observationUnitDbId,\
+                    cv.id::text as germplasmDbId, \
+                    cv.name as germplasmName, \
+                    es.experiment_id::text as studyDbId, \
+                    et.treatment_id::text as treatmentDbId, \
+                    seasons.id::text as seasonDbId, \
+                    tr.name as factor, \
+                    tr.definition as modality, \
+                    t.entity_id::text as replicate, \
+                    c.author as operator, \
+                    t.checked as quality \
+                from traits t, variables v, sites s, experiments e, experiments_sites es, experiments_treatments et, treatments tr, citations c, cultivars cv, \
+                    (select distinct extract(year from start_date) as year, LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, \
+                    md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) seasons \
+                where v.id = t.variable_id \
+                    and t.site_id = s.id and t.citation_id = c.id and t.checked > -1 \
+                    and t.cultivar_id = cv.id and t.access_level = 4 \
+                    and e.id = es.experiment_id and t.site_id = es.site_id \
+                    and e.id = et.experiment_id and tr.id = et.treatment_id \
+                    and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) "
+
     params = []
 
     if observationVariableDbId is not None:
@@ -197,4 +191,3 @@ def _conform_element(ele):
         res["treatments"] = [res_treat]
 
     return res
-
