@@ -14,6 +14,74 @@ Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb databa
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
 
+
+# Currently implemented endpoints & parameters
+
+See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
+
+```
+  /calls	
+  	dataType
+  	paging
+  /commoncropnames
+  	paging				
+  /programs
+  	commonCropName
+  	programName	
+  	abbreviation
+  	paging		
+  /locations
+  	locationType - Unavailable
+  	paging
+  ​/locations​/{locationDbId}
+  /trials
+  	commonCropName	
+  	programDbId		
+  	locationDbId - Not supported
+  	active - Unavailable
+  	sorting	- Not supported
+  	paging
+  /seasons
+  	seasonDbId	
+  	season	
+  	year	
+  	paging	
+  /studies
+  	commonCropName - Not supported
+  	studyTypeDbId - Unavailable
+  	programDbId	- Not supported
+  	locationDbId
+  	seasonDbId
+  	trialDbId - Not supported
+  	studyDBId
+  	active - Unavailable
+  	sorting
+  	paging
+  /studies/{studyDbId}			
+  /studies/{studyDbId}/germplasm
+  	paging				
+  /studies/{studyDbId}/layouts
+  	paging				
+  /observationunits
+  	germplasmDbId		
+  	observationVariableDbId	
+  	studyDbId	
+  	locationDbId	
+  	trialDbId - Not supported
+  	programDbId - Not supported
+  	seasonDbId
+  	observationLevel - Unavailable
+  	observationTimeStampRangeStart
+  	observationTimeStampRangeEnd
+  	paging
+  /germplasm
+  	germplasmPUI			
+  	germplasmDbId			
+  	germplasmName		
+  	commonCropName		
+  	paging
+```
+
 ## How to set up a development environment.
 
 We assume you have the following installed:
@@ -91,72 +159,6 @@ If you run the brapi server as a docker container in docker-compose you can use 
 the server on your machine you can either use `http://host.docker.internal:5000/brapi/v1` or
 you can use `http://<ipaddress>:5000/brapi/v1`.
 
-# Currently implemented endpoints & parameters
-
-See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
-
-```
-  /calls	
-  	dataType
-  	paging
-  /commoncropnames
-  	paging				
-  /programs
-  	commonCropName
-  	programName	
-  	abbreviation
-  	paging		
-  /locations
-  	locationType - Unavailable
-  	paging
-  ​/locations​/{locationDbId}
-  /trials
-  	commonCropName	
-  	programDbId		
-  	locationDbId - Not supported
-  	active - Unavailable
-  	sorting	- Not supported
-  	paging
-  /seasons
-  	seasonDbId	
-  	season	
-  	year	
-  	paging	
-  /studies
-  	commonCropName - Not supported
-  	studyTypeDbId - Unavailable
-  	programDbId	- Not supported
-  	locationDbId
-  	seasonDbId
-  	trialDbId - Not supported
-  	studyDBId
-  	active - Unavailable
-  	sorting
-  	paging
-  /studies/{studyDbId}			
-  /studies/{studyDbId}/germplasm
-  	paging				
-  /studies/{studyDbId}/layouts
-  	paging				
-  /observationunits
-  	germplasmDbId		
-  	observationVariableDbId	
-  	studyDbId	
-  	locationDbId	
-  	trialDbId - Not supported
-  	programDbId - Not supported
-  	seasonDbId
-  	observationLevel - Unavailable
-  	observationTimeStampRangeStart
-  	observationTimeStampRangeEnd
-  	paging
-  /germplasm
-  	germplasmPUI			
-  	germplasmDbId			
-  	germplasmName		
-  	commonCropName		
-  	paging
-```
 
 ## Configuring and Augmenting the TERRA REF database
 
