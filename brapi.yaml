@@ -479,11 +479,11 @@ paths:
                           $ref: '#/components/schemas/Event'
                         type: array
                     required:
-                    - data
+                       - data
                     type: object
                 required:
-                - metadata
-                - result
+                  - metadata
+                  - result
                 title: eventsResponse
                 type: object
           description: OK
@@ -496,7 +496,7 @@ paths:
           $ref: '#/components/responses/403Forbidden'
       summary: Get the Events
       tags:
-      - Events
+        - Events
   /germplasm:
     get:
       tags:
@@ -3043,6 +3043,15 @@ components:
           type: string
           description: 'The type of person this contact represents (ex: Coordinator,
             Scientist, PI, etc.)'
+    Context:
+      description: "The JSON-LD Context is used to provide JSON-LD definitions to each field in a JSON object. By providing an array of context file urls, a BrAPI response object becomes JSON-LD compatible.  \n\nFor more information, see https://w3c.github.io/json-ld-syntax/#the-context"
+      example:
+      - https://brapi.org/jsonld/context/metadata.jsonld
+      items:
+        format: uri
+        type: string
+      title: context
+      type: array
     dataLink:
       type: object
       properties:
