@@ -2,6 +2,7 @@ import helper
 
 VERSIONS_1_2 = ["1.2"]
 VERSIONS_1_3 = ["1.3"]
+VERSIONS_2_0 = ["2.0"]
 VERSIONS_ALL = VERSIONS_1_2 + VERSIONS_1_3
 VERSIONS_LATEST = VERSIONS_1_3
 
@@ -16,6 +17,7 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('calls'),
         calls_get_helper('commoncropnames'),
         calls_get_helper('crops'),
+#        calls_get_helper('events', VERSIONS_2_0),
         calls_get_helper('germplasm', versions=VERSIONS_LATEST),
         calls_get_helper('locations'),
         calls_get_helper('locations/{locationDbId}'),
