@@ -1,19 +1,17 @@
-# TERRA-REF Breeder's API
+# TERRA-REF Breeder's API (BRAPI)
 
 Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb database (terraref.org/bety).
-
-
 
 ## Mappings from BETY to BRAPI models
 
 | BRAPI      | BETY        | Notes |
 |------------|-------------|-------|
 | /calls     | generated   |       |
+| /events    | managements |       |
 | /locations | sitegroups  | lat/lon computed from sites part of sitegroup |
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
-
 
 # Currently implemented endpoints & parameters
 
@@ -25,15 +23,18 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	paging
   /commoncropnames
   	paging				
-  /programs
-  	commonCropName
-  	programName	
-  	abbreviation
-  	paging		
+  /events
+    date
+    eventDbId
+    eventDescription
+    eventParameters
+    eventType
+    observationUnitDbIds
+    studyDbId
   /locations
   	locationType - Unavailable
   	paging
-  ​/locations​/{locationDbId}
+  /locations/{locationDbId}
   /trials
   	commonCropName	
   	programDbId		
@@ -41,6 +42,11 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	active - Unavailable
   	sorting	- Not supported
   	paging
+  /programs
+  	commonCropName
+  	programName	
+  	abbreviation
+  	paging		
   /seasons
   	seasonDbId	
   	season	
