@@ -419,50 +419,49 @@ paths:
       deprecated: true
   /events:
     get:
-      summary: Get the Events
-      description: Get list of events (backported from BrAPI Phenotyping v2.0)
+      description: Get list of events
       parameters:
-        - description: Filter based on study unique identifier in which the events occured
-          in: query
-          name: studyDbId
-          required: false
-          schema:
-            type: string
-        - description: Filter based on an ObservationUnit unique identifier in which the events occured
-          in: query
-          name: observationUnitDbId
-          required: false
-          schema:
-            type: string
-        - description: Filter based on an Event DbId
-          in: query
-          name: eventDbId
-          required: false
-          schema:
-            type: string
-        - description: Filter based on an Event Type
-          in: query
-          name: eventType
-          required: false
-          schema:
-            type: string
-        - description: Filter based on an Date Range
-          in: query
-          name: dateRangeStart
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - description: Filter based on an Date Range
-          in: query
-          name: dateRangeEnd
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - $ref: '#/components/parameters/page'
-        - $ref: '#/components/parameters/pageSize'
-        - $ref: '#/components/parameters/authorizationHeader'
+      - description: Filter based on study unique identifier in which the events occured
+        in: query
+        name: studyDbId
+        required: false
+        schema:
+          type: string
+      - description: Filter based on an ObservationUnit unique identifier in which the events occured
+        in: query
+        name: observationUnitDbId
+        required: false
+        schema:
+          type: string
+      - description: Filter based on an Event DbId
+        in: query
+        name: eventDbId
+        required: false
+        schema:
+          type: string
+      - description: Filter based on an Event Type
+        in: query
+        name: eventType
+        required: false
+        schema:
+          type: string
+      - description: Filter based on an Date Range
+        in: query
+        name: dateRangeStart
+        required: false
+        schema:
+          format: date-time
+          type: string
+      - description: Filter based on an Date Range
+        in: query
+        name: dateRangeEnd
+        required: false
+        schema:
+          format: date-time
+          type: string
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/authorizationHeader'
       responses:
         '200':
           content:
@@ -480,11 +479,11 @@ paths:
                           $ref: '#/components/schemas/Event'
                         type: array
                     required:
-                      - data
+                    - data
                     type: object
                 required:
-                  - metadata
-                  - result
+                - metadata
+                - result
                 title: eventsResponse
                 type: object
           description: OK
@@ -495,8 +494,9 @@ paths:
           $ref: '#/components/responses/401Unauthorized'
         '403':
           $ref: '#/components/responses/403Forbidden'
+      summary: Get the Events
       tags:
-        - Events
+      - Events
   /germplasm:
     get:
       tags:
@@ -3067,6 +3067,92 @@ components:
           type: array
           items:
             type: string
+    Event:
+      properties:
+        additionalInfo:
+          additionalProperties:
+            type: string
+          description: Additional arbitrary info
+          type: object
+        date:
+          description: 'A list of dates when the event occured
+
+
+            MIAPPE V1.1 (DM-68) Event date - Date and time of the event.'
+          example:
+            - '2018-10-08T18:15:11Z'
+            - '2018-11-09T18:16:12Z'
+          items:
+            format: date-time
+            type: string
+          type: array
+        eventDbId:
+          description: Internal database identifier
+          example: 8566d4cb
+          type: string
+        eventDescription:
+          description: 'A detailed, human-readable description of this event
+
+
+            MIAPPE V1.1 (DM-67) Event description - Description of the event, including details such as amount applied and possibly duration of the event. '
+          example: A set of plots was watered
+          type: string
+        eventParameters:
+          description: A list of objects describing additional event parameters. Each of the following accepts a human-readable value or URI
+          example:
+            - key: http://www.example.fr/vocabulary/2018#hasContact,
+              value: http://www.example.fr/id/agent/marie,
+              valueRdfType: http://xmlns.com/foaf/0.1/Agent,
+            - key: fertilizer
+              value: nitrogen
+              valueRdfType: null
+          items:
+            properties:
+              key:
+                description: Specifies the relationship between the event and the given property. E.g. fertilizer, operator
+                example: operator
+                type: string
+              rdfValue:
+                description: The type of the value given above, e.g. http://xmlns.com/foaf/0.1/Agent
+                example: http://xmlns.com/foaf/0.1/Agent
+                type: string
+              value:
+                description: The value of the property for this event. E.g. nitrogen, John Doe
+                example: Bob Robertson
+                type: string
+            type: object
+          type: array
+        eventType:
+          description: 'General category for this event (e.g. Sowing, Watering, Rain). Each eventType should correspond to exactly one eventTypeDbId, if provided.
+
+
+            MIAPPE V1.1 (DM-65) Event type - Short name of the event.'
+          example: Watering
+          type: string
+        eventTypeDbId:
+          description: 'An identifier for this event type, in the form of an ontology class reference
+
+
+            MIAPPE V1.1 (DM-66) Event accession number - Accession number of the event type in a suitable controlled vocabulary (Crop Ontology).'
+          example: 4e7d691e
+          type: string
+        observationUnitDbIds:
+          description: A list of the affected observation units. If this parameter is not given, it is understood that the event affected all units in the study
+          example:
+            - 8439eaff
+            - d7682e7a
+            - 305ae51c
+          items:
+            type: string
+          type: array
+        studyDbId:
+          description: The study in which the event occurred
+          example: 2cc2001f
+          type: string
+      required:
+        - eventDbId
+        - eventType
+      type: object
     genomeMap:
       required:
       - commonCropName
