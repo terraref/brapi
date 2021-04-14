@@ -17,7 +17,7 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
 
     # add a filter on the variable ID
     if observationVariableDbId:
-        query += where_clause + " ex.id = %s "
+        query += where_clause + " v.id = %s "
         params.append(observationVariableDbId)
         where_clause = " AND"
 
