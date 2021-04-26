@@ -41,7 +41,7 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
     for row in result:
         data.append({
              "name": row["name"],
-             "observationVariableDbName": row["name"],
+             "observationVariableName": row["name"],
              "observationVariableDbId": row["id"],
              "scale": {
                 "name": row["units"],

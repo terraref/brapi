@@ -89,7 +89,7 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	paging
   /variables
   	name
-  	observationVariableDbName
+  	observationVariableName
   	observationVariableDbID
   	scale
     
