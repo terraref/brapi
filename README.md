@@ -12,6 +12,7 @@ Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb databa
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
+| /variables | variables | |
 
 # Currently implemented endpoints & parameters
 
@@ -86,6 +87,12 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	germplasmName		
   	commonCropName		
   	paging
+  /variables
+  	name
+  	observationVariableName
+  	observationVariableDbID
+  	scale
+    
 ```
 
 ## How to set up a development environment.
