@@ -87,6 +87,12 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	germplasmName		
   	commonCropName		
   	paging
+  /variables
+  	name
+  	observationVariableDbName
+  	observationVariableDbID
+  	scale
+    
 ```
 
 ## How to set up a development environment.
