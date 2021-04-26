@@ -28,7 +28,7 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
     #    params.append(traitClass)
     #    where_clause = " AND"
 
-    query += " ORDER BY id"
+    query += " ORDER BY v.id"
 
     # count first
     count = helper.query_count(query, params)
