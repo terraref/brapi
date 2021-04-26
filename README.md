@@ -12,6 +12,7 @@ Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb databa
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
+| /variables | variables | |
 
 # Currently implemented endpoints & parameters
 
