@@ -42,7 +42,7 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
         data.append({
              "name": row["name"],
              "observationVariableName": row["name"],
-             "observationVariableDbId": row["id"],
+             "observationVariableDbId": str(row["id"]),
              "scale": {
                 "name": row["units"],
                 "validValues": {
