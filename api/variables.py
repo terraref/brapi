@@ -46,8 +46,8 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
              "scale": {
                 "name": row["units"],
                 "validValues": {
-                    "min": row["min"],
-                    "max": row["max"]
+                    "min": int(row["min"]) if "Infinity" not in row["min"] else None,
+                    "max": int(row["max"]) if "Infinity" not in row["max"] else None
                 }
              }
         })
