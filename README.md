@@ -193,3 +193,7 @@ The file `contrib/ontologies/ontology_reference.json` contains metadata for the 
 ### Setup Locations
 
 For the locations endpoint to work correctly we grouped multiple sites together in a sitegroup. The commands in `contrib/locations_setup.sql` were used to associate sites with the sitegroups. (This has been done and is now part of the TERRA-REF dump).
+
+### Errors 
+
+**wrong password for database or process already using a port**: the port numbers for the databases (5432) specified in docker-compose.yml needs to match the one in database.py
