@@ -132,7 +132,23 @@ Now that you have BETYdb running on port 5432, you will be able to begin develop
  
 ### How to add an endpoint
 
-You will need add a new file under the `api` folder called with the name of the endpoint, for example the /locations endpoint will be defined in a file called api/locations.py. In that file you will need a `search` function to handle the call to the GET endpoint. If the function is not implemented the url will return the actual name of the file and the function name.
+* add endpoint definition to `brapi.yml` - for v1.3, this can be copied `brapi-complete.yml`. For v2.x, copy from specification on [Swaggerhub](https://app.swaggerhub.com/apis/PlantBreedingAPI/BrAPI-Phenotyping/2.0).
+* add a new file under the `api` folder called with the name of the endpoint, for example the /locations endpoint will be defined in a file called api/locations.py. In that file you will need a `search` function to handle the call to the GET endpoint. If the function is not implemented the url will return the actual name of the file and the function name.
+  * write code to make the endpoint work
+* test new endpoint using Brava BrAPI Validator
+* add new line to `api/calls.py`
+* update README
+
+## Style and conventions
+
+* for SQL Chunks, use triple quotes, e.g.
+```sql
+query ="""
+select * from foo
+  where bar = 1
+"""
+``` 
+* for parameterized quotes, use `str.format`, e.g. `a = """foo {0}"""" \n b = "bar" \n c = a.format(b)`
 
 ## Showing data in BETY database
 
