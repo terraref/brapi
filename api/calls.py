@@ -30,7 +30,8 @@ def search(datatype=None, dataType=None, pageSize=None, page=None):
         calls_get_helper('studies/{studyDbId}/germplasm', versions=VERSIONS_1_23),
         calls_get_helper('studies/{studyDbId}/layouts', versions=VERSIONS_1_23),
         calls_get_helper('trials', versions=VERSIONS_1_23),
-        calls_get_helper('variables', versions=VERSIONS_1_23)
+        calls_get_helper('variables', versions=VERSIONS_1_23),
+        calls_get_helper('methods', versions=VERSIONS_1_23)
     ]
 
     # filter on datatype

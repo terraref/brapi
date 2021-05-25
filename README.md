@@ -13,6 +13,7 @@ Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb databa
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
 | /variables | variables | |
+| /methods | methods| |
 
 # Currently implemented endpoints & parameters
 
@@ -91,7 +92,12 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	name
   	observationVariableName
   	observationVariableDbID
-  	scale
+ 	scale
+  /methods
+    description
+    name
+    observationVariableDbId
+    observationVariableName
     
 ```
 
