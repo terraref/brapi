@@ -11,21 +11,22 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
            active=None, sortBy=None, sortOrder=None, pageSize=None, page=None):
     params = list()
 
-    query = "SELECT DISTINCT experiments.id::text as studyDbId, " \
-            "   LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 2))) as studyName, " \
-            "   experiments.start_date as startDate, " \
-            "   experiments.end_date as endDate, " \
-            "   experiments.description as studyDescription, " \
-            "   sitegroups.id::text as location_id, " \
-            "   seasonids.id::text as season_id " \
-            "FROM experiments, experiments_sites, sitegroups, sitegroups_sites, " \
-            "(select * from (select distinct extract(year from start_date) as year, " \
-            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \
-            "md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list) seasonids " \
-            "WHERE experiments.id = experiments_sites.experiment_id " \
-            "AND sitegroups_sites.site_id = experiments_sites.site_id " \
-            "AND sitegroups_sites.sitegroup_id = sitegroups.id " \
-            "AND seasonids.season = LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 1))) "
+    query = """SELECT DISTINCT experiments.id::text as studyDbId,
+       LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 2))) as studyName, 
+       experiments.start_date as startDate, 
+       experiments.end_date as endDate, 
+       experiments.description as studyDescription, 
+       sitegroups.id::text as location_id, 
+       seasonids.id::text as season_id 
+    FROM experiments, experiments_sites, sitegroups, sitegroups_sites, 
+    (select * from (select distinct extract(year from start_date) as year, 
+      LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season,
+      md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list) seasonids 
+      WHERE experiments.id = experiments_sites.experiment_id
+        AND sitegroups_sites.site_id = experiments_sites.site_id 
+        AND sitegroups_sites.sitegroup_id = sitegroups.id 
+        AND seasonids.season = LTRIM(RTRIM(SPLIT_PART(experiments.name, ': ', 1))) 
+    """
 
     if studyDbId:
         query += " AND experiments.id = %s "
@@ -75,7 +76,7 @@ def search(commonCropName=None, studyTypeDbId=None, programDbId=None, locationDb
         current_descrption = row_pop(row, 'studydescription', '')
         current_descrption = current_descrption.replace('\n', ' ')
         current_descrption = current_descrption.replace('\r', '')
-        study['statisticalDesign'] = {'description': current_descrption }
+        study['statisticalDesign'] = {'description': current_descrption}
 
         # get seasons data
         if row.has_key('season_id'):
@@ -112,9 +113,11 @@ def get(studyDbId):
 def germplasm_search(studyDbId, pageSize=None, page=None):
     params = list()
 
-    query = "SELECT DISTINCT sites_cultivars.cultivar_id AS cultivar_id " \
-            "FROM experiments_sites, sites_cultivars " \
-            "WHERE experiments_sites.site_id = sites_cultivars.site_id "
+    query = """
+    SELECT DISTINCT sites_cultivars.cultivar_id AS cultivar_id
+      FROM experiments_sites, sites_cultivars
+      WHERE experiments_sites.site_id = sites_cultivars.site_id
+    """
 
     if studyDbId:
         query += "AND experiments_sites.experiment_id = %s "
@@ -144,17 +147,19 @@ def germplasm_search(studyDbId, pageSize=None, page=None):
 def layouts_search(studyDbId, pageSize=None, page=None):
     params = list()
 
-    query = "SELECT DISTINCT experiments.id as studyDbId, " \
-            "   experiments.name as studyName, " \
-            "   experiments_sites.site_id as observation_unit_db_id, " \
-            "   sites.sitename as location_abbreviation, " \
-            "   cultivars.id as germplasmDbId, " \
-            "   cultivars.name as germplasmName " \
-            "FROM experiments, experiments_sites, sites, sites_cultivars, cultivars " \
-            "WHERE experiments.id = experiments_sites.experiment_id " \
-            "AND sites.id = experiments_sites.site_id " \
-            "AND sites_cultivars.site_id = experiments_sites.site_id " \
-            "AND sites_cultivars.cultivar_id = cultivars.id "
+    query = """
+    SELECT DISTINCT experiments.id as studyDbId,
+       experiments.name as studyName,
+       experiments_sites.site_id as observation_unit_db_id,
+       sites.sitename as location_abbreviation,
+       cultivars.id as germplasmDbId, 
+       cultivars.name as germplasmName
+    FROM experiments, experiments_sites, sites, sites_cultivars, cultivars
+    WHERE experiments.id = experiments_sites.experiment_id
+    AND sites.id = experiments_sites.site_id
+    AND sites_cultivars.site_id = experiments_sites.site_id
+    AND sites_cultivars.cultivar_id = cultivars.id
+    """
 
     if studyDbId:
         query += "AND experiments.id = %s "

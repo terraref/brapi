@@ -45,44 +45,44 @@ def search(germplasmDbId=None, observationVariableDbId=None, studyDbId=None, loc
         observationTimeStampRangeEnd = deserialize_datetime(observationTimeStampRangeEnd)
 
     query = """
-select
-  t.treatment_id :: text as treatmentDbId,
-  t.site_id :: text as observationUnitDbId, 
-  t.variable_id :: text as observationVariableDbId, 
-  v.name as observationVariableName, 
-  t.id :: text as observationDbId, 
-  t.mean :: text as value, 
-  t.date as observationTimeStamp, 
-  s.sitename as observationUnitName, 
-  t.cultivar_id :: text as germplasmDbId, 
-  cv.name as germplasmName, 
-  e.id :: text as studyDbId, 
-  seasons.id :: text as seasonDbId, 
-  tr.name as factor, 
-  tr.definition as modality, 
-  t.entity_id :: text as replicate, 
-  c.author as operator, 
-  t.checked as quality 
-from 
-  traits t 
-  left join variables v on t.variable_id = v.id 
-  left join sites s on t.site_id = s.id 
-  left join treatments tr on t.treatment_id = tr.id 
-  left join citations c on t.citation_id = c.id 
-  left join cultivars cv on t.cultivar_id = cv.id 
-  left join experiments_sites es on t.site_id = es.site_id 
-  left join experiments_treatments et on t.treatment_id = et.treatment_id
-  left join experiments e on es.experiment_id = e.id,
-  (select distinct extract (year from start_date) as year, 
-      LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, 
-      md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1)))):: varchar(255) as id 
-    from experiments) seasons 
-where 
-  t.treatment_id = tr.id
-  and t.checked > -1 
-  and t.access_level = 4 
-  and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) 
-"""
+    select
+      t.treatment_id :: text as treatmentDbId,
+      t.site_id :: text as observationUnitDbId, 
+      t.variable_id :: text as observationVariableDbId, 
+      v.name as observationVariableName, 
+      t.id :: text as observationDbId, 
+      t.mean :: text as value, 
+      t.date as observationTimeStamp, 
+      s.sitename as observationUnitName, 
+      t.cultivar_id :: text as germplasmDbId, 
+      cv.name as germplasmName, 
+      e.id :: text as studyDbId, 
+      seasons.id :: text as seasonDbId, 
+      tr.name as factor, 
+      tr.definition as modality, 
+      t.entity_id :: text as replicate, 
+      c.author as operator, 
+      t.checked as quality 
+    from 
+      traits t 
+      left join variables v on t.variable_id = v.id 
+      left join sites s on t.site_id = s.id 
+      left join treatments tr on t.treatment_id = tr.id 
+      left join citations c on t.citation_id = c.id 
+      left join cultivars cv on t.cultivar_id = cv.id 
+      left join experiments_sites es on t.site_id = es.site_id 
+      left join experiments_treatments et on t.treatment_id = et.treatment_id
+      left join experiments e on es.experiment_id = e.id,
+      (select distinct extract (year from start_date) as year, 
+          LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season, 
+          md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1)))):: varchar(255) as id 
+        from experiments) seasons 
+    where 
+      t.treatment_id = tr.id
+      and t.checked > -1 
+      and t.access_level = 4 
+      and seasons.season = LTRIM(RTRIM(SPLIT_PART(e.name, ': ', 1))) 
+   """
 
 
     params = []

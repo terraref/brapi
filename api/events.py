@@ -2,32 +2,34 @@ import helper
 
 def search(studyDbId=None, observationUnitDbId=None, eventDbId=None, eventType=None, dateRangeStart=None,
            dateRangeEnd=None, pageSize=None, page=None):
-    query = "WITH event_parameters as ( select " \
-            "m.id as id, array_agg(array[m.level::text, m.units, null]) as events " \
-            "from managements m " \
-            "where " \
-            "m.id in (select m.id from experiments ex join experiments_treatments et on ex.id = et.experiment_id " \
-            "join treatments t on et.treatment_id = t.id " \
-            "join managements_treatments mt on t.id = mt.treatment_id " \
-            "join managements m on mt.management_id = m.id) " \
-            "group by m.id) " \
-            "select DISTINCT" \
-            "  m.date as date," \
-            "  m.id::text as eventDbId," \
-            "  m.mgmttype as eventType," \
-            "  m.notes as eventDescription, " \
-            "  array_agg(s.id::text) as observationUnitDbIds, " \
-            "  ex.id::text as studyDbId," \
-            "  ev.events as events " \
-            "from" \
-            "  experiments ex" \
-            "  join experiments_treatments et on ex.id = et.experiment_id" \
-            "  join treatments t on et.treatment_id = t.id" \
-            "  join managements_treatments mt on t.id = mt.treatment_id" \
-            "  join managements m on mt.management_id = m.id" \
-            "  join experiments_sites es on ex.id = es.experiment_id" \
-            "  join sites s on es.site_id = s.id " \
-            "  join event_parameters ev on ev.id = m.id"
+    query = """
+    with event_parameters as (select
+      m.id as id, array_agg(array[m.level::text, m.units, null]) as events
+      from managements m
+    where
+      m.id in (select m.id from experiments ex join experiments_treatments et on ex.id = et.experiment_id
+        join treatments t on et.treatment_id = t.id
+        join managements_treatments mt on t.id = mt.treatment_id
+        join managements m on mt.management_id = m.id)
+    group by m.id)
+    select distinct
+      m.date as date,
+      m.id::text as eventDbId,
+      m.mgmttype as eventType,
+      m.notes as eventDescription,
+      array_agg(s.id::text) as observationUnitDbIds,
+      ex.id::text as studyDbId,
+      ev.events as events
+    from
+      experiments ex
+      join experiments_treatments et on ex.id = et.experiment_id
+      join treatments t on et.treatment_id = t.id
+      join managements_treatments mt on t.id = mt.treatment_id
+      join managements m on mt.management_id = m.id
+      join experiments_sites es on ex.id = es.experiment_id
+      join sites s on es.site_id = s.id
+      join event_parameters ev on ev.id = m.id
+    """
 
     params = []
 

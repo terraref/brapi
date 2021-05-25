@@ -29,33 +29,39 @@ def query(single_row=False, locationDbId=None, locationType=None, pageSize=None,
     params = list()
 
     # get all sitegroups and sites
-    query = "SELECT sitegroups.id::text AS locationDbId, " \
-            "       sitegroups.name AS name, " \
-            "       sites.country AS countryCode, " \
-            "       sites.geometry AS geometry " \
-            "FROM sites, sitegroups, sitegroups_sites " \
-            "WHERE sitegroups_sites.site_id = sites.id " \
-            "      AND sitegroups_sites.sitegroup_id = sitegroups.id "
+    query = """
+    select sitegroups.id::text AS locationDbId,
+           sitegroups.name AS name,
+           sites.country as countryCode,
+           sites.geometry AS geometry
+    from sites, sitegroups, sitegroups_sites
+    where sitegroups_sites.site_id = sites.id
+          and sitegroups_sites.sitegroup_id = sitegroups.id 
+    """
 
     if locationDbId:
         query += "AND sitegroups.id = %s"
         params.append(locationDbId)
 
     # compute the bounding box
-    query = "SELECT locationDbId, " \
-            "       name, " \
-            "       countryCode, " \
-            "       ST_Extent(geometry) AS geometry " \
-            "FROM (" + query + ") ss1 " \
-            "GROUP BY locationDbId, name, countryCode "
+    bbquery = """
+    select locationDbId, name, countryCode, ST_Extent(geometry) as geometry
+      from ({0}) ss1
+      group by locationDbId, name, countryCode
+    """
+    query = bbquery.format(query)
+
     # compute center point
-    query = "SELECT DISTINCT locationDbId::text, " \
-            "       name, " \
-            "       countryCode, " \
-            "       ST_X(ST_CENTROID(geometry)) AS longitude, " \
-            "       ST_Y(ST_CENTROID(geometry)) AS latitude, " \
-            "       ST_Z(ST_CENTROID(geometry)) AS altitude " \
-            "FROM (" + query + ") ss2"
+    cpquery = """
+    select distinct locationDbId::text,
+       name,
+       countryCode,
+       ST_X(ST_CENTROID(geometry)) as longitude,
+       ST_Y(ST_CENTROID(geometry)) as latitude,
+       ST_Z(ST_CENTROID(geometry)) as altitude 
+       from ( {0} ) ss2
+    """
+    query = cpquery.format(query)
 
     # order query
     query += " ORDER BY locationDbId"

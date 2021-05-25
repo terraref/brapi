@@ -14,9 +14,11 @@ def search(seasonDbId=None, season=None, year=None, pageSize=None, page=None):
     :return: all seasons in the page
     """
     params = list()
-    query = "select * from (select distinct extract(year from start_date) as year, " \
-            "LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season," \
-            "md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list "
+    query = """
+    SELECT * FROM (select distinct extract(year from start_date) as year,
+      LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))) as season,
+      md5(LTRIM(RTRIM(SPLIT_PART(name, ': ', 1))))::varchar(255) as id from experiments) season_list 
+    """
 
     # add a filter on the season ID
     if seasonDbId:
