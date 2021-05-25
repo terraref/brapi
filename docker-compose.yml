@@ -1,7 +1,7 @@
 #docker-compose -p bety up  -d postgres
 #
 # initialize BETY database
-#docker run -ti --rm --network bety_bety -e BETY_INITIALIZE_URL='-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz' pecan/bety:develop initialize
+#docker run -ti --rm --network bety_bety -e BETY_INITIALIZE_URL='-w https://terraref.org/bety/dump/bety0/bety.tar.gz' pecan/bety:develop initialize
 #
 # sync  BETY database
 #docker run -ti --rm --network bety_bety -e REMOTE_SERVERS=6  pecan/bety:terra sync
@@ -31,11 +31,11 @@ services:
     ports:
       - 8000:8000
     environment:
-      - INITIALIZE_URL=-w https://terraref.ncsa.illinois.edu/bety/dump/bety0/bety.tar.gz
+      - INITIALIZE_URL=-w https://terraref.org/bety/dump/bety0/bety.tar.gz
       - REMOTE_SERVERS=6
       - UNICORN_WORKER_PROCESSES=1
       - SECRET_KEY_BASE=thisissomereallllllylongsecretkeyandshouldbelongerthanthis
-      - DUMPURL=https://terraref.ncsa.illinois.edu/bety/dump/bety6/bety.tar.gz
+      - DUMPURL=https://terraref.org/bety/dump/bety6/bety.tar.gz
     depends_on:
       - postgres
     restart: unless-stopped
