@@ -141,6 +141,14 @@ Now that you have BETYdb running on port 5432, you will be able to begin develop
 
 ## Style and conventions
 
+### Helper Functions
+
+`create_result` in helper.py takes a result and will return a properly formatted response. 
+
+
+
+### SQL
+
 * for SQL Chunks, use triple quotes, e.g.
 ```sql
 query ="""
@@ -148,7 +156,11 @@ select * from foo
   where bar = 1
 """
 ``` 
-* for parameterized quotes, use `str.format`, e.g. `a = """foo {0}"""" \n b = "bar" \n c = a.format(b)`
+* for parameterized quotes, use the following syntax (from python >=3.6)
+```python
+query = 'bar'
+query = f"""select * from {query}"""
+```
 
 ## Showing data in BETY database
 
@@ -184,8 +196,9 @@ Next switch to 'Test your own' and change the URL. To launch the BrAPI:
 docker-compose up -d brapi
 ```
 
-If you run the brapi server as a docker container in docker-compose you can use `http://brapi:5000/brapi/v1` as the URL. If you run
-the server on your machine you can either use `http://host.docker.internal:5000/brapi/v1` or
+If you run the brapi server as a docker container in docker-compose you can use `http://brapi:5000/brapi/v1` as the URL. 
+
+If you run the server on your machine you can either use **`http://host.docker.internal:5000/brapi/v1`** or
 you can use `http://<ipaddress>:5000/brapi/v1`.
 
 

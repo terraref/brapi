@@ -22,7 +22,7 @@ def search(observationVariableDbId=None, traitClass=None, pageSize=None, page=No
         where_clause = " AND"
 
     # add a filter on the trait class  - not implemented at this time
-    #if traitClass:
+    # if traitClass:
     # NOTE: this code is invalid for filtering on traitClass, it's just a placeholder
     #    query += where_clause + " s.id = %s "
     #    params.append(traitClass)

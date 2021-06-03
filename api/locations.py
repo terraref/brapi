@@ -44,24 +44,22 @@ def query(single_row=False, locationDbId=None, locationType=None, pageSize=None,
         params.append(locationDbId)
 
     # compute the bounding box
-    bbquery = """
+    query = f"""
     select locationDbId, name, countryCode, ST_Extent(geometry) as geometry
-      from ({0}) ss1
+      from ({query}) ss1
       group by locationDbId, name, countryCode
     """
-    query = bbquery.format(query)
 
     # compute center point
-    cpquery = """
+    query = f"""
     select distinct locationDbId::text,
        name,
        countryCode,
        ST_X(ST_CENTROID(geometry)) as longitude,
        ST_Y(ST_CENTROID(geometry)) as latitude,
        ST_Z(ST_CENTROID(geometry)) as altitude 
-       from ( {0} ) ss2
+       from ( {query} ) ss2
     """
-    query = cpquery.format(query)
 
     # order query
     query += " ORDER BY locationDbId"
