@@ -87,7 +87,7 @@ def search(studyDbId=None, observationUnitDbId=None, eventDbId=None, eventType=N
 
             events.append(new_item)
         data.append({
-             "date": row["date"],
+             "date" = [{discreteDates": row["date"]}],
              "eventDbId": row["eventdbid"],
              "eventType": row["eventtype"],
              "eventDescription": row["eventdescription"],
