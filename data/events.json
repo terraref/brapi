@@ -347,8 +347,8 @@
         {
           "code": ["harvest"],
           "name": ["harvest"],
-          "unit": [""],
-          "value": [""]
+          "unit": ["whole plant"],
+          "value": ["aboveground biomass"]
         }
       ]
     ],
@@ -362,8 +362,8 @@
         {
           "code": ["harvest"],
           "name": ["harvest"],
-          "unit": [""],
-          "value": [""]
+          "unit": ["whole plant"],
+          "value": ["aboveground biomass"]
         }
       ]
     ],
@@ -435,8 +435,8 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": [""],
+          "name": [""],
           "unit": [""],
           "value": [""]
         }
@@ -450,8 +450,8 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": [""],
+          "name": [""],
           "unit": [""],
           "value": [""]
         }
@@ -465,14 +465,14 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": [""],
+          "name": [""],
           "unit": [""],
           "value": [""]
         }
       ]
     ],
-    "eventType": ["fertilizer_N"]
+    "eventType": ["fertilizer"]
   },
   {
     "eventDbId": ["6000000103"],
@@ -480,8 +480,8 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": [""],
+          "name": [""],
           "unit": [""],
           "value": [""]
         }
@@ -495,8 +495,8 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": [""],
+          "name": [""],
           "unit": [""],
           "value": [""]
         }
