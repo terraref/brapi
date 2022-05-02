@@ -1,7 +1,7 @@
 [
   {
     "eventDbId": ["6000000052"],
-    "eventDescription": ["Field ripped and tilled. "],
+    "eventDescription": ["Field ripped and tilled."],
     "eventParameters": [
       [
         {
@@ -15,38 +15,23 @@
     "eventType": ["tillage"]
   },
   {
-    "eventDbId": ["6000000051"],
-    "eventDescription": ["Field leveled. "],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["tillage"]
-  },
-  {
     "eventDbId": ["6000000050"],
-    "eventDescription": ["Pre-plant Nitrogen fertilizer incorporated in the field, at 100 lbs N/A as urea. "],
+    "eventDescription": ["Pre-plant Nitrogen fertilizer incorporated in the field, at 100 lbs N/A as urea."],
     "eventParameters": [
       [
         {
           "code": ["FE005"],
           "name": ["Urea"],
-          "unit": ["lbs / acre"],
-          "value": ["100"]
+          "unit": ["kg / ha"],
+          "value": ["112.1"]
         }
       ]
     ],
-    "eventType": ["fertilizer_N"]
+    "eventType": ["fertilizer"]
   },
   {
     "eventDbId": ["6000000049"],
-    "eventDescription": ["Field planted with Kincaid planter, 5 cm seed spacing (planned for thinning after seedling emergence).  Planted plot length 3.5 m with 0.5 m alley length, 2-row plots spaced at 76.2 cm.  Seed depth 3.18 cm. "],
+    "eventDescription": ["Field planted with Kincaid planter, 5 cm seed spacing (planned for thinning to 14cm spacing after seedling emergence).  Planted plot length 3.5 m with 0.5 m alley length, 2-row plots spaced at 76.2 cm.  Seed depth 3.18 cm. "],
     "eventParameters": [
       [
         {
@@ -56,14 +41,34 @@
           "value": [""]
         },
         {
-          "name": ["seed spacing"],
+          "code": ["PLDP"],
+          "name": ["planting_depth"],
           "unit": ["cm"],
-          "value": ["5"]
+          "value": ["3.18"]
         },
         {
-          "name": ["row spacing"],
+          "code": ["PLSP"],
+          "name": ["plant_spacing"],
+          "unit": ["cm"],
+          "value": ["14"]
+        },
+        {
+          "code": ["PLRS"],
+          "name": ["row_spacing"],
           "unit": ["cm"],
           "value": ["76.2"]
+        },
+        {
+          "code": ["PLTLN"],
+          "name": ["plot_length"],
+          "unit": ["m"],
+          "value": ["3.5"]
+        },
+        {
+          "code": ["PLTWI"],
+          "name": ["plot_width"],
+          "unit": ["m"],
+          "value": ["1.52"]
         }
       ]
     ],
@@ -71,93 +76,53 @@
   },
   {
     "eventDbId": ["6000000066"],
-    "eventDescription": ["First sprinkler irrigation after planting"],
+    "eventDescription": ["sprinkler irrigation after planting to facilitate seedling emergence."],
+    "date": {
+      "startDate": ["2017-04-21"],
+      "endDate": ["2017-05-04"]
+    },
     "eventParameters": [
       [
         {
           "code": ["IR004"],
           "name": ["Sprinkler"],
-          "unit": ["mm"],
-          "value": [""]
         }
       ]
     ],
     "eventType": ["irrigation"]
-  },
-  {
-    "eventDbId": ["6000000067"],
-    "eventDescription": ["Final sprinkler irrigation to facilitate seedling emergence.  All subsequent irrigation implemented by sub-surface drip system. "],
-    "eventParameters": [
-      [
-        {
-          "code": ["IR004"],
-          "name": ["Sprinkler"],
-          "unit": ["mm"],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["irrigation"]
-  },
-  {
-    "eventDbId": ["6000000068"],
-    "eventDescription": ["Plant thinning in Ranges 3-10.  Seedlings removed to approximately 14 cm spacing between plants for a final plant stand count of 50 to 56 plants per plot. "],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": ["Thinning"],
-          "unit": ["cm"],
-          "value": ["14"]
-        }
-      ]
-    ],
-    "eventType": ["thinning"]
-  },
-  {
-    "eventDbId": ["6000000069"],
-    "eventDescription": ["Plant thinning, Ranges 11-32.  Seedlings removed to approximately 14 cm spacing between plants for a final plant stand count of 50 to 56 plants per plot."],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": ["Thinning"],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["thinning"]
-  },
-  {
-    "eventDbId": ["6000000070"],
-    "eventDescription": ["Plant thinning, Ranges 33-52.  Seedlings removed to approximately 14 cm spacing between plants for a final plant stand count of 50 to 56 plants per plot."],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": ["Thinning"],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["thinning"]
   },
   {
     "eventDbId": ["6000000053"],
-    "eventDescription": ["Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac, for total of approximately 6 oz.  "],
+    "eventDescription": ["Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac, for total of approximately 6 oz."],
     "eventParameters": [
       [
         {
-          "code": ["NONE Exists"],
-          "name": ["Coragen"],
-          "unit": ["oz/ac"],
-          "value": ["4.5"]
+          "code": ["CH_NAME"],
+          "name": ["chem_applic_name"],
+          "unit": ["text"],
+          "value": ["Coragen"]
+        },
+        {
+          "code": ["CHCD"],
+          "name": ["chem_applic_material"],
+          "unit": ["text"],
+          "value": ["Chlortaniliprole"]
+        },
+        {
+          "code": ["CH"],
+          "name": ["chem_applic_level"],
+          "unit": ["kg/ha"],
+          "value": ["2.9"]
+        },
+        {
+          "code": ["CH_TARGETS"],
+          "name": ["chemical_applic_target"],
+          "unit": ["text"],
+          "value": ["grub"]
         }
       ]
     ],
-    "eventType": ["pesticide"]
+    "eventType": ["chemicals"]
   },
   {
     "eventDbId": ["6000000071"],
@@ -177,21 +142,10 @@
   {
     "eventDbId": ["6000000072"],
     "eventDescription": ["Manual weed removal by hoe, east half of field"],
-    "eventParameters": [
-      [
-        {
-          "code": ["weeding"],
-          "name": ["mechanical weeding"],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["weeding"]
-  },
-  {
-    "eventDbId": ["6000000073"],
-    "eventDescription": ["Manual weed removal by hoe, west half of field"],
+    "date": {
+      "startDate": ["2017-05-18"],
+      "endDate": ["2017-05-19"]
+    },
     "eventParameters": [
       [
         {
@@ -266,7 +220,11 @@
   },
   {
     "eventDbId": ["6000000078"],
-    "eventDescription": ["Final full-field irrigation prior to starting water-deficit treatment in portion of field"],
+    "eventDescription": ["full-field sub-surface drip irrigation"],
+    "date": {
+      "startDate": ["2017-05-05"],
+      "endDate": ["2017-07-30"]
+    },
     "eventParameters": [
       [
         {
@@ -282,6 +240,10 @@
   {
     "eventDbId": ["6000000079"],
     "eventDescription": ["Water-deficit and well-watered treatment blocks established by capping the drip lines within the water-deficit treatment area so that these plots receive no water at all during irrigation events, while plots within the well-watered treatment area continue to be irrigated by their associated drip lines.  Experimental plots within Columns 5, 6, 7, 8, 12, 13, 14, and 15 were established as water-deficit blocks with restricted irrigation. Experimental plots within Columns 2, 3, 4, 9, 10, and 11 remained under full irrigation as well-watered blocks. Border Column 1 remained under full irrigation and Border Column 16 was included as part of the water-deficit block with restricted irrigation. "],
+    "date": {
+      "startDate": ["2017-08-01"],
+      "endDate": ["2017-08-15"]
+    },
     "eventParameters": [
       [
         {
@@ -297,21 +259,10 @@
   {
     "eventDbId": ["6000000080"],
     "eventDescription": ["Water-deficit and well-watered treatments blocks reversed by capping the drip lines that were previously open and un-capping those that were previously capped.  Starting with the irrigation overnight between August 14 and 15, the new water-deficit treatment blocks included experimental plots in Columns 2, 3, 4, 9, 10, and 11.  Experimental plots in Columns 5, 6, 7, 8, 12, 13, 14, and 15 were included in well-watered blocks to allow recovery from the previous water-deficit stress.  Border Column 1 included with the new water-deficit treatment blocks with restricted irrigation and Border Column 16 returned to full irrigation with the well-watered blocks. "],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["irrigation"]
-  },
-  {
-    "eventDbId": ["6000000081"],
-    "eventDescription": ["Irrigation terminated across whole field to allow ground to dry in preparation for harvest equipment field access"],
+    "date": {
+      "startDate": ["2017-08-15"],
+      "endDate": ["2017-08-30"]
+    },
     "eventParameters": [
       [
         {
@@ -326,59 +277,18 @@
   },
   {
     "eventDbId": ["6000000082"],
-    "eventDescription": ["First day of mechanical harvest for green-chop biomass yield estimates, using Kemper small-plot harvester and customized Carter weigh-wagon"],
+    "eventDescription": ["mechanical harvest for green-chop biomass yield estimates, using Kemper small-plot harvester and customized Carter weigh-wagon"],
+    "date": {
+      "startDate": ["2017-09-11"],
+      "endDate": ["2017-09-16"]
+    },
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
-          "unit": ["whole plant"],
+          "code": ["harvest_operat_component"],
+          "name": ["HACOM"],
+          "unit": ["text"],
           "value": ["aboveground biomass"]
-        }
-      ]
-    ],
-    "eventType": ["harvest"]
-  },
-  {
-    "eventDbId": ["6000000083"],
-    "eventDescription": ["Second day of mechanical harvest for green-chop biomass yield estimates, using Kemper small-plot harvester and customized Carter weigh-wagon"],
-    "eventParameters": [
-      [
-        {
-          "code": ["harvest"],
-          "name": ["harvest"],
-          "unit": ["whole plant"],
-          "value": ["aboveground biomass"]
-        }
-      ]
-    ],
-    "eventType": ["harvest"]
-  },
-  {
-    "eventDbId": ["6000000084"],
-    "eventDescription": ["Third day of mechanical harvest for green-chop biomass yield estimates, using Kemper small-plot harvester and customized Carter weigh-wagon"],
-    "eventParameters": [
-      [
-        {
-          "code": ["harvest"],
-          "name": ["harvest"],
-          "unit": ["whole plant"],
-          "value": ["aboveground biomass"]
-        }
-      ]
-    ],
-    "eventType": ["harvest"]
-  },
-  {
-    "eventDbId": ["6000000085"],
-    "eventDescription": ["Fourth and final day of mechanical harvest for green-chop biomass yield estimates, using Kemper small-plot harvester and customized Carter weigh-wagon"],
-    "eventParameters": [
-      [
-        {
-          "code": ["harvest"],
-          "name": ["harvest"],
-          "unit": [""],
-          "value": [""]
         }
       ]
     ],
@@ -386,33 +296,48 @@
   },
   {
     "eventDbId": ["6000000097"],
-    "eventDescription": ["Sorghum BAP experiment planted: 336 accessions randomized in a row-column experimental design in two replicate blocks plus two uniformity ranges of 14 plots at each end of the field, for a total of 700 experimental 2-row plots.  "],
+    "eventDescription": ["Sorghum BAP experiment planted: 336 accessions randomized in a row-column experimental design in two replicate blocks plus two uniformity ranges of 14 plots at each end of the field, for a total of 700 experimental 2-row plots.  Plants were later thinned lightly in all experimental plots to a spacing of 1 plant per 7 cm when possible."],
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": ["S"],
+          "name": ["Dry Seed"],
           "unit": [""],
           "value": [""]
+        },
+        {
+          "code": ["PLDP"],
+          "name": ["planting_depth"],
+          "unit": ["cm"],
+          "value": ["3.18"]
+        },
+        {
+          "code": ["PLSP"],
+          "name": ["plant_spacing"],
+          "unit": ["cm"],
+          "value": ["7"]
+        },
+        {
+          "code": ["PLRS"],
+          "name": ["row_spacing"],
+          "unit": ["cm"],
+          "value": ["76.2"]
+        },
+        {
+          "code": ["PLTLN"],
+          "name": ["plot_length"],
+          "unit": ["m"],
+          "value": ["3.5"]
+        },
+        {
+          "code": ["PLTWI"],
+          "name": ["plot_width"],
+          "unit": ["m"],
+          "value": ["1.52"]
         }
       ]
     ],
     "eventType": ["planting"]
-  },
-  {
-    "eventDbId": ["6000000098"],
-    "eventDescription": ["Soil moisture probe arrays installed at depths of 1 cm, 10 cm, and 50 cm in the seed row and between seed rows at 3 locations (middle of short axis at ranges 20, 28, and 38) for continuous data logging throughout the season. "],
-    "eventParameters": [
-      [
-        {
-          "code": ["harvest"],
-          "name": ["harvest"],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["other"]
   },
   {
     "eventDbId": ["6000000099"],
@@ -420,8 +345,8 @@
     "eventParameters": [
       [
         {
-          "code": ["harvest"],
-          "name": ["harvest"],
+          "code": ["IR004"],
+          "name": ["Sprinkler"],
           "unit": [""],
           "value": [""]
         }
@@ -450,14 +375,32 @@
     "eventParameters": [
       [
         {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
+          "code": ["CH_NAME"],
+          "name": ["chem_applic_name"],
+          "unit": ["text"],
+          "value": ["Belt SC"]
+        },
+        {
+          "code": ["CHCD"],
+          "name": ["chem_applic_material"],
+          "unit": ["text"],
+          "value": ["Flubendiamide"]
+        },
+        {
+          "code": ["CH"],
+          "name": ["chem_applic_level"],
+          "unit": ["l/ha"],
+          "value": ["0.029"]
+        },
+        {
+          "code": ["CH_TARGETS"],
+          "name": ["chemical_applic_target"],
+          "unit": ["text"],
+          "value": ["Lepidopteran pests, especially Lesser Cornstalk Borer"]
         }
       ]
     ],
-    "eventType": ["pesticide"]
+    "eventType": ["chemicals"]
   },
   {
     "eventDbId": ["6000000102"],
@@ -465,10 +408,10 @@
     "eventParameters": [
       [
         {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
+          "code": ["FE010"],
+          "name": ["Urea ammonium nitrate"],
+          "unit": ["kg/ha"],
+          "value": ["28"]
         }
       ]
     ],
@@ -476,29 +419,18 @@
   },
   {
     "eventDbId": ["6000000103"],
-    "eventDescription": ["First day of two-day harvest for total above-ground biomass, using a Kemper harvester chopper and attached Carter weigh wagon.  Subsamples were collected for estimates of moisture content.  "],
+    "eventDescription": ["Two-day harvest for total above-ground biomass, using a Kemper harvester chopper and attached Carter weigh wagon.  Subsamples were collected for estimates of moisture content."],
+    "date": {
+      "startDate": ["2018-07-31"],
+      "endDate": ["2018-08-01"]
+    },
     "eventParameters": [
       [
         {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["harvest"]
-  },
-  {
-    "eventDbId": ["6000000104"],
-    "eventDescription": ["Second day of two-day harvest for total above-ground biomass, using a Kemper harvester chopper and attached Carter weigh wagon.  Subsamples were collected for estimates of moisture content.  "],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
+          "code": ["harvest_operat_component"],
+          "name": ["HACOM"],
+          "unit": ["text"],
+          "value": ["aboveground biomass"]
         }
       ]
     ],
