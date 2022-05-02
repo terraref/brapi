@@ -1,19 +1,18 @@
-# TERRA-REF Breeder's API
+# TERRA-REF Breeder's API (BRAPI)
 
 Implementation of the BRAPI standard for TERRA-REF instance of the BETYdb database (terraref.org/bety).
-
-
 
 ## Mappings from BETY to BRAPI models
 
 | BRAPI      | BETY        | Notes |
 |------------|-------------|-------|
 | /calls     | generated   |       |
+| /events    | managements |       |
 | /locations | sitegroups  | lat/lon computed from sites part of sitegroup |
 | /seasons   | experiments | season = month of start_date, year of start_date |
 | /germplasm  | cultivars.  |       | 
 | /observations | traits | |
-
+| /variables | variables | |
 
 # Currently implemented endpoints & parameters
 
@@ -25,15 +24,18 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	paging
   /commoncropnames
   	paging				
-  /programs
-  	commonCropName
-  	programName	
-  	abbreviation
-  	paging		
+  /events
+    date
+    eventDbId
+    eventDescription
+    eventParameters
+    eventType
+    observationUnitDbIds
+    studyDbId
   /locations
   	locationType - Unavailable
   	paging
-  ​/locations​/{locationDbId}
+  /locations/{locationDbId}
   /trials
   	commonCropName	
   	programDbId		
@@ -41,6 +43,11 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	active - Unavailable
   	sorting	- Not supported
   	paging
+  /programs
+  	commonCropName
+  	programName	
+  	abbreviation
+  	paging		
   /seasons
   	seasonDbId	
   	season	
@@ -80,6 +87,12 @@ See [Swagger documentation](http://terraref.org/brapi/v1/ui) for more details
   	germplasmName		
   	commonCropName		
   	paging
+  /variables
+  	name
+  	observationVariableName
+  	observationVariableDbID
+  	scale
+    
 ```
 
 ## How to set up a development environment.
@@ -180,3 +193,7 @@ The file `contrib/ontologies/ontology_reference.json` contains metadata for the 
 ### Setup Locations
 
 For the locations endpoint to work correctly we grouped multiple sites together in a sitegroup. The commands in `contrib/locations_setup.sql` were used to associate sites with the sitegroups. (This has been done and is now part of the TERRA-REF dump).
+
+### Errors 
+
+**wrong password for database or process already using a port**: the port numbers for the databases (5432) specified in docker-compose.yml needs to match the one in database.py

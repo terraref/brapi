@@ -2768,6 +2768,276 @@ paths:
                 type: string
               example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
                 to perform this action
+
+  /variables:
+    get:
+      tags:
+      - Observation Variables
+      summary: Get the Observation Variables
+      description: Call to retrieve a list of observationVariables available in the
+        system.
+      parameters:
+      - name: page
+        in: query
+        description: Which result page is requested. The page indexing starts at 0
+          (the first page is 'page'= 0). Default is `0`.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: "0"
+      - name: pageSize
+        in: query
+        description: The size of the pages to be returned. Default is `1000`.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+        example: 1000
+      - name: Authorization
+        in: header
+        description: "HTTP HEADER - Token used for Authorization \n\n<strong>Bearer\
+          \ {token_string} </strong>"
+        required: false
+        style: simple
+        explode: false
+        schema:
+          pattern: ^Bearer .*$
+          type: string
+        example: Bearer XXXX
+      - name: observationVariableDbId
+        in: query
+        description: Variable's unique ID
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: traitClass
+        in: query
+        description: Variable's trait class (phenological, physiological, morphological,
+          etc.)
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/observationVariablesResponse'
+              example:
+                metadata:
+                  datafiles: []
+                  pagination:
+                    currentPage: 0
+                    pageSize: 2
+                    totalCount: 5
+                    totalPages: 3
+                  status: []
+                result:
+                  data:
+                  - contextOfUse: []
+                    crop: maize
+                    date: 2018-12-05
+                    defaultValue: "10"
+                    documentationURL: https://brapi.org
+                    growthStage: "1"
+                    institution: "1"
+                    language: English
+                    method:
+                      class: Numeric
+                      description: Standard rolled measuring tape
+                      formula: a^2 + b^2 = c^2
+                      methodDbId: m1
+                      methodName: Tape Measure
+                      name: Tape Measure
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/m1
+                          type: RDF
+                          url: https://ontology.org/m1
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      reference: google.com
+                    name: Plant height
+                    observationVariableDbId: MO_123:100002
+                    observationVariableName: Plant height
+                    ontologyDbId: MO_123
+                    ontologyName: Ontology.org
+                    ontologyReference:
+                      documentationLinks:
+                      - URL: https://ontology.org
+                        type: WEBPAGE
+                        url: https://ontology.org
+                      ontologyDbId: MO_123
+                      ontologyName: Ontology.org
+                      version: "17"
+                    scale:
+                      dataType: Numerical
+                      decimalPlaces: 1
+                      name: Centimeter
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/s1
+                          type: OBO
+                          url: https://ontology.org/s1
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      scaleDbId: s1
+                      scaleName: Centimeter
+                      validValues:
+                        categories: []
+                        max: 99999
+                        min: 0
+                      xref: xref
+                    scientist: Bob
+                    status: active
+                    submissionTimestamp: 2011-06-14T22:12:51-04:00
+                    synonyms: []
+                    trait:
+                      alternativeAbbreviations: []
+                      attribute: plant height
+                      class: Numeric
+                      description: plant height
+                      entity: entity
+                      mainAbbreviation: H
+                      name: Plant Height
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/t1
+                          type: WEBPAGE
+                          url: https://ontology.org/t1
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      status: active
+                      synonyms: []
+                      traitDbId: t1
+                      traitName: Plant Height
+                      xref: xref
+                    xref: MO_123:100002
+                  - contextOfUse: []
+                    crop: maize
+                    date: 2018-12-05
+                    defaultValue: "10"
+                    documentationURL: https://brapi.org
+                    growthStage: "1"
+                    institution: "1"
+                    language: English
+                    method:
+                      class: Categorical
+                      description: Comparing sample color to standard color palette
+                      formula: NA
+                      methodDbId: m3
+                      methodName: Standard Color Palette
+                      name: Standard Color Palette
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/m3
+                          type: OBO
+                          url: https://ontology.org/m3
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      reference: google.com
+                    name: Carotenoid
+                    observationVariableDbId: MO_123:100003
+                    observationVariableName: Carotenoid
+                    ontologyDbId: MO_123
+                    ontologyName: Ontology.org
+                    ontologyReference:
+                      documentationLinks:
+                      - URL: https://ontology.org
+                        type: WEBPAGE
+                        url: https://ontology.org
+                      ontologyDbId: MO_123
+                      ontologyName: Ontology.org
+                      version: "17"
+                    scale:
+                      dataType: Nominal
+                      decimalPlaces: 0
+                      name: Color
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/s3
+                          type: WEBPAGE
+                          url: https://ontology.org/s3
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      scaleDbId: s3
+                      scaleName: Color
+                      validValues:
+                        categories:
+                        - dark red
+                        - red
+                        - dark blue
+                        - blue
+                        - black
+                        max: 0
+                        min: 0
+                      xref: xref
+                    scientist: Bob
+                    status: active
+                    submissionTimestamp: 2011-06-14T22:12:51-04:00
+                    synonyms: []
+                    trait:
+                      alternativeAbbreviations: []
+                      attribute: leaf color
+                      class: Categorical
+                      description: color of leaf sample
+                      entity: entity
+                      mainAbbreviation: LC
+                      name: Leaf Color
+                      ontologyReference:
+                        documentationLinks:
+                        - URL: https://ontology.org/t3
+                          type: RDF
+                          url: https://ontology.org/t3
+                        ontologyDbId: MO_123
+                        ontologyName: Ontology.org
+                        version: "17"
+                      status: active
+                      synonyms: []
+                      traitDbId: t3
+                      traitName: Leaf Color
+                      xref: xref
+                    xref: MO_123:100003
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                ERROR - 2018-10-08T20:15:11Z - Malformed JSON Request Object
+                ERROR - 2018-10-08T20:15:11Z - Invalid query parameter
+                ERROR - 2018-10-08T20:15:11Z - Required parameter is missing
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - Missing or expired authorization
+                token
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              example: ERROR - 2018-10-08T20:15:11Z - User does not have permission
+                to perform this action
+
 components:
   schemas:
     VariableBaseClass:
@@ -3018,6 +3288,15 @@ components:
             - "1.1"
             - "1.2"
             - "1.3"
+    Context:
+      description: "The JSON-LD Context is used to provide JSON-LD definitions to each field in a JSON object. By providing an array of context file urls, a BrAPI response object becomes JSON-LD compatible.  \n\nFor more information, see https://w3c.github.io/json-ld-syntax/#the-context"
+      example:
+        - https://brapi.org/jsonld/context/metadata.jsonld
+      items:
+        format: uri
+        type: string
+      title: context
+      type: array
     contact:
       required:
       - contactDbId
@@ -3089,8 +3368,8 @@ components:
 
             MIAPPE V1.1 (DM-68) Event date - Date and time of the event.'
           example:
-            - '2018-10-08T18:15:11Z'
-            - '2018-11-09T18:16:12Z'
+          - '2018-10-08T18:15:11Z'
+          - '2018-11-09T18:16:12Z'
           items:
             format: date-time
             type: string
@@ -3109,12 +3388,12 @@ components:
         eventParameters:
           description: A list of objects describing additional event parameters. Each of the following accepts a human-readable value or URI
           example:
-            - key: http://www.example.fr/vocabulary/2018#hasContact,
-              value: http://www.example.fr/id/agent/marie,
-              valueRdfType: http://xmlns.com/foaf/0.1/Agent,
-            - key: fertilizer
-              value: nitrogen
-              valueRdfType: null
+          - key: http://www.example.fr/vocabulary/2018#hasContact,
+            value: http://www.example.fr/id/agent/marie,
+            valueRdfType: http://xmlns.com/foaf/0.1/Agent,
+          - key: fertilizer
+            value: nitrogen
+            valueRdfType: null
           items:
             properties:
               key:
@@ -3148,9 +3427,9 @@ components:
         observationUnitDbIds:
           description: A list of the affected observation units. If this parameter is not given, it is understood that the event affected all units in the study
           example:
-            - 8439eaff
-            - d7682e7a
-            - 305ae51c
+          - 8439eaff
+          - d7682e7a
+          - 305ae51c
           items:
             type: string
           type: array
@@ -3159,8 +3438,8 @@ components:
           example: 2cc2001f
           type: string
       required:
-        - eventDbId
-        - eventType
+      - eventDbId
+      - eventType
       type: object
     genomeMap:
       required:
