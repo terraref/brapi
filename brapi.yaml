@@ -419,49 +419,50 @@ paths:
       deprecated: true
   /events:
     get:
-      description: Get list of events
+      summary: Get the Events
+      description: Get list of events (backported from BrAPI Phenotyping v2.0)
       parameters:
-      - description: Filter based on study unique identifier in which the events occured
-        in: query
-        name: studyDbId
-        required: false
-        schema:
-          type: string
-      - description: Filter based on an ObservationUnit unique identifier in which the events occured
-        in: query
-        name: observationUnitDbId
-        required: false
-        schema:
-          type: string
-      - description: Filter based on an Event DbId
-        in: query
-        name: eventDbId
-        required: false
-        schema:
-          type: string
-      - description: Filter based on an Event Type
-        in: query
-        name: eventType
-        required: false
-        schema:
-          type: string
-      - description: Filter based on an Date Range
-        in: query
-        name: dateRangeStart
-        required: false
-        schema:
-          format: date-time
-          type: string
-      - description: Filter based on an Date Range
-        in: query
-        name: dateRangeEnd
-        required: false
-        schema:
-          format: date-time
-          type: string
-      - $ref: '#/components/parameters/page'
-      - $ref: '#/components/parameters/pageSize'
-      - $ref: '#/components/parameters/authorizationHeader'
+        - description: Filter based on study unique identifier in which the events occured
+          in: query
+          name: studyDbId
+          required: false
+          schema:
+            type: string
+        - description: Filter based on an ObservationUnit unique identifier in which the events occured
+          in: query
+          name: observationUnitDbId
+          required: false
+          schema:
+            type: string
+        - description: Filter based on an Event DbId
+          in: query
+          name: eventDbId
+          required: false
+          schema:
+            type: string
+        - description: Filter based on an Event Type
+          in: query
+          name: eventType
+          required: false
+          schema:
+            type: string
+        - description: Filter based on an Date Range
+          in: query
+          name: dateRangeStart
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - description: Filter based on an Date Range
+          in: query
+          name: dateRangeEnd
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/authorizationHeader'
       responses:
         '200':
           content:
@@ -479,7 +480,7 @@ paths:
                           $ref: '#/components/schemas/Event'
                         type: array
                     required:
-                       - data
+                      - data
                     type: object
                 required:
                   - metadata
@@ -494,7 +495,6 @@ paths:
           $ref: '#/components/responses/401Unauthorized'
         '403':
           $ref: '#/components/responses/403Forbidden'
-      summary: Get the Events
       tags:
         - Events
   /germplasm:
@@ -3322,15 +3322,6 @@ components:
           type: string
           description: 'The type of person this contact represents (ex: Coordinator,
             Scientist, PI, etc.)'
-    Context:
-      description: "The JSON-LD Context is used to provide JSON-LD definitions to each field in a JSON object. By providing an array of context file urls, a BrAPI response object becomes JSON-LD compatible.  \n\nFor more information, see https://w3c.github.io/json-ld-syntax/#the-context"
-      example:
-      - https://brapi.org/jsonld/context/metadata.jsonld
-      items:
-        format: uri
-        type: string
-      title: context
-      type: array
     dataLink:
       type: object
       properties:
