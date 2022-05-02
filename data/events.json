@@ -355,21 +355,6 @@
     "eventType": ["irrigation"]
   },
   {
-    "eventDbId": ["6000000100"],
-    "eventDescription": ["Plants were thinned lightly in all experimental plots to a spacing of 1 plant per 7 cm when possible. "],
-    "eventParameters": [
-      [
-        {
-          "code": [""],
-          "name": [""],
-          "unit": [""],
-          "value": [""]
-        }
-      ]
-    ],
-    "eventType": ["thinning"]
-  },
-  {
     "eventDbId": ["6000000101"],
     "eventDescription": ["Ground-vehicle spray application of insecticide for treatment of Lepidopteran pests, especially Lesser Cornstalk Borer.  Belt SC (active ingredient Flubendiamide) applied at rate 0.029 Liters/Hectare (4 oz/acre), dilution per 100 gal = 20 oz.   "],
     "eventParameters": [
