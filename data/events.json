@@ -1,6 +1,9 @@
 [
   {
     "eventDbId": ["6000000052"],
+    "date": {
+      "discreteDates": ["2017-04-10"]
+    },
     "eventDescription": ["Field ripped and tilled."],
     "eventParameters": [
       [
@@ -16,6 +19,9 @@
   },
   {
     "eventDbId": ["6000000050"],
+    "date": {
+      "discreteDates": ["2017-04-13"]
+    },
     "eventDescription": ["Pre-plant Nitrogen fertilizer incorporated in the field, at 100 lbs N/A as urea."],
     "eventParameters": [
       [
@@ -31,6 +37,9 @@
   },
   {
     "eventDbId": ["6000000049"],
+    "date": {
+      "discreteDates": ["2017-04-20"]
+    },
     "eventDescription": ["Field planted with Kincaid planter, 5 cm seed spacing (planned for thinning to 14cm spacing after seedling emergence).  Planted plot length 3.5 m with 0.5 m alley length, 2-row plots spaced at 76.2 cm.  Seed depth 3.18 cm. "],
     "eventParameters": [
       [
@@ -85,7 +94,7 @@
       [
         {
           "code": ["IR004"],
-          "name": ["Sprinkler"],
+          "name": ["Sprinkler"]
         }
       ]
     ],
@@ -93,6 +102,9 @@
   },
   {
     "eventDbId": ["6000000053"],
+    "date": {
+      "discreteDates": ["2017-05-12"]
+    },
     "eventDescription": ["Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac, for total of approximately 6 oz."],
     "eventParameters": [
       [
@@ -126,6 +138,9 @@
   },
   {
     "eventDbId": ["6000000071"],
+    "date": {
+      "discreteDates": ["2017-05-15"]
+    },
     "eventDescription": ["Mechanical cultivation between rows to control weeds "],
     "eventParameters": [
       [
@@ -160,6 +175,9 @@
   },
   {
     "eventDbId": ["6000000074"],
+    "date": {
+      "discreteDates": ["2017-05-26"]
+    }, 
     "eventDescription": ["Manual weed removal by hand, within plant rows"],
     "eventParameters": [
       [
@@ -175,6 +193,9 @@
   },
   {
     "eventDbId": ["6000000075"],
+    "date": {
+      "discreteDates": ["2017-06-11"]
+    },
     "eventDescription": ["Liquid UAN (nitrogen) added through drip irrigation system at rate of 28 kg/ha"],
     "eventParameters": [
       [
@@ -190,6 +211,9 @@
   },
   {
     "eventDbId": ["6000000076"],
+    "date": {
+      "discreteDates": ["2017-06-22"]
+    },
     "eventDescription": ["Liquid UAN (nitrogen) added through drip irrigation system at rate of 28 kg/ha "],
     "eventParameters": [
       [
@@ -205,6 +229,9 @@
   },
   {
     "eventDbId": ["6000000077"],
+    "date": {
+      "discreteDates": ["2017-07-18"]
+    },
     "eventDescription": ["Liquid UAN (nitrogen) added through drip irrigation system at rate of 28 kg/ha "],
     "eventParameters": [
       [
@@ -296,6 +323,9 @@
   },
   {
     "eventDbId": ["6000000097"],
+    "date": {
+      "discreteDates": ["2018-04-25"]
+    },
     "eventDescription": ["Sorghum BAP experiment planted: 336 accessions randomized in a row-column experimental design in two replicate blocks plus two uniformity ranges of 14 plots at each end of the field, for a total of 700 experimental 2-row plots.  Plants were later thinned lightly in all experimental plots to a spacing of 1 plant per 7 cm when possible."],
     "eventParameters": [
       [
@@ -341,6 +371,9 @@
   },
   {
     "eventDbId": ["6000000099"],
+    "date": {
+      "discreteDates": ["2018-04-26"]
+    },
     "eventDescription": ["First sprinkler irrigation event after planting, started approx 17:00 going into the night hours to irrigate approximately 2.5 cm of water. "],
     "eventParameters": [
       [
@@ -356,6 +389,9 @@
   },
   {
     "eventDbId": ["6000000101"],
+    "date": {
+      "discreteDates": ["2018-05-21"]
+    },
     "eventDescription": ["Ground-vehicle spray application of insecticide for treatment of Lepidopteran pests, especially Lesser Cornstalk Borer.  Belt SC (active ingredient Flubendiamide) applied at rate 0.029 Liters/Hectare (4 oz/acre), dilution per 100 gal = 20 oz.   "],
     "eventParameters": [
       [
@@ -389,6 +425,9 @@
   },
   {
     "eventDbId": ["6000000102"],
+    "date": {
+      "discreteDates": ["2018-06-15"]
+    },
     "eventDescription": ["Nitrogen applied by fertigation through the drip system at rate of 28 kg/ha.  "],
     "eventParameters": [
       [

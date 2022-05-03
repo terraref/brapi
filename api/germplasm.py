@@ -1,5 +1,4 @@
 import json
-import logging
 
 import helper
 
@@ -9,7 +8,6 @@ int_to_str_names = ["germplasmDbId"]
 str_to_int_names = ["biologicalStatusOfAccessionCode"]
 
 germplasm_data = None
-
 
 def search(germplasmPUI=None, germplasmDbId=None, germplasmName=None, commonCropName=None, pageSize=None, page=None):
     return get_result(dataonly=False, germplasmPUI=germplasmPUI, germplasmDbId=germplasmDbId,
@@ -22,6 +20,8 @@ def get_result(dataonly=False,
 
     if not germplasm_data:
         load_data()
+    else:
+        pass
 
     def filter_func(x):
         if germplasmPUI and x.get('germplasmPUI', '') != germplasmPUI:

@@ -1,7 +1,29 @@
+import json
+
 import helper
+
+events_data = None
+
+def load_data():
+    global germplasm_data
+
+    raw_data = json.load(open('data/events.json', 'r'))
+    events_data = _ensure_arrays(_convert_strings(_flatten_data(_convert_types(raw_data))))
 
 def search(studyDbId=None, observationUnitDbId=None, eventDbId=None, eventType=None, dateRangeStart=None,
            dateRangeEnd=None, pageSize=None, page=None):
+    return get_result(dataonly=False, studyDbId=None, observationUnitDbId=None, eventDbId=None, eventType=None, dateRangeStart=None,
+           dateRangeEnd=None, pageSize=None, page=None)
+
+
+def get_result(dataonly=False,
+               studyDbId=None, observationUnitDbId=None, eventDbId=None, eventType=None, dateRangeStart=None,
+               dateRangeEnd=None, pageSize=None, page=None):
+    if not cultivar_data:
+        load_data()
+    else:
+        pass
+
     query = "WITH event_parameters as ( select " \
             "m.id as id, array_agg(array[m.level::text, m.units, null]) as events " \
             "from managements m " \
