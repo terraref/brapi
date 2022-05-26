@@ -278,7 +278,7 @@
         "code": "IROP",
         "name": "irrigation_operation",
         "value": "IR012",
-        "units": "code",
+        "unit": "code",
         "codeValueDescription": "Subsurface (burried) drip, mm"
       },
       {
