@@ -61,86 +61,89 @@
     "eventParameters": [
         {
           "code": "PLMA",
-          "name": "Planting Method",
+          "name": "planting_material",
+          "parameterDescription": "Planting material",
           "value": "S",
           "unit":"code",
           "codeValueDescription": "Dry Seed"
         },
         {
           "code": "CRID",
-          "name": "Crop (or weed) species identifier",
+          "name": "crop_ident_ICASA",
+          "parameterDescription": "Crop (or weed) species identifier",
           "value": "SGG",
           "unit": "code",
           "codeValueDescription": "Sorghum bicolor"
         },
         {
-          "code": "PLSL",
-          "name": "Planting Length",
+          "code": "PLTLN",
+          "name": "plot_length",
+          "parameterDescription": "Plot length (gross) for single plot or treatment",
           "value": "3.5",
           "unit":"m",
           "codeValueDescription": "3.5 m"
         },
         {
-          "code": "PLAL",
-          "name": "Planting Alley Length",
+          "code": "PLTSP",
+          "name": "plot_separation",
+          "parameterDescription": "Spacing between individual plots, if any",
           "value": "0.5",
-          "unit":"m",
-          "codeValueDescription": "0.5 m"
+          "unit":"m"
         },
         {
-          "code": "PLNR",
-          "name": "Planting Row",
+          "code": "PLTRno",
+          "name": "plot_row_number",
+          "parameterDescription":"Plot row number for single plot or treatment",
           "value": "2",
-          "unit":"",
-          "codeValueDescription": "2"
+          "unit":""
         },
         {
-          "code": "PLSP",
-          "name": "Planting Spacing",
+          "code": "PLRS",
+          "name": "row_spacing",
+          "parameterDescription": "Distance between two adjacent rows",
           "value": "76.2",
           "unit":"cm",
           "codeValueDescription": "76.2 cm"
         },
         {
-          "code": "PLSD",
-          "name": "Seed Depth",
+          "code": "PLDP",
+          "name": "planting_depth",
+          "parameterDescription": "Depth of seed (or other planted material) relative to soil surface.",
           "value": "3.18",
-          "unit":"cm",
-          "codeValueDescription": "3.18 cm"
+          "unit":"cm"
         },
         {
           "code": "PLPOP",
           "name": "plant_pop_at_planting",
+          "parameterDescription": "Plant population at planting",
           "unit": "number/m2",
           "value": "10"
         },
         {
-          "code": "PLDP",
-          "name": "planting_depth",
-          "unit": "cm",
-          "value": "3.18"
-        },
-        {
           "code": "PLSP",
           "name": "plant_spacing",
+          "parameterDescription": "Spacing of plants in a row",
           "unit": "cm",
           "value": "14"
         },
         {
           "code": "PLRS",
           "name": "row_spacing",
+          "parameterDescription": "Distance between two adjacent rows",
           "unit": "cm",
           "value": "76.2"
         },
         {
           "code": "PLTLN",
           "name": "plot_length",
+          "parameterDescription": "Plot length (gross) for single plot or treatment",
           "unit": "m",
           "value": "3.5"
         },
         {
           "code": "PLTWI",
           "name": "plot_width",
+          "parameterDescription": "Plot width (gross) for single plot or treatment",
           "unit": "m",
           "value": "1.52"
         }
@@ -202,7 +205,7 @@
           "value": "Chlortaniliprole"
         },
         {
-          "code": "CH",
+          "code": "CHAMT",
           "name": "chem_applic_level",
           "unit": "kg/ha",
           "value": "2.9"
@@ -546,10 +549,11 @@
     },
     "eventParameters": [
         {
-          "code": "harvest_operat_component",
-          "name": "HACOM",
-          "unit": "text",
-          "value": "aboveground biomass"
+          "code": "HACOM",
+          "name": "harvest_operat_component",
+          "unit": "code",
+          "value": "canopy",
+          "codeValueDescription": "entire aboveground biomass harvested, uncertain if 'canopy' is correct code"
         }
     ],
     "eventType": "harvest",
