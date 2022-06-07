@@ -91,7 +91,7 @@
           "unit":"m"
         },
         {
-          "code": "PLTRno",
+          "code": "PLTR#",
           "name": "plot_row_number",
           "parameterDescription":"Plot row number for single plot or treatment",
           "value": "2",
@@ -190,7 +190,7 @@
     "date": {
       "discreteDates": ["2017-05-12"]
     },
-    "eventDescription": "Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac, for total of approximately 6 oz.",
+    "eventDescription": "Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac (0.035 gal), for total of approximately 6 oz.",
     "eventParameters": [
         {
           "code": "CH_NAME",
@@ -208,7 +208,7 @@
           "code": "CHAMT",
           "name": "chem_applic_level",
           "unit": "kg/ha",
-          "value": "2.9"
+          "value": "0.3"
         },
         {
           "code": "CH_TARGETS",
