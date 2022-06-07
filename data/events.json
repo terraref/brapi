@@ -493,7 +493,7 @@
           "value": "Flubendiamide"
         },
         {
-          "code": "CH",
+          "code": "CHAMT",
           "name": "chem_applic_level",
           "unit": "l/ha",
           "value": "0.029"
