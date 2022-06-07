@@ -495,7 +495,7 @@
         {
           "code": "CHAMT",
           "name": "chem_applic_level",
-          "unit": "l/ha",
+          "unit": "kg/ha",
           "value": "0.01392"
         },
         {
