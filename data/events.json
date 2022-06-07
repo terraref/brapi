@@ -478,7 +478,7 @@
     "date": {
       "discreteDates": ["2018-05-21"]
     },
-    "eventDescription": "Ground-vehicle spray application of insecticide for treatment of Lepidopteran pests, especially Lesser Cornstalk Borer.  Belt SC (active ingredient Flubendiamide) applied at rate 0.029 Liters/Hectare (4 oz/acre), dilution per 100 gal = 20 oz.   ",
+    "eventDescription": "Ground-vehicle spray application of insecticide for treatment of Lepidopteran pests, especially Lesser Cornstalk Borer.  Belt SC (active ingredient 480g/l Flubendiamide) applied at rate 0.029 Liters/Hectare (4 oz/acre), dilution per 100 gal = 20 oz.",
     "eventParameters": [
         {
           "code": "CH_NAME",
@@ -496,7 +496,7 @@
           "code": "CHAMT",
           "name": "chem_applic_level",
           "unit": "l/ha",
-          "value": "0.029"
+          "value": "0.01392"
         },
         {
           "code": "CH_TARGETS",
