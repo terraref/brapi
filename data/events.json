@@ -10,10 +10,10 @@
         {
           "code": "tiimp",
           "name": "tillage_implement",
-          "parameterDescription": "Implement or tool used for tillage",
+          "description": "Implement or tool used for tillage",
           "unit": "code",
           "value": "TI001",
-          "codeValueDescription": "Standard V-Ripper (TI001)"
+          "valueDescription": "Standard V-Ripper (TI001)"
         }
     ],
     "eventType": "tillage",
@@ -32,7 +32,7 @@
           "name": "fertilizer_material",
           "value": "FE005",
           "unit": "code",
-          "codeValueDescription": "Urea"
+          "valueDescription": "Urea"
         },
         {
           "code": "FEAMN",
@@ -45,7 +45,7 @@
           "name": "fertilizer_applic_method",
           "value": "AP002",
           "unit": "code",
-          "codeValueDescription": "Broadcast, incorporated"
+          "valueDescription": "Broadcast, incorporated"
         }
     ],
     "eventType": "fertilizer",
@@ -62,88 +62,88 @@
         {
           "code": "PLMA",
           "name": "planting_material",
-          "parameterDescription": "Planting material",
+          "description": "Planting material",
           "value": "S",
           "unit":"code",
-          "codeValueDescription": "Dry Seed"
+          "valueDescription": "Dry Seed"
         },
         {
           "code": "CRID",
           "name": "crop_ident_ICASA",
-          "parameterDescription": "Crop (or weed) species identifier",
+          "description": "Crop (or weed) species identifier",
           "value": "SGG",
           "unit": "code",
-          "codeValueDescription": "Sorghum bicolor"
+          "valueDescription": "Sorghum bicolor"
         },
         {
           "code": "PLTLN",
           "name": "plot_length",
-          "parameterDescription": "Plot length (gross) for single plot or treatment",
+          "description": "Plot length (gross) for single plot or treatment",
           "value": "3.5",
           "unit":"m",
-          "codeValueDescription": "3.5 m"
+          "valueDescription": "3.5 m"
         },
         {
           "code": "PLTSP",
           "name": "plot_separation",
-          "parameterDescription": "Spacing between individual plots, if any",
+          "description": "Spacing between individual plots, if any",
           "value": "0.5",
           "unit":"m"
         },
         {
-          "code": "PLTR#",
+          "code": "PLTRno",
           "name": "plot_row_number",
-          "parameterDescription":"Plot row number for single plot or treatment",
+          "description":"Plot row number for single plot or treatment",
           "value": "2",
           "unit":""
         },
         {
           "code": "PLRS",
           "name": "row_spacing",
-          "parameterDescription": "Distance between two adjacent rows",
+          "description": "Distance between two adjacent rows",
           "value": "76.2",
           "unit":"cm",
-          "codeValueDescription": "76.2 cm"
+          "valueDescription": "76.2 cm"
         },
         {
           "code": "PLDP",
           "name": "planting_depth",
-          "parameterDescription": "Depth of seed (or other planted material) relative to soil surface.",
+          "description": "Depth of seed (or other planted material) relative to soil surface.",
           "value": "3.18",
           "unit":"cm"
         },
         {
           "code": "PLPOP",
           "name": "plant_pop_at_planting",
-          "parameterDescription": "Plant population at planting",
+          "description": "Plant population at planting",
           "unit": "number/m2",
           "value": "10"
         },
         {
           "code": "PLSP",
           "name": "plant_spacing",
-          "parameterDescription": "Spacing of plants in a row",
+          "description": "Spacing of plants in a row",
           "unit": "cm",
           "value": "14"
         },
         {
           "code": "PLRS",
           "name": "row_spacing",
-          "parameterDescription": "Distance between two adjacent rows",
+          "description": "Distance between two adjacent rows",
           "unit": "cm",
           "value": "76.2"
         },
         {
           "code": "PLTLN",
           "name": "plot_length",
-          "parameterDescription": "Plot length (gross) for single plot or treatment",
+          "description": "Plot length (gross) for single plot or treatment",
           "unit": "m",
           "value": "3.5"
         },
         {
           "code": "PLTWI",
           "name": "plot_width",
-          "parameterDescription": "Plot width (gross) for single plot or treatment",
+          "description": "Plot width (gross) for single plot or treatment",
           "unit": "m",
           "value": "1.52"
         }
@@ -164,19 +164,19 @@
           "name": "irrigation_operation",
           "value": "IR004",
           "unit": "code",
-          "codeValueDescription": "Sprinkler"
+          "valueDescription": "Sprinkler"
         },
         {
           "code": "IRRIG",
           "name": "irrigation_applied",
           "unit": "code",
           "value": "y",
-          "codeValueDescription": "Yes irrigation was applied"
+          "valueDescription": "Yes irrigation was applied"
         },
         {
           "code": "IRVAL",
           "name": "irrig_amount_depth",
-          "parameterDescription":"Irrigation amount, depth of water",
+          "description":"Irrigation amount, depth of water",
           "unit": "mm",
           "valuesByDate": ["4.5", "2.6", "0.4", "27.9", "14", "0", "14", "0", "14", "0", "14", "0", "14", "0", "2.7", "2.7", "14"]
         }
@@ -190,7 +190,7 @@
     "date": {
       "discreteDates": ["2017-05-12"]
     },
-    "eventDescription": "Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac (0.035 gal), for total of approximately 6 oz.",
+    "eventDescription": "Coragen (active ingredient Chlortraniliprole) injected into subsurface drip system in the afternoon, approximately 2:00 PM.  Applied at rate 4.5 oz/ac, for total of approximately 6 oz.",
     "eventParameters": [
         {
           "code": "CH_NAME",
@@ -213,10 +213,10 @@
         {
           "code": "CH_TARGETS",
           "name": "chemical_applic_target",
-          "parameterDescription": "Chemicals application target",
+          "description": "Chemicals application target",
           "unit": "code",
           "value": "CUTWORM",
-          "codeValueDescription": "generic Cutworm"
+          "valueDescription": "generic Cutworm"
         }
     ],
     "eventType": "chemicals",
@@ -233,10 +233,10 @@
         {
           "code": "tiimp",
           "name": "tillage_implement",
-          "parameterDescription": "Implement or tool used for tillage",
+          "description": "Implement or tool used for tillage",
           "unit": "code",
           "value": "TI012",
-          "codeValueDescription": "Cultivator, row (TI012)"
+          "valueDescription": "Cultivator, row (TI012)"
         }
     ],
     "eventType": "tillage",
@@ -275,7 +275,7 @@
         "name": "fertilizer_material",
         "value": "FE010",
         "unit": "code",
-        "codeValueDescription": "Urea ammonium nitrate"
+        "valueDescription": "Urea ammonium nitrate"
       },
       {
         "code": "FEAMN",
@@ -288,7 +288,7 @@
         "name": "fertilizer_applic_method",
         "value": "AP005",
         "unit": "code",
-        "codeValueDescription": "applied in irrigation water"
+        "valueDescription": "applied in irrigation water"
       }
     ],
     "eventType": "fertilizer",
@@ -307,7 +307,7 @@
           "name": "irrigation_operation",
           "value": "IR012",
           "unit": "code",
-          "codeValueDescription": "Subsurface (burried) drip, mm"
+          "valueDescription": "Subsurface (burried) drip, mm"
         },
         {
           "code": "IRADP",
@@ -318,7 +318,7 @@
         {
           "code": "IRVAL",
           "name": "irrig_amount_depth",
-          "parameterDescription":"Irrigation amount, depth of water",
+          "description":"Irrigation amount, depth of water",
           "unit": "mm",
           "valuesByDate": ["2.6", "0", "0", "0", "0", "2.5", "3.3", "2.7", "0", "0", "2.7", "2.6", "0", "0", "24.3", "24.6", "24.5", "24.2", "3.2", "3.3", "3.2", "6.6", "7.7", "7.4", "7.4", "8", "8.3", "8.2", "8.7", "8.6", "8.6", "10.1", "10.4", "10.4", "10.6", "10.3", "10.2", "10.2", "10.4", "14", "14.8", "14.6", "13.7", "13.6", "13.7", "13.9", "6.4", "14.4", "14.4", "14.7", "15.5", "15", "14.5", "12.9", "13.3", "13.7", "14", "19.2", "19.2", "19.2", "19.1", "18.5", "18.1", "14", "13", "11.1", "9.7", "9.1", "11.2", "12.9", "17.2", "15.6", "15.9", "14.5", "13", "13.1", "9.5", "6.5", "6.4", "6.1", "3", "0", "12.1", "0", "0.7", "11.4", "3.1", "0", "9.2", "5.3", "5.2", "10.2", "10", "10", "9.7", "9.5", "9.9", "10.1", "10.1", "10.6", "10.6", "10.9", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
         }
@@ -339,7 +339,7 @@
         "name": "irrigation_operation",
         "value": "IR012",
         "unit": "code",
-        "codeValueDescription": "Subsurface (burried) drip, mm"
+        "valueDescription": "Subsurface (burried) drip, mm"
       },
       {
         "code": "IRADP",
@@ -350,7 +350,7 @@
       {
         "code": "IRVAL",
         "name": "irrig_amount_depth",
-        "parameterDescription":"Irrigation amount, depth of water",
+        "description":"Irrigation amount, depth of water",
         "unit": "mm",
         "valuesByDate": ["2.6", "0", "0", "0", "0", "2.5", "3.3", "2.7", "0", "0", "2.7", "2.6", "0", "0", "24.3", "24.6", "24.5", "24.2", "3.2", "3.3", "3.2", "6.6", "7.7", "7.4", "7.4", "8", "8.3", "8.2", "8.7", "8.6", "8.6", "10.1", "10.4", "10.4", "10.6", "10.3", "10.2", "10.2", "10.4", "14", "14.8", "14.6", "13.7", "13.6", "13.7", "13.9", "6.4", "14.4", "14.4", "14.7", "15.5", "15", "14.5", "12.9", "13.3", "13.7", "14", "19.2", "19.2", "19.2", "19.1", "18.5", "18.1", "14", "13", "11.1", "9.7", "9.1", "11.2", "12.9", "17.2", "15.6", "15.9", "14.5", "13", "13.1", "9.5", "6.5", "6.4", "6.1", "3", "0", "12.1", "0", "0.7", "11.4", "3.1", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "8", "8", "8.2", "8.2", "8.5", "8.6", "8.3", "8.1", "8.1", "8.1", "8.1", "8.3", "8.3", "8.1", "7.9", "0", "0"]
       }
@@ -372,7 +372,7 @@
           "name": "harvest_operat_component",
           "unit": "code",
           "value": "canopy",
-          "codeValueDescription": "entire aboveground biomass harvested, uncertain if 'canopy' is correct code"
+          "valueDescription": "entire aboveground biomass harvested, uncertain if 'canopy' is correct code"
         }
     ],
     "eventType": "harvest",
@@ -391,14 +391,14 @@
           "name": "planting_method",
           "value": "S",
           "unit": "code",
-          "codeValueDescription": "Dry Seed"
+          "valueDescription": "Dry Seed"
         },
         {
           "code": "CRID",
           "name": "Crop (or weed) species identifier",
           "value": "SGG",
           "unit": "code",
-          "codeValueDescription": "Sorghum bicolor"
+          "valueDescription": "Sorghum bicolor"
         },
         {
           "code": "PLPOP",
@@ -453,7 +453,7 @@
       "name": "irrigation_operation",
       "value": "IR004",
       "unit": "code",
-      "codeValueDescription": "Sprinkler"
+      "valueDescription": "Sprinkler"
     },
     {
       "code": "IRADP",
@@ -464,7 +464,7 @@
     {
       "code": "IRVAL",
       "name": "irrig_amount_depth",
-      "parameterDescription":"Irrigation amount, depth of water",
+      "description":"Irrigation amount, depth of water",
       "unit": "mm",
       "value": 25
     }    
@@ -521,7 +521,7 @@
           "name": "fertilizer_material",
           "value": "FE010",
           "unit": "code",
-          "codeValueDescription": "Urea ammonium nitrate"
+          "valueDescription": "Urea ammonium nitrate"
         },
         {
           "code": "FEAMN",
@@ -534,7 +534,7 @@
           "name": "fertilizer_applic_method",
           "value": "AP005",
           "unit": "code",
-          "codeValueDescription": "applied in irrigation water"
+          "valueDescription": "applied in irrigation water"
         }
     ],
     "eventType": "fertilizer",
@@ -553,7 +553,7 @@
           "name": "harvest_operat_component",
           "unit": "code",
           "value": "canopy",
-          "codeValueDescription": "entire aboveground biomass harvested, uncertain if 'canopy' is correct code"
+          "valueDescription": "entire aboveground biomass harvested, uncertain if 'canopy' is correct code"
         }
     ],
     "eventType": "harvest",
